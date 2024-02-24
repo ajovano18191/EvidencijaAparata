@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34408.163
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvidencijaAparata.Server", "EvidencijaAparata.Server\EvidencijaAparata.Server.csproj", "{BF6F35C8-3B77-4D64-8C47-310B06942568}"
+EndProject
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "evidencijaaparata.client", "evidencijaaparata.client\evidencijaaparata.client.esproj", "{988DE2A1-193E-4998-84AB-20EF29205EB5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BF6F35C8-3B77-4D64-8C47-310B06942568}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BF6F35C8-3B77-4D64-8C47-310B06942568}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BF6F35C8-3B77-4D64-8C47-310B06942568}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BF6F35C8-3B77-4D64-8C47-310B06942568}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{988DE2A1-193E-4998-84AB-20EF29205EB5}.Release|Any CPU.Deploy.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {66005475-56ED-4BB0-A92B-509B23362897}
+	EndGlobalSection
+EndGlobal
