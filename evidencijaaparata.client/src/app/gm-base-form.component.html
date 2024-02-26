@@ -1,3 +1,6 @@
+<div class="example-loading-shade" *ngIf="isLoadingResult">
+  <mat-spinner></mat-spinner>
+</div>
 <div mat-dialog-content>
   <h1><b>{{this.isEdit ? "Update" : "Add"}} GM</b></h1>
   <mat-form-field>
@@ -23,6 +26,6 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button (click)="onNoClick()">Cancel</button>
-  <button mat-button (click)="onOkClick()" [mat-dialog-close]="gmBase" cdkFocusInitial>{{this.isEdit ? "Update" : "Add"}}</button>
+  <button mat-button (click)="onNoClick()">Cancelll</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isEdit ? "Update" : "Add"}}</button>
 </div>

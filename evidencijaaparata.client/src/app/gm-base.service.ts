@@ -43,4 +43,8 @@ export class GmBaseService {
   updateGM(id: number, gmDTO: GMBaseDTO): Observable<GMBase> {
     return this.httpClient.put<GMBase>(`${this.href}/${id}`, gmDTO);
   }
+
+  deleteGM(id: number): Observable<void> {
+    return this.httpClient.delete<void>(`${this.href}/${id}`);
+  }
 }

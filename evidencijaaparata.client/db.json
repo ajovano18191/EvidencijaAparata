@@ -37,23 +37,9 @@
       "name": "Objekat 5",
       "serial_num": "SN005",
       "old_sticker_no": "OSN005",
-      "work_type": "SAS",
+      "work_type": "COUNTERS",
       "act_location_naziv": "Ca Kneza Milosa",
       "act_location_id": 1
-    },
-    {
-      "name": "Test",
-      "serial_num": "1",
-      "old_sticker_no": "1",
-      "work_type": "APOLLO",
-      "id": 6
-    },
-    {
-      "name": "Test2",
-      "serial_num": "2",
-      "old_sticker_no": "2",
-      "work_type": "APOLLO",
-      "id": 7
     }
   ]
 }

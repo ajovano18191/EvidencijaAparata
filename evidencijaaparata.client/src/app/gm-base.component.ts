@@ -74,10 +74,12 @@ export class GmBaseComponent implements AfterViewInit {
       data: data
     });
 
-    // TO DO: proveriti sa pravim back da li se odmah azurira prikaz
     dialogRef.afterClosed()
-      .subscribe((gmBase: GMBase) => {
-        this.dataUpdate$.next({});
-      });
+      .subscribe(() => this.dataUpdate$.next({}));
+  }
+
+  deleteGM(id: number) {
+    this.gmBaseService.deleteGM(id)
+      .subscribe(() => this.dataUpdate$.next({}));
   }
 }
