@@ -1,0 +1,47 @@
+{
+  "gm_base": [
+    {
+      "id": 1,
+      "name": "Objekat 1",
+      "serial_num": "SN001",
+      "old_sticker_no": "OSN001",
+      "work_type": "SAS",
+      "act_location_naziv": "Ca Kneza Milosa",
+      "act_location_id":  1
+    },
+    {
+      "id": 2,
+      "name": "Objekat 2",
+      "serial_num": "SN002",
+      "old_sticker_no": "OSN002",
+      "work_type": "APOLLO",
+      "act_location_naziv": "Neaktivan"
+    },
+    {
+      "id": 3,
+      "name": "Objekat 3",
+      "serial_num": "SN003",
+      "old_sticker_no": "OSN003",
+      "work_type": "ROULETE",
+      "act_location_naziv": "Ca Robna Kuca",
+      "act_location_id": 2
+    },
+    {
+      "id": 4,
+      "name": "Objekat 4",
+      "serial_num": "SN004",
+      "old_sticker_no": "OSN004",
+      "work_type": "COUNTERS",
+      "act_location_naziv": "Neaktivan"
+    },
+    {
+      "id": 5,
+      "name": "Objekat 5",
+      "serial_num": "SN005",
+      "old_sticker_no": "OSN005",
+      "work_type": "SAS",
+      "act_location_naziv": "Ca Kneza Milosa",
+      "act_location_id": 1
+    }
+  ]
+}

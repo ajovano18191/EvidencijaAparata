@@ -17,7 +17,7 @@ import { GMBase, GMBaseWorkType } from './gm-base.interface';
   styleUrls: ['./gm-base.component.css']
 })
 export class GmBaseComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type',];
+  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv',];
   exampleDatabase: ExampleHttpDatabase | null = null;
   data: GMBase[] = [];
 
@@ -44,6 +44,7 @@ export class GmBaseComponent implements AfterViewInit {
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,
+            30
           ).pipe(catchError(() => observableOf(null)));
         }),
         map(data => {
@@ -61,57 +62,24 @@ export class GmBaseComponent implements AfterViewInit {
   }
 }
 
-/** An example database that the data source uses to retrieve data for the table. */
 export class ExampleHttpDatabase {
   constructor(private _httpClient: HttpClient) { }
 
-  getRepoIssues(sort: string, order: SortDirection, page: number): Observable<{ items: GMBase[], total_count: number }> {
-    return of({
-      items: [
-        {
-          id: 1,
-          name: 'Objekat 1',
-          serial_num: 'SN001',
-          old_sticker_no: 'OSN001',
-          work_type: GMBaseWorkType.SAS
-        },
-        {
-          id: 2,
-          name: 'Objekat 2',
-          serial_num: 'SN002',
-          old_sticker_no: 'OSN002',
-          work_type: GMBaseWorkType.APOLLO
-        },
-        {
-          id: 3,
-          name: 'Objekat 3',
-          serial_num: 'SN003',
-          old_sticker_no: 'OSN003',
-          work_type: GMBaseWorkType.ROULETE
-        },
-        {
-          id: 4,
-          name: 'Objekat 4',
-          serial_num: 'SN004',
-          old_sticker_no: 'OSN004',
-          work_type: GMBaseWorkType.COUNTERS
-        },
-        {
-          id: 5,
-          name: 'Objekat 5',
-          serial_num: 'SN005',
-          old_sticker_no: 'OSN005',
-          work_type: GMBaseWorkType.SAS
-        },
-      ],
-      total_count: 5,
-    }).pipe(
-      delay(2000),
-    );
-    //const href = 'https://api.github.com/search/issues';
-    //const requestUrl = `${href}?q=repo:angular/components&sort=${sort}&order=${order}&page=${page + 1
-    //  }`;
-
-    //return this._httpClient.get<GithubApi>(requestUrl);
+  getRepoIssues(sort: string, order: SortDirection, page: number, limit: number): Observable<{ items: GMBase[], total_count: number }> {
+    const href = "http://localhost:3000/gm_base";
+    return this._httpClient.get<GMBase[]>(href, {
+      params: {
+        _sort: sort,
+        _order: order,
+        _page: page + 1,
+        _limit: limit,
+      }
+    })
+      .pipe(
+        map(items => ({
+          items: items,
+          total_count: 5
+        })),
+      );
   }
 }

@@ -4,6 +4,8 @@ export interface GMBase {
   serial_num: string;
   old_sticker_no: string;
   work_type: GMBaseWorkType;
+  act_location_naziv: string;
+  act_location_id: number | undefined;
 }
 
 export enum GMBaseWorkType {
