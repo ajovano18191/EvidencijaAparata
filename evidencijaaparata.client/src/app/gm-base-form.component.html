@@ -1,0 +1,28 @@
+<div mat-dialog-content>
+  <h1><b>{{this.isEdit ? "Update" : "Add"}} GM</b></h1>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="gmBaseDTO!.name">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Serial num.</mat-label>
+    <input matInput [(ngModel)]="gmBaseDTO!.serial_num">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Old Sticker No.</mat-label>
+    <input matInput [(ngModel)]="gmBaseDTO!.old_sticker_no">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Work type</mat-label>
+    <mat-select [(value)]="gmBaseDTO!.work_type">
+      <mat-option [value]="wt.value" *ngFor="let wt of workTypes | keyvalue">{{wt.value}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onNoClick()">Cancel</button>
+  <button mat-button (click)="onOkClick()" [mat-dialog-close]="gmBase" cdkFocusInitial>{{this.isEdit ? "Update" : "Add"}}</button>
+</div>

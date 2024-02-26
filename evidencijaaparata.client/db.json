@@ -7,7 +7,7 @@
       "old_sticker_no": "OSN001",
       "work_type": "SAS",
       "act_location_naziv": "Ca Kneza Milosa",
-      "act_location_id":  1
+      "act_location_id": 1
     },
     {
       "id": 2,
@@ -40,6 +40,20 @@
       "work_type": "SAS",
       "act_location_naziv": "Ca Kneza Milosa",
       "act_location_id": 1
+    },
+    {
+      "name": "Test",
+      "serial_num": "1",
+      "old_sticker_no": "1",
+      "work_type": "APOLLO",
+      "id": 6
+    },
+    {
+      "name": "Test2",
+      "serial_num": "2",
+      "old_sticker_no": "2",
+      "work_type": "APOLLO",
+      "id": 7
     }
   ]
 }

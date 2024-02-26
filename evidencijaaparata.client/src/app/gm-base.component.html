@@ -58,7 +58,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef disableClear>
           Actions
-          <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+          <button mat-icon-button color="primary" aria-label="Add" (click)="openGMDialog(undefined)">
             <mat-icon>add</mat-icon>
           </button>
         </th>
@@ -67,7 +67,7 @@
             <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
               <mat-icon>receipt_long</mat-icon>
             </button>
-            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+            <button mat-icon-button color="primary" aria-label="Edit" (click)="openGMDialog(row)">
               <mat-icon>edit</mat-icon>
             </button>
             <button mat-icon-button color="warn" matTooltip="Basic" aria-label="Example icon-button with a heart icon">

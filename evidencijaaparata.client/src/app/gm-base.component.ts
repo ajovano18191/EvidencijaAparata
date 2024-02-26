@@ -1,17 +1,19 @@
 import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
-import { merge, Observable, of as observableOf, of } from 'rxjs';
-import { catchError, map, startWith, switchMap } from 'rxjs/operators';
+import { merge, Observable, of as observableOf, of, Subject } from 'rxjs';
+import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe, NgIf } from '@angular/common';
 import { GMBase } from './gm-base.interface';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { GmBaseService } from './gm-base.service';
+import { GmBaseFormComponent } from './gm-base-form.component';
 
 @Component({
   selector: 'app-gm-base',
@@ -22,7 +24,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 })
 export class GmBaseComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv', 'activation', 'actions',];
-  exampleDatabase: ExampleHttpDatabase | null = null;
+  gmBaseService = inject(GmBaseService);
   data: GMBase[] = [];
 
   resultsLength = 0;
@@ -31,20 +33,20 @@ export class GmBaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  constructor(private _httpClient: HttpClient) { }
+  constructor() { }
+
+  private dataUpdate$ = new Subject();
 
   ngAfterViewInit() {
-    this.exampleDatabase = new ExampleHttpDatabase(this._httpClient);
-
     // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
-    merge(this.sort.sortChange, this.paginator.page)
+    merge(this.sort.sortChange, this.paginator.page, this.dataUpdate$)
       .pipe(
         startWith({}),
         switchMap(() => {
           this.isLoadingResults = true;
-          return this.exampleDatabase!.getRepoIssues(
+          return this.gmBaseService.getGMs(
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,
@@ -64,26 +66,18 @@ export class GmBaseComponent implements AfterViewInit {
       )
       .subscribe(data => (this.data = data));
   }
-}
 
-export class ExampleHttpDatabase {
-  constructor(private _httpClient: HttpClient) { }
+  public dialog: MatDialog = inject(MatDialog);
 
-  getRepoIssues(sort: string, order: SortDirection, page: number, limit: number): Observable<{ items: GMBase[], total_count: number }> {
-    const href = "http://localhost:3000/gm_base";
-    return this._httpClient.get<GMBase[]>(href, {
-      params: {
-        _sort: sort,
-        _order: order,
-        _page: page + 1,
-        _limit: limit,
-      }
-    })
-      .pipe(
-        map(items => ({
-          items: items,
-          total_count: 5
-        })),
-      );
+  openGMDialog(data: GMBase | undefined) {
+    const dialogRef = this.dialog.open(GmBaseFormComponent, {
+      data: data
+    });
+
+    // TO DO: proveriti sa pravim back da li se odmah azurira prikaz
+    dialogRef.afterClosed()
+      .subscribe((gmBase: GMBase) => {
+        this.dataUpdate$.next({});
+      });
   }
 }
