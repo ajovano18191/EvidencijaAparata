@@ -41,3 +41,15 @@ table {
 .mat-column-created {
   max-width: 124px;
 }
+
+.demo-button-container {
+  padding-bottom: 16px;
+}
+
+.demo-button + .demo-button {
+  margin-left: 8px;
+}
+
+.example-button-row button {
+  margin-right: 8px;
+}

@@ -41,7 +41,40 @@
       <!-- Act. Location Naziv Column -->
       <ng-container matColumnDef="act_location_naziv">
         <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Location Naziv</th>
-        <td mat-cell *matCellDef="let row">{{row.act_location_naziv}}</td>
+        <td mat-cell *matCellDef="let row">{{row.act_location_naziv ? row.act_location_naziv : ""}}</td>
+      </ng-container>
+
+      <!-- Activation Column -->
+      <ng-container matColumnDef="activation">
+        <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_location_id !== undefined">
+            {{row.act_location_id ? "Active" : "Deactive"}}
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef disableClear>
+          Actions
+          <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+            <mat-icon>add</mat-icon>
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="example-button-row">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>receipt_long</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Basic" aria-label="Example icon-button with a heart icon">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

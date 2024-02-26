@@ -14,8 +14,7 @@
       "name": "Objekat 2",
       "serial_num": "SN002",
       "old_sticker_no": "OSN002",
-      "work_type": "APOLLO",
-      "act_location_naziv": "Neaktivan"
+      "work_type": "APOLLO"
     },
     {
       "id": 3,
@@ -31,8 +30,7 @@
       "name": "Objekat 4",
       "serial_num": "SN004",
       "old_sticker_no": "OSN004",
-      "work_type": "COUNTERS",
-      "act_location_naziv": "Neaktivan"
+      "work_type": "COUNTERS"
     },
     {
       "id": 5,

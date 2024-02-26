@@ -3,21 +3,25 @@ import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { merge, Observable, of as observableOf, of } from 'rxjs';
-import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, map, startWith, switchMap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { CommonModule, DatePipe, NgIf } from '@angular/common';
-import { GMBase, GMBaseWorkType } from './gm-base.interface';
+import { DatePipe, NgIf } from '@angular/common';
+import { GMBase } from './gm-base.interface';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-gm-base',
   standalone: true,
-  imports: [NgIf, MatProgressSpinnerModule, MatTableModule, MatSortModule, MatPaginatorModule, DatePipe,],
+  imports: [NgIf, MatProgressSpinnerModule, MatTableModule, MatSortModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatDialogModule, MatSlideToggleModule,],
   templateUrl: './gm-base.component.html',
   styleUrls: ['./gm-base.component.css']
 })
 export class GmBaseComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv',];
+  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv', 'activation', 'actions',];
   exampleDatabase: ExampleHttpDatabase | null = null;
   data: GMBase[] = [];
 
