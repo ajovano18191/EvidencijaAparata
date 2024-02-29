@@ -4,6 +4,8 @@ export interface GMLocation {
   naziv: string;
   adresa: string;
   mesto_id: number;
+  mesto_naziv: string;
   ip: string;
-  loc_id: string;
+  act_location_naziv: string | undefined;
+  act_location_id: number | undefined;
 }
