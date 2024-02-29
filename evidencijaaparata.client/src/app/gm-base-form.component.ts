@@ -47,7 +47,7 @@ export class GmBaseFormComponent {
     }
     addOrUpdateGM$
       .subscribe(gmBase => {
-        this.dialogRef.close();
+        this.dialogRef.close(true);
       });
   }
 
@@ -57,9 +57,5 @@ export class GmBaseFormComponent {
 
   updateGM() {
     return this.gmBaseService.updateGM(this.gmBase!.id, this.gmBaseDTO);
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
   }
 }

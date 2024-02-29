@@ -3,7 +3,7 @@ import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
 import { merge, Observable, of as observableOf, of, Subject } from 'rxjs';
-import { catchError, delay, map, startWith, switchMap } from 'rxjs/operators';
+import { catchError, delay, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { MatTableModule } from '@angular/material/table';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe, NgIf } from '@angular/common';
@@ -75,11 +75,18 @@ export class GmBaseComponent implements AfterViewInit {
     });
 
     dialogRef.afterClosed()
+      .pipe(
+        filter((p: boolean) => p),
+      )
       .subscribe(() => this.dataUpdate$.next({}));
   }
 
   deleteGM(id: number) {
     this.gmBaseService.deleteGM(id)
       .subscribe(() => this.dataUpdate$.next({}));
+  }
+
+  activateOrDeactivateGM(event: { checked: boolean, source: any }, gmBaseID: number) {
+    console.log(event.checked, gmBaseID);
   }
 }

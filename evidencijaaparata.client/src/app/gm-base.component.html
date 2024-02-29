@@ -48,7 +48,7 @@
       <ng-container matColumnDef="activation">
         <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>
         <td mat-cell *matCellDef="let row">
-          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_location_id !== undefined">
+          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_location_id !== undefined" (change)="activateOrDeactivateGM($event, row.id)">
             {{row.act_location_id ? "Active" : "Deactive"}}
           </mat-slide-toggle>
         </td>
