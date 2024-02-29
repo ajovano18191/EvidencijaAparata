@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
-import { GMLocation } from './gm-location.interface';
+import { City, GMLocation } from './gm-location.interface';
 import { Observable, map } from 'rxjs';
 import { GMLocationDTO } from './gm-location.dto';
 
@@ -46,5 +46,9 @@ export class GmLocationService {
 
   deleteLocation(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.href}/${id}`);
+  }
+
+  getCities(): Observable<City[]> {
+    return this.httpClient.get<City[]>("http://localhost:3000/cities");
   }
 }

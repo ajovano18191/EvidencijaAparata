@@ -48,8 +48,10 @@
       "rul_base_id": 1,
       "naziv": "Location 1",
       "adresa": "Adresa 1",
-      "mesto_id": 1,
-      "mesto_naziv": "Mesto 1",
+      "mesto": {
+        "id": 1,
+        "naziv": "Mesto 1"
+      },
       "ip": "192.168.0.1"
     },
     {
@@ -57,8 +59,10 @@
       "rul_base_id": 2,
       "naziv": "Location 2",
       "adresa": "Adresa 2",
-      "mesto_id": 2,
-      "mesto_naziv": "Mesto 2",
+      "mesto": {
+        "id": 2,
+        "naziv": "Mesto 2"
+      },
       "ip": "192.168.0.2",
       "act_location_naziv": "Aktivna lokacija 2",
       "act_location_id": 2
@@ -68,8 +72,10 @@
       "rul_base_id": 3,
       "naziv": "Location 3",
       "adresa": "Adresa 3",
-      "mesto_id": 3,
-      "mesto_naziv": "Mesto 3",
+      "mesto": {
+        "id": 3,
+        "naziv": "Mesto 3"
+      },
       "ip": "192.168.0.3"
     },
     {
@@ -77,8 +83,10 @@
       "rul_base_id": 4,
       "naziv": "Location 4",
       "adresa": "Adresa 4",
-      "mesto_id": 4,
-      "mesto_naziv": "Mesto 4",
+      "mesto": {
+        "id": 4,
+        "naziv": "Mesto 4"
+      },
       "ip": "192.168.0.4",
       "act_location_naziv": "Aktivna lokacija 4",
       "act_location_id": 4
@@ -88,11 +96,35 @@
       "rul_base_id": 5,
       "naziv": "Location 5",
       "adresa": "Adresa 5",
-      "mesto_id": 5,
-      "mesto_naziv": "Mesto 5",
+      "mesto": {
+        "id": 5,
+        "naziv": "Mesto 5"
+      },
       "ip": "192.168.0.5",
       "act_location_naziv": "Aktivna lokacija 5",
       "act_location_id": 5
+    }
+  ],
+  "cities": [
+    {
+      "id": 1,
+      "naziv": "Mesto 1"
+    },
+    {
+      "id": 2,
+      "naziv": "Mesto 2"
+    },
+    {
+      "id": 3,
+      "naziv": "Mesto 3"
+    },
+    {
+      "id": 4,
+      "naziv": "Mesto 4"
+    },
+    {
+      "id": 5,
+      "naziv": "Mesto 5"
     }
   ]
 }

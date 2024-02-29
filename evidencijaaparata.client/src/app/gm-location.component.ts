@@ -11,6 +11,7 @@ import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { GmLocationFormComponent } from './gm-location-form.component';
 
 @Component({
   selector: 'app-gm-location',
@@ -67,15 +68,15 @@ export class GmLocationComponent implements AfterViewInit {
   public dialog: MatDialog = inject(MatDialog);
 
   openLocationDialog(data: GMLocation | undefined) {
-    //const dialogRef = this.dialog.open(GmBaseFormComponent, {
-    //  data: data
-    //});
+    const dialogRef = this.dialog.open(GmLocationFormComponent, {
+      data: data
+    });
 
-    //dialogRef.afterClosed()
-    //  .pipe(
-    //    filter((p: boolean) => p),
-    //  )
-    //  .subscribe(() => this.dataUpdate$.next({}));
+    dialogRef.afterClosed()
+      .pipe(
+        filter((p: boolean) => p),
+      )
+      .subscribe(() => this.dataUpdate$.next({}));
   }
 
   deleteLocation(id: number) {
