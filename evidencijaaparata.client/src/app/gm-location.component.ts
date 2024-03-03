@@ -80,6 +80,7 @@ export class GmLocationComponent implements AfterViewInit {
   }
 
   deleteLocation(id: number) {
+    this.isLoadingResults = true;
     this.gmLocationService.deleteLocation(id)
       .subscribe(() => this.dataUpdate$.next({}));
   }

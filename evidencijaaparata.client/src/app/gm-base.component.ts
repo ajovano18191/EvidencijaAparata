@@ -82,6 +82,7 @@ export class GmBaseComponent implements AfterViewInit {
   }
 
   deleteGM(id: number) {
+    this.isLoadingResults = true;
     this.gmBaseService.deleteGM(id)
       .subscribe(() => this.dataUpdate$.next({}));
   }
