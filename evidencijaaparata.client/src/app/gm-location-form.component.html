@@ -1,0 +1,36 @@
+<div class="example-loading-shade" *ngIf="isLoadingResult">
+  <mat-spinner></mat-spinner>
+</div>
+<div mat-dialog-content>
+  <h1><b>{{this.isEdit ? "Update" : "Add"}} Location</b></h1>
+  <mat-form-field>
+    <mat-label>Rul. Base ID</mat-label>
+    <input matInput [(ngModel)]="gmLocationDTO!.rul_base_id">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput [(ngModel)]="gmLocationDTO!.naziv">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Address</mat-label>
+    <input matInput [(ngModel)]="gmLocationDTO!.adresa">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>IP</mat-label>
+    <input matInput [(ngModel)]="gmLocationDTO!.ip">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Mesto</mat-label>
+    <mat-select [(value)]="gmLocationDTO!.mesto_id">
+      <mat-option [value]="city.id" *ngFor="let city of citie$ | async">{{city.naziv}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isEdit ? "Update" : "Add"}}</button>
+</div>

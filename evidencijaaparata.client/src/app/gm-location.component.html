@@ -1,0 +1,92 @@
+<div class="example-container mat-elevation-z8">
+  <div class="example-loading-shade" *ngIf="isLoadingResults">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div class="example-table-container">
+
+    <table mat-table [dataSource]="data" class="example-table"
+           matSort matSortActive="id" matSortDisableClear matSortDirection="desc">
+
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>ID</th>
+        <td mat-cell *matCellDef="let row">{{row.id}}</td>
+      </ng-container>
+
+      <!-- Rul. Base ID Column -->
+      <ng-container matColumnDef="rul_base_id">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Rul. Base ID</th>
+        <td mat-cell *matCellDef="let row">{{row.rul_base_id}}</td>
+      </ng-container>
+
+      <!-- Name Column -->
+      <ng-container matColumnDef="naziv">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Name</th>
+        <td mat-cell *matCellDef="let row">{{row.naziv}}</td>
+      </ng-container>
+
+      <!-- Address Column -->
+      <ng-container matColumnDef="adresa">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Address</th>
+        <td mat-cell *matCellDef="let row">{{row.adresa}}</td>
+      </ng-container>
+
+      <!-- Place Name Column -->
+      <ng-container matColumnDef="mesto_naziv">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Place Name</th>
+        <td mat-cell *matCellDef="let row">{{row.mesto.naziv}}</td>
+      </ng-container>
+
+      <!-- IP Column -->
+      <ng-container matColumnDef="ip">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>IP</th>
+        <td mat-cell *matCellDef="let row">{{row.ip}}</td>
+      </ng-container>
+
+      <!-- Act. Location Name Column -->
+      <ng-container matColumnDef="act_location_naziv">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Location Naziv</th>
+        <td mat-cell *matCellDef="let row">{{row.act_location_naziv ? row.act_location_naziv : ""}}</td>
+      </ng-container>
+
+      <!-- Activation Column -->
+      <ng-container matColumnDef="activation">
+        <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>
+        <td mat-cell *matCellDef="let row">
+          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_location_id !== undefined" (change)="activateOrDeactivateLocation($event, row.id)">
+            {{row.act_location_id ? "Active" : "Deactive"}}
+          </mat-slide-toggle>
+        </td>
+      </ng-container>
+
+      <!-- Actions Column -->
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef disableClear>
+          Actions
+          <button mat-icon-button color="primary" aria-label="Add" (click)="openLocationDialog(undefined)">
+            <mat-icon>add</mat-icon>
+          </button>
+        </th>
+        <td mat-cell *matCellDef="let row">
+          <div class="example-button-row">
+            <button mat-icon-button color="primary" aria-label="Example icon button with a home icon">
+              <mat-icon>receipt_long</mat-icon>
+            </button>
+            <button mat-icon-button color="primary" aria-label="Edit" (click)="openLocationDialog(row)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" matTooltip="Basic" aria-label="Delete" (click)="deleteLocation(row.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </div>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+  </div>
+
+  <mat-paginator [length]="resultsLength" [pageSize]="30" aria-label="Select page of GitHub search results"></mat-paginator>
+</div>
