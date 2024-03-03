@@ -8,11 +8,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { GmLocationService } from './gm-location.service';
 import { GMLocationActDTO } from './gm-location-act.dto';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 
 @Component({
   selector: 'app-gm-location-act-form',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatProgressSpinnerModule,],
+  imports: [CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule,],
+  providers: [
+    { provide: DateAdapter, useClass: NativeDateAdapter },
+    { provide: MAT_DATE_FORMATS, useValue: MAT_NATIVE_DATE_FORMATS },
+    { provide: MAT_DATE_LOCALE, useValue: 'sr' },
+  ],
   templateUrl: './gm-location-act-form.component.html',
   styleUrls: ['./gm-location-act-form.component.css']
 })
@@ -31,7 +38,7 @@ export class GmLocationActFormComponent {
 
   onOkClick() {
     // this.isLoadingResult = true;
-    // console.log(this.matDialogData, this.gmLocationActDTO);
+    console.log(this.matDialogData, this.gmLocationActDTO);
     this.dialogRef.close(true);
   }
 }

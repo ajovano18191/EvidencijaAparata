@@ -10,7 +10,9 @@
   <br>
   <mat-form-field>
     <mat-label>Datum</mat-label>
-    <input matInput [(ngModel)]="gmLocationActDTO.datum">
+    <input matInput [matDatepicker]="picker" [(ngModel)]="gmLocationActDTO.datum">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <br>
   <mat-form-field>
