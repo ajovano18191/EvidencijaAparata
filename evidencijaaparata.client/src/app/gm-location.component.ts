@@ -86,12 +86,13 @@ export class GmLocationComponent implements AfterViewInit {
       .subscribe(() => this.dataUpdate$.next({}));
   }
 
-  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocationID: number) {  
+  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocation: GMLocation) {  
     event.source._checked = !event.source._checked;
     const dialogRef = this.dialog.open(GmLocationActFormComponent, {
       data: {
-        location_id: gmLocationID,
-        activateNotDeactivate: event.checked,
+        id: gmLocation.act_location_id,
+        naziv: gmLocation.act_location_naziv ? gmLocation.act_location_naziv : gmLocation.naziv,
+        location_id: gmLocation.id,
       }
     });
 

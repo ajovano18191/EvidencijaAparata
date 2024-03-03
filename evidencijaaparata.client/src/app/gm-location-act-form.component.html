@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </div>
 <div mat-dialog-content>
-  <h1><b>{{this.matDialogData.activateNotDeactivate ? "Activation" : "Deactivation"}}</b></h1>
+  <h1><b>{{this.matDialogData.naziv ? this.matDialogData.naziv : "Activation"}}</b></h1>
   <mat-form-field>
     <mat-label>Resenje</mat-label>
     <input matInput [(ngModel)]="gmLocationActDTO.resenje">
@@ -27,5 +27,5 @@
 </div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>
-  <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.matDialogData.activateNotDeactivate ? "Activate" : "Deactivate"}}</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isActivation ? "Activate" : "Deactivate"}}</button>
 </div>
