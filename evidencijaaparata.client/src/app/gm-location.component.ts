@@ -3,7 +3,7 @@ import { CommonModule, DatePipe, NgIf } from '@angular/common';
 import { GMLocation } from './gm-location.interface';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Subject, catchError, merge, startWith, switchMap, of as observableOf, map, filter } from 'rxjs';
+import { Subject, catchError, merge, startWith, switchMap, of as observableOf, map, filter, tap } from 'rxjs';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { GmLocationService } from './gm-location.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { GmLocationFormComponent } from './gm-location-form.component';
+import { GmLocationActFormComponent } from './gm-location-act-form.component';
 
 @Component({
   selector: 'app-gm-location',
@@ -85,7 +86,21 @@ export class GmLocationComponent implements AfterViewInit {
       .subscribe(() => this.dataUpdate$.next({}));
   }
 
-  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocationID: number) {
-    console.log(event.checked, gmLocationID);
+  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocationID: number) {  
+    event.source._checked = !event.source._checked;
+    const dialogRef = this.dialog.open(GmLocationActFormComponent, {
+      data: {
+        location_id: gmLocationID,
+        activateNotDeactivate: event.checked,
+      }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter((p: boolean) => p),
+      )
+      .subscribe(() => {
+        this.dataUpdate$.next({});
+      });
   }
 }
