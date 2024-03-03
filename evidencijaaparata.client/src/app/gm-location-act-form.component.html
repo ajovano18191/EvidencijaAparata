@@ -1,0 +1,31 @@
+<div class="example-loading-shade" *ngIf="isLoadingResult">
+  <mat-spinner></mat-spinner>
+</div>
+<div mat-dialog-content>
+  <h1><b>{{this.matDialogData.naziv ? this.matDialogData.naziv : "Activation"}}</b></h1>
+  <mat-form-field>
+    <mat-label>Resenje</mat-label>
+    <input matInput [(ngModel)]="gmLocationActDTO.resenje">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Datum</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="gmLocationActDTO.datum">
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Loc ID</mat-label>
+    <input matInput [(ngModel)]="gmLocationActDTO.loc_id">
+  </mat-form-field>
+  <br>
+  <mat-form-field>
+    <mat-label>Napomena</mat-label>
+    <input matInput [(ngModel)]="gmLocationActDTO.napomena">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button [mat-dialog-close]="false">Cancel</button>
+  <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isActivation ? "Activate" : "Deactivate"}}</button>
+</div>

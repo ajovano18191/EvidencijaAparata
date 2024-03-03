@@ -2,8 +2,9 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
 import { City, GMLocation } from './gm-location.interface';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { GMLocationDTO } from './gm-location.dto';
+import { GMLocationActDTO } from './gm-location-act.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -50,5 +51,17 @@ export class GmLocationService {
 
   getCities(): Observable<City[]> {
     return this.httpClient.get<City[]>("http://localhost:3000/cities");
+  }
+
+  activateLocation(location_id: number, gmLocationActDTO: GMLocationActDTO): Observable<void> {
+    return this.httpClient.put<void>(`${this.href}/${location_id}/activate`, gmLocationActDTO);
+  }
+
+  deactivateLocation(location_id: number, gmLocationActDTO: GMLocationActDTO): Observable<void> {
+    return this.httpClient.put<void>(`${this.href}/${location_id}/deactivate`, gmLocationActDTO);
+  }
+
+  getActiveLocationNapomena(id: number): Observable<string> {
+    return of("Test napomena");
   }
 }
