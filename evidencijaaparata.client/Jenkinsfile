@@ -5,28 +5,29 @@ pipeline {
         stage('Build') {
             steps {
                 nodejs(nodeJSInstallationName: 'latest') {
-                    sh '''
-                        ls -lhtra
-                        cd ./evidencijaaparata.client
-                        ls -lhtra
-                        npm i
-                        ng build
-                    '''
+                    dir('evidencijaaparata.client') {
+                        sh 'npm i'
+                        sh 'ng build'
+                    }
                 }
             }
         }
-        stage('Deploy') {
+        stage('Release') {
             steps {
-                sh 'pwd'
-                sh 'ls -lhtra'
-                // def myImage = docker.build("ajovano/ajovano")
-                // myImage.push()
+                dir('evidencijaaparata.client') {
+                    sh 'ls -lhtra'
+                    def myImage = docker.build("ajovano/ajovano")
+                    // myImage.push()
+                }
             }
         }
+
     }
+    /*
     post {
         always {
             cleanWs()
         }
     }
+    */
 }
