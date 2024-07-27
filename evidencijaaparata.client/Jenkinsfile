@@ -4,18 +4,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                echo 'Building..'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'Testing..'
+                nodejs(nodeJSInstallationName: 'latest') {
+                    sh '''
+                        ls -lhtra
+                        cd ./evidencijaaparata.client
+                        ls -lhtra
+                        npm i
+                        ng build
+                    '''
+                }
             }
         }
         stage('Deploy') {
             steps {
-                echo 'Deploying....'
+                sh 'pwd'
+                sh 'ls -lhtra'
+                // def myImage = docker.build("ajovano/ajovano")
+                // myImage.push()
             }
+        }
+    }
+    post {
+        always {
+            cleanWs()
         }
     }
 }
