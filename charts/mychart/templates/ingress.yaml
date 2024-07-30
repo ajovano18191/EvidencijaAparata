@@ -1,0 +1,16 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mychart-ingress
+spec:
+  rules:
+  - host: front.10.17.2.52.sslip.io
+    http:
+      paths:
+      - path: /
+        pathType: ImplementationSpecific
+        backend:
+          service:
+            name: mychart-service
+            port:
+              number: 80

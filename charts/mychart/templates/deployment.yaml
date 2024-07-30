@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mychart-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ajovano
+  template:
+    metadata:
+      labels:
+        app: ajovano
+    spec:
+      containers:
+      - name: mychart-container
+        image: ajovano/ajovano
+        ports:
+        - containerPort: 80
