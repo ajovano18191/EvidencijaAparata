@@ -4,7 +4,7 @@ metadata:
   name: mychart-ingress
 spec:
   rules:
-  - host: front.10.17.2.52.sslip.io
+  - host: front.10.17.2.48.sslip.io
     http:
       paths:
       - path: /
