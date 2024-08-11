@@ -3,4 +3,4 @@ kind: GatewayClass
 metadata:
   name: mychart-gateway-class
 spec:
-  controllerName: example.com/gateway-controller
+  controllerName: 10.18.2.47.sslip.io/gateway-controller
