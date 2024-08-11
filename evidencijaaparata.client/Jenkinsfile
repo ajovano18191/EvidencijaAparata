@@ -7,6 +7,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            agent any
+            steps {
+                checkout scm
+            }
+        }
         stage('Build') {
             agent {
                 docker {
@@ -15,7 +21,6 @@ pipeline {
                 }
             }
             steps {
-                checkout scm
                 dir('evidencijaaparata.client') {
                     sh '''
                         npm i
@@ -37,6 +42,7 @@ pipeline {
                         docker.withRegistry('', 'docker-token') {
                             docker.build("ajovano/ajovano").push()
                         }
+                        sh 'docker rmi ajovano/ajovano'
                     }
                 }
             }
