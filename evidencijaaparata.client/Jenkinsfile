@@ -1,33 +1,61 @@
 pipeline {
-    agent any
+
+    agent none
+
+    options { 
+        skipDefaultCheckout() 
+    }
 
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'node:alpine'
+                    args '-u root -v $PWD:/workspace'
+                }
+            }
             steps {
-                nodejs(nodeJSInstallationName: 'latest') {
-                    dir('evidencijaaparata.client') {
-                        sh 'npm i'
-                        sh 'ng build'
-                    }
+                checkout scm
+                dir('evidencijaaparata.client') {
+                    sh '''
+                        npm i
+                        npm run build --source-map=false
+                    '''
                 }
             }
         }
         stage('Release') {
+            agent {
+                docker {
+                    image 'docker:cli'
+                    args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workspace'
+                }
+            }
             steps {
                 dir('evidencijaaparata.client') {
-                    sh 'ls -lhtra'
-                    def myImage = docker.build("ajovano/ajovano")
-                    // myImage.push()
+                    script {
+                        docker.withRegistry('', 'docker-token') {
+                            docker.build("ajovano/ajovano").push()
+                        }
+                    }
                 }
             }
         }
-
-    }
-    /*
-    post {
-        always {
-            cleanWs()
+        stage('Redeploy') {
+            agent {
+                docker {
+                    image 'dtzar/helm-kubectl'
+                    args '-v $PWD:/workspace'
+                }
+            } 
+            steps {
+                script {
+                    def clusterIP = "10.17.2.47"
+                    withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
+                        sh "helm upgrade --install ajovano charts/mychart --set hostIP=${clusterIP}"
+                    }
+                }
+            }
         }
     }
-    */
 }
