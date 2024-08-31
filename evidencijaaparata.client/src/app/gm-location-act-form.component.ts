@@ -34,7 +34,6 @@ export class GMLocationActFormComponent implements OnInit {
   public gmLocationActDTO: GMLocationActDTO = {
     resenje: "",
     datum: new Date(),
-    loc_id: "",
     napomena: "",
   }
 

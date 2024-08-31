@@ -29,7 +29,6 @@ export class GMBaseActFormComponent {
   public gmBaseActDTO: GMBaseActDTO = {
     resenje: "",
     datum: new Date(),
-    base_id: 0,
   }
 
   ngOnInit() {

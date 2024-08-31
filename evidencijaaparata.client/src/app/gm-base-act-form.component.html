@@ -14,12 +14,6 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
-  <br>
-  <mat-form-field>
-    <mat-label>Base ID</mat-label>
-    <input matInput [(ngModel)]="gmBaseActDTO.base_id">
-  </mat-form-field>
-</div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>
   <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isActivation ? "Activate" : "Deactivate"}}</button>

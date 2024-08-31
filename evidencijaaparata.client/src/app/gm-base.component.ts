@@ -93,7 +93,6 @@ export class GMBaseComponent implements AfterViewInit {
       data: {
         id: gmBase.id,
         naziv: gmBase.act_base_name ? gmBase.act_base_name : gmBase.name,
-        base_id: gmBase.act_base_id,
       }
     });
 
