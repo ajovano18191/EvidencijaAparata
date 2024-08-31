@@ -1,16 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { GmLocationService } from './gm-location.service';
-import { GMLocationActDTO } from './gm-location-act.dto';
-import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
 import { Observable } from 'rxjs';
+import { GMLocationActDTO } from './gm-location-act.dto';
+import { GMLocationService } from './gm-location.service';
 
 @Component({
   selector: 'app-gm-location-act-form',
@@ -24,9 +24,9 @@ import { Observable } from 'rxjs';
   templateUrl: './gm-location-act-form.component.html',
   styleUrls: ['./gm-location-act-form.component.css']
 })
-export class GmLocationActFormComponent implements OnInit {
+export class GMLocationActFormComponent implements OnInit {
   private dialogRef = inject(MatDialogRef);
-  private gmLocationService = inject(GmLocationService);
+  private gmLocationService = inject(GMLocationService);
   public isLoadingResult: boolean = false;
 
   public matDialogData: { id: number | undefined, naziv: string | undefined, location_id: number } = inject(MAT_DIALOG_DATA);
@@ -41,7 +41,7 @@ export class GmLocationActFormComponent implements OnInit {
   ngOnInit() {
     if (!this.isActivation) {
       this.gmLocationService.getActiveLocationNapomena(this.matDialogData.id!)
-        .subscribe(napomena =>  this.gmLocationActDTO.napomena = napomena);
+        .subscribe(napomena => this.gmLocationActDTO.napomena = napomena);
     }
   }
 
@@ -57,7 +57,7 @@ export class GmLocationActFormComponent implements OnInit {
     addOrUpdateLocation$
       .subscribe(() => {
         this.dialogRef.close(true);
-    });
+      });
   }
 
   activateLocation() {

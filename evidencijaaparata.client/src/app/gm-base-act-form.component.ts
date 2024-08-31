@@ -1,20 +1,16 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { GMBaseActDTO } from './gm-base-act.dto';
-import { Observable } from 'rxjs';
-import { GMBaseService } from './gm-base.service';
-import { OnInit } from '@angular/core';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { GmLocationService } from './gm-location.service';
-import { GMLocationActDTO } from './gm-location-act.dto';
+import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS, MatNativeDateModule, NativeDateAdapter } from '@angular/material/core';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Observable } from 'rxjs';
+import { GMBaseActDTO } from './gm-base-act.dto';
+import { GMBaseService } from './gm-base.service';
 
 @Component({
   selector: 'app-gm-act-form',
@@ -23,7 +19,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, MAT_NATIVE_DATE_FORMATS
   templateUrl: './gm-base-act-form.component.html',
   styleUrls: ['./gm-base-act-form.component.css']
 })
-export class GmBaseActFormComponent {
+export class GMBaseActFormComponent {
   private dialogRef = inject(MatDialogRef);
   private gmBaseService = inject(GMBaseService);
   public isLoadingResult: boolean = false;

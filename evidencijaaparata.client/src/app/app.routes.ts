@@ -1,9 +1,9 @@
 import { Route } from "@angular/router";
-import { GmBaseComponent } from "./gm-base.component";
-import { GmLocationComponent } from "./gm-location.component";
+import { GMBaseService } from "./gm-base.service";
+import { GMLocationService } from "./gm-location.service";
 
 export const appRoutes: Route[] = [
-  { path: 'gm-location', component: GmLocationComponent },
-  { path: 'gm-base', component: GmBaseComponent },
+  { path: 'gm-location', component: GMLocationService },
+  { path: 'gm-base', component: GMBaseService },
   { path: '', redirectTo: 'gm-location', pathMatch: 'full' },
 ];

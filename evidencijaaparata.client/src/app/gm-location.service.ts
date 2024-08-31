@@ -1,15 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
-import { City, GMLocation } from './gm-location.interface';
 import { Observable, map, of } from 'rxjs';
-import { GMLocationDTO } from './gm-location.dto';
 import { GMLocationActDTO } from './gm-location-act.dto';
+import { GMLocationDTO } from './gm-location.dto';
+import { City, GMLocation } from './gm-location.interface';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GmLocationService {
+export class GMLocationService {
   private httpClient = inject(HttpClient);
   private readonly href = 'http://localhost:3000/gm_location';
 

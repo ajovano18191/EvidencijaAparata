@@ -1,10 +1,10 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
 import { Observable, map } from 'rxjs';
-import { GMBase } from './gm-base.interface';
-import { HttpClient } from '@angular/common/http';
-import { GMBaseDTO } from './gm-base.dto';
 import { GMBaseActDTO } from './gm-base-act.dto';
+import { GMBaseDTO } from './gm-base.dto';
+import { GMBase } from './gm-base.interface';
 
 @Injectable({
   providedIn: 'root'

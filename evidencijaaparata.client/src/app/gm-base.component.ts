@@ -1,20 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule, SortDirection } from '@angular/material/sort';
-import { merge, Observable, of as observableOf, of, Subject } from 'rxjs';
-import { catchError, delay, filter, map, startWith, switchMap } from 'rxjs/operators';
-import { MatTableModule } from '@angular/material/table';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { DatePipe, NgIf } from '@angular/common';
-import { GMBase } from './gm-base.interface';
+import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { merge, of as observableOf, Subject } from 'rxjs';
+import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
+import { GMBaseActFormComponent } from './gm-base-act-form.component';
+import { GMBaseFormComponent } from './gm-base-form.component';
+import { GMBase } from './gm-base.interface';
 import { GMBaseService } from './gm-base.service';
-import { GmBaseFormComponent } from './gm-base-form.component';
-import { GmBaseActFormComponent } from './gm-base-act-form.component';
 
 @Component({
   selector: 'app-gm-base',
@@ -23,7 +22,7 @@ import { GmBaseActFormComponent } from './gm-base-act-form.component';
   templateUrl: './gm-base.component.html',
   styleUrls: ['./gm-base.component.css']
 })
-export class GmBaseComponent implements AfterViewInit {
+export class GMBaseComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_base_name', 'activation', 'actions',];
   gmBaseService = inject(GMBaseService);
   data: GMBase[] = [];
@@ -71,7 +70,7 @@ export class GmBaseComponent implements AfterViewInit {
   public dialog: MatDialog = inject(MatDialog);
 
   openGMDialog(data: GMBase | undefined) {
-    const dialogRef = this.dialog.open(GmBaseFormComponent, {
+    const dialogRef = this.dialog.open(GMBaseFormComponent, {
       data: data
     });
 
@@ -90,7 +89,7 @@ export class GmBaseComponent implements AfterViewInit {
 
   activateOrDeactivateBase(event: { checked: boolean, source: any }, gmBase: GMBase) {
     event.source._checked = !event.source._checked;
-    const dialogRef = this.dialog.open(GmBaseActFormComponent, {
+    const dialogRef = this.dialog.open(GMBaseActFormComponent, {
       data: {
         id: gmBase.id,
         naziv: gmBase.act_base_name ? gmBase.act_base_name : gmBase.name,

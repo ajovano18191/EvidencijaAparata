@@ -1,15 +1,15 @@
-import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatDialogModule, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { GMBase, GMBaseWorkType } from './gm-base.interface';
-import { GMBaseDTO } from './gm-base.dto';
-import { Observable, delay } from 'rxjs';
-import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { Observable } from 'rxjs';
+import { GMBaseDTO } from './gm-base.dto';
+import { GMBase, GMBaseWorkType } from './gm-base.interface';
 import { GMBaseService } from './gm-base.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { GMBaseService } from './gm-base.service';
   templateUrl: './gm-base-form.component.html',
   styleUrls: ['./gm-base-form.component.css']
 })
-export class GmBaseFormComponent {
+export class GMBaseFormComponent {
   private dialogRef = inject(MatDialogRef);
   private gmBaseService = inject(GMBaseService);
   public workTypes = GMBaseWorkType;
@@ -28,13 +28,13 @@ export class GmBaseFormComponent {
   public isEdit = this.gmBase !== undefined;
   public gmBaseDTO: GMBaseDTO =
     this.isEdit ?
-    { ...(this.gmBase!) } :
-    {
+      { ...(this.gmBase!) } :
+      {
         name: "",
         serial_num: "",
         old_sticker_no: "",
         work_type: GMBaseWorkType.APOLLO,
-    };
+      };
 
   onOkClick() {
     this.isLoadingResult = true;

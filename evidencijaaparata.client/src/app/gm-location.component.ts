@@ -1,18 +1,18 @@
+import { DatePipe, NgIf } from '@angular/common';
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
-import { CommonModule, DatePipe, NgIf } from '@angular/common';
-import { GMLocation } from './gm-location.interface';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
-import { MatSort, MatSortModule } from '@angular/material/sort';
-import { Subject, catchError, merge, startWith, switchMap, of as observableOf, map, filter, tap } from 'rxjs';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
-import { GmLocationService } from './gm-location.service';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { GmLocationFormComponent } from './gm-location-form.component';
-import { GmLocationActFormComponent } from './gm-location-act-form.component';
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
+import { Subject, catchError, filter, map, merge, of as observableOf, startWith, switchMap } from 'rxjs';
+import { GMLocationActFormComponent } from './gm-location-act-form.component';
+import { GMLocationFormComponent } from './gm-location-form.component';
+import { GMLocation } from './gm-location.interface';
+import { GMLocationService } from './gm-location.service';
 
 @Component({
   selector: 'app-gm-location',
@@ -21,9 +21,9 @@ import { GmLocationActFormComponent } from './gm-location-act-form.component';
   templateUrl: './gm-location.component.html',
   styleUrls: ['./gm-location.component.css']
 })
-export class GmLocationComponent implements AfterViewInit {
+export class GMLocationComponent implements AfterViewInit {
   displayedColumns: string[] = ['id', 'rul_base_id', 'naziv', 'adresa', 'mesto_naziv', 'ip', 'act_location_naziv', 'activation', 'actions',];
-  gmLocationService = inject(GmLocationService);
+  gmLocationService = inject(GMLocationService);
   data: GMLocation[] = [];
 
   resultsLength = 0;
@@ -69,7 +69,7 @@ export class GmLocationComponent implements AfterViewInit {
   public dialog: MatDialog = inject(MatDialog);
 
   openLocationDialog(data: GMLocation | undefined) {
-    const dialogRef = this.dialog.open(GmLocationFormComponent, {
+    const dialogRef = this.dialog.open(GMLocationFormComponent, {
       data: data
     });
 
@@ -86,9 +86,9 @@ export class GmLocationComponent implements AfterViewInit {
       .subscribe(() => this.dataUpdate$.next({}));
   }
 
-  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocation: GMLocation) {  
+  activateOrDeactivateLocation(event: { checked: boolean, source: any }, gmLocation: GMLocation) {
     event.source._checked = !event.source._checked;
-    const dialogRef = this.dialog.open(GmLocationActFormComponent, {
+    const dialogRef = this.dialog.open(GMLocationActFormComponent, {
       data: {
         id: gmLocation.act_location_id,
         naziv: gmLocation.act_location_naziv ? gmLocation.act_location_naziv : gmLocation.naziv,
