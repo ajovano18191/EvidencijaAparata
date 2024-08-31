@@ -12,8 +12,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
-import { GmBaseService } from './gm-base.service';
+import { GMBaseService } from './gm-base.service';
 import { GmBaseFormComponent } from './gm-base-form.component';
+import { GmBaseActFormComponent } from './gm-base-act-form.component';
 
 @Component({
   selector: 'app-gm-base',
@@ -23,8 +24,8 @@ import { GmBaseFormComponent } from './gm-base-form.component';
   styleUrls: ['./gm-base.component.css']
 })
 export class GmBaseComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv', 'activation', 'actions',];
-  gmBaseService = inject(GmBaseService);
+  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_base_name', 'activation', 'actions',];
+  gmBaseService = inject(GMBaseService);
   data: GMBase[] = [];
 
   resultsLength = 0;
@@ -87,7 +88,22 @@ export class GmBaseComponent implements AfterViewInit {
       .subscribe(() => this.dataUpdate$.next({}));
   }
 
-  activateOrDeactivateGM(event: { checked: boolean, source: any }, gmBaseID: number) {
-    console.log(event.checked, gmBaseID);
+  activateOrDeactivateBase(event: { checked: boolean, source: any }, gmBase: GMBase) {
+    event.source._checked = !event.source._checked;
+    const dialogRef = this.dialog.open(GmBaseActFormComponent, {
+      data: {
+        id: gmBase.id,
+        naziv: gmBase.act_base_name ? gmBase.act_base_name : gmBase.name,
+        base_id: gmBase.act_base_id,
+      }
+    });
+
+    dialogRef.afterClosed()
+      .pipe(
+        filter((p: boolean) => p),
+      )
+      .subscribe(() => {
+        this.dataUpdate$.next({});
+      });
   }
 }

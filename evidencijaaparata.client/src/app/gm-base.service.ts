@@ -4,11 +4,12 @@ import { Observable, map } from 'rxjs';
 import { GMBase } from './gm-base.interface';
 import { HttpClient } from '@angular/common/http';
 import { GMBaseDTO } from './gm-base.dto';
+import { GMBaseActDTO } from './gm-base-act.dto';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GmBaseService {
+export class GMBaseService {
   private httpClient = inject(HttpClient);
   private readonly href = 'http://localhost:3000/gm_base';
 
@@ -46,5 +47,13 @@ export class GmBaseService {
 
   deleteGM(id: number): Observable<void> {
     return this.httpClient.delete<void>(`${this.href}/${id}`);
+  }
+
+  activateBase(base_id: number, gmBaseActDTO: GMBaseActDTO): Observable<void> {
+    return this.httpClient.put<void>(`${this.href}/${base_id}/activate`, gmBaseActDTO);
+  }
+
+  deactivateBase(base_id: number, gmBaseActDTO: GMBaseActDTO): Observable<void> {
+    return this.httpClient.put<void>(`${this.href}/${base_id}/deactivate`, gmBaseActDTO);
   }
 }

@@ -7,10 +7,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { GMBase, GMBaseWorkType } from './gm-base.interface';
 import { GMBaseDTO } from './gm-base.dto';
-import { GmBaseService } from './gm-base.service';
 import { Observable, delay } from 'rxjs';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { GMBaseService } from './gm-base.service';
 
 @Component({
   selector: 'app-gm-base-form',
@@ -21,7 +21,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 })
 export class GmBaseFormComponent {
   private dialogRef = inject(MatDialogRef);
-  private gmBaseService = inject(GmBaseService);
+  private gmBaseService = inject(GMBaseService);
   public workTypes = GMBaseWorkType;
   public isLoadingResult: boolean = false;
   public gmBase: GMBase | undefined = inject(MAT_DIALOG_DATA);

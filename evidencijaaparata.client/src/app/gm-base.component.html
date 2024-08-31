@@ -38,18 +38,18 @@
         <td mat-cell *matCellDef="let row">{{row.work_type}}</td>
       </ng-container>
 
-      <!-- Act. Location Naziv Column -->
-      <ng-container matColumnDef="act_location_naziv">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Location Naziv</th>
-        <td mat-cell *matCellDef="let row">{{row.act_location_naziv ? row.act_location_naziv : ""}}</td>
+      <!-- Act. Base Naziv Column -->
+      <ng-container matColumnDef="act_base_name">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Base Naziv</th>
+        <td mat-cell *matCellDef="let row">{{row.act_base_name ? row.act_base_name : ""}}</td>
       </ng-container>
 
       <!-- Activation Column -->
       <ng-container matColumnDef="activation">
         <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>
         <td mat-cell *matCellDef="let row">
-          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_location_id !== undefined" (change)="activateOrDeactivateGM($event, row.id)">
-            {{row.act_location_id ? "Active" : "Deactive"}}
+          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_base_id !== undefined" (change)="activateOrDeactivateBase($event, row)">
+            {{row.act_base_id ? "Active" : "Deactive"}}
           </mat-slide-toggle>
         </td>
       </ng-container>
