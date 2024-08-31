@@ -56,7 +56,7 @@ pipeline {
             } 
             steps {
                 script {
-                    def clusterIP = "10.17.2.47"
+                    def clusterIP = "dev-1.local"
                     withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
                         sh "helm upgrade --install ajovano charts/mychart --set hostIP=${clusterIP}"
                     }

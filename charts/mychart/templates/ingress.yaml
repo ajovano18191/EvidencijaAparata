@@ -6,7 +6,7 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: {{ printf "front.%s.sslip.io" .Values.hostIP }}
+  - host: {{ printf "front.%s" .Values.hostIP }}
     http:
       paths:
       - path: /
