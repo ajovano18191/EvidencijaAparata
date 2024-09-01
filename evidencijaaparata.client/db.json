@@ -6,8 +6,9 @@
       "serial_num": "SN001",
       "old_sticker_no": "OSN001",
       "work_type": "SAS",
-      "act_base_name": "Aktivan Aparat 1",
-      "act_base_id": 1
+      "act_base_id": 1,
+      "act_location_id": 11,
+      "act_location_naziv": "Lokacija 1"
     },
     {
       "id": 2,
@@ -22,8 +23,9 @@
       "serial_num": "SN003",
       "old_sticker_no": "OSN003",
       "work_type": "ROULETE",
-      "act_base_name": "Aktivan Aparat 3",
-      "act_base_id": 3
+      "act_base_id": 3,
+      "act_location_id": 13,
+      "act_location_naziv": "Lokacija 3"
     },
     {
       "id": 4,
@@ -38,8 +40,9 @@
       "serial_num": "SN005",
       "old_sticker_no": "OSN005",
       "work_type": "COUNTERS",
-      "act_base_name": "Aktivan Aparat 5",
-      "act_base_id": 5
+      "act_base_id": 5,
+      "act_location_id": 15,
+      "act_location_naziv": "Lokacija 5"
     }
   ],
   "gm_location": [
@@ -64,7 +67,6 @@
         "naziv": "Mesto 2"
       },
       "ip": "192.168.0.2",
-      "act_location_naziv": "Aktivna lokacija 2",
       "act_location_id": 2
     },
     {
@@ -88,7 +90,6 @@
         "naziv": "Mesto 4"
       },
       "ip": "192.168.0.4",
-      "act_location_naziv": "Aktivna lokacija 4",
       "act_location_id": 4
     },
     {
@@ -101,7 +102,6 @@
         "naziv": "Mesto 5"
       },
       "ip": "192.168.0.5",
-      "act_location_naziv": "Aktivna lokacija 5",
       "act_location_id": 5
     }
   ],

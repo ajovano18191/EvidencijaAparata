@@ -23,7 +23,7 @@ import { GMBaseService } from './gm-base.service';
   styleUrls: ['./gm-base.component.css']
 })
 export class GMBaseComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'activation', 'actions',];
+  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_location_naziv', 'activation', 'actions',];
   gmBaseService = inject(GMBaseService);
   data: GMBase[] = [];
 

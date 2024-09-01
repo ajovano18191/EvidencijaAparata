@@ -5,6 +5,8 @@ export interface GMBase {
   old_sticker_no: string;
   work_type: GMBaseWorkType;
   act_base_id: number | undefined;
+  act_location_id: number | undefined;
+  act_location_naziv: number | undefined;
 }
 
 export enum GMBaseWorkType {
