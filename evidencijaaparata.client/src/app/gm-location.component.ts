@@ -1,4 +1,4 @@
-import { DatePipe, NgIf } from '@angular/common';
+import { DatePipe, NgIf, NgStyle } from '@angular/common';
 import { AfterViewInit, Component, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -14,12 +14,11 @@ import { GMLocationFormComponent } from './gm-location-form.component';
 import { GMLocation } from './gm-location.interface';
 import { GMLocationService } from './gm-location.service';
 import { GMBaseComponent } from './gm-base.component';
-import { GMBaseActFormComponent } from './gm-base-act-form.component';
 
 @Component({
   selector: 'app-gm-location',
   standalone: true,
-  imports: [NgIf, MatProgressSpinnerModule, MatTableModule, MatSortModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatDialogModule, MatSlideToggleModule,],
+  imports: [NgStyle, NgIf, MatProgressSpinnerModule, MatTableModule, MatSortModule, MatPaginatorModule, DatePipe, MatButtonModule, MatIconModule, MatDialogModule, MatSlideToggleModule,],
   templateUrl: './gm-location.component.html',
   styleUrls: ['./gm-location.component.css']
 })

@@ -33,7 +33,7 @@ export class GMBaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private matDialogData: { act_location_id: number, addOrNotList: boolean } | null = inject(MAT_DIALOG_DATA, { optional: true });
+  public matDialogData: { act_location_id: number, addOrNotList: boolean } | null = inject(MAT_DIALOG_DATA, { optional: true });
 
   constructor() { }
 
@@ -70,6 +70,19 @@ export class GMBaseComponent implements AfterViewInit {
   }
 
   public dialog: MatDialog = inject(MatDialog);
+
+  selectAllOrDeactivatedBases(event: { checked: boolean, source: any }) {
+    if (event.source._checked) {
+      this.matDialogData = null;
+    }
+    else {      
+      this.matDialogData = {
+        act_location_id: this.matDialogData?.act_location_id ?? -1,
+        addOrNotList: true,
+      }
+    }
+    this.dataUpdate$.next({});
+  }
 
   openGMDialog(data: GMBase | undefined) {
     const dialogRef = this.dialog.open(GMBaseFormComponent, {
