@@ -25,7 +25,7 @@ import { MatSelectModule } from '@angular/material/select';
 export class GMBaseActFormComponent {
   private dialogRef = inject(MatDialogRef);
   private gmBaseService = inject(GMBaseService);
-  public isLoadingResult: boolean = true;
+  public isLoadingResult: boolean = false;
 
   public matDialogData: { id: number | undefined, naziv: string | undefined, base_id: number } = inject(MAT_DIALOG_DATA);
   public isActivation: boolean = this.matDialogData.id === undefined;

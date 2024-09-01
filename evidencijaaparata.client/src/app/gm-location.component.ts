@@ -22,7 +22,7 @@ import { GMLocationService } from './gm-location.service';
   styleUrls: ['./gm-location.component.css']
 })
 export class GMLocationComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'rul_base_id', 'naziv', 'adresa', 'mesto_naziv', 'ip', 'act_location_naziv', 'activation', 'actions',];
+  displayedColumns: string[] = ['id', 'rul_base_id', 'naziv', 'adresa', 'mesto_naziv', 'ip', 'activation', 'actions',];
   gmLocationService = inject(GMLocationService);
   data: GMLocation[] = [];
 
@@ -91,7 +91,7 @@ export class GMLocationComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(GMLocationActFormComponent, {
       data: {
         id: gmLocation.act_location_id,
-        naziv: gmLocation.act_location_naziv ? gmLocation.act_location_naziv : gmLocation.naziv,
+        naziv: gmLocation.naziv,
         location_id: gmLocation.id,
       }
     });

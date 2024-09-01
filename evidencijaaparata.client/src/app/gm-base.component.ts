@@ -23,7 +23,7 @@ import { GMBaseService } from './gm-base.service';
   styleUrls: ['./gm-base.component.css']
 })
 export class GMBaseComponent implements AfterViewInit {
-  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'act_base_name', 'activation', 'actions',];
+  displayedColumns: string[] = ['id', 'name', 'serial_num', 'old_sticker_no', 'work_type', 'activation', 'actions',];
   gmBaseService = inject(GMBaseService);
   data: GMBase[] = [];
 
@@ -92,7 +92,7 @@ export class GMBaseComponent implements AfterViewInit {
     const dialogRef = this.dialog.open(GMBaseActFormComponent, {
       data: {
         id: gmBase.act_base_id,
-        naziv: gmBase.act_base_name ? gmBase.act_base_name : gmBase.name,
+        naziv: gmBase.name,
         base_id: gmBase.id,
       }
     });

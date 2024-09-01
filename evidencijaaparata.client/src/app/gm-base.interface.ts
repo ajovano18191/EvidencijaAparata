@@ -4,7 +4,6 @@ export interface GMBase {
   serial_num: string;
   old_sticker_no: string;
   work_type: GMBaseWorkType;
-  act_base_name: string | undefined;
   act_base_id: number | undefined;
 }
 
