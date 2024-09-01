@@ -92,6 +92,7 @@ export class GMLocationComponent implements AfterViewInit {
       data: {
         id: gmLocation.act_location_id,
         naziv: gmLocation.act_location_naziv ? gmLocation.act_location_naziv : gmLocation.naziv,
+        location_id: gmLocation.id,
       }
     });
 
