@@ -38,12 +38,6 @@
         <td mat-cell *matCellDef="let row">{{row.work_type}}</td>
       </ng-container>
 
-      <!-- Act. Base Naziv Column -->
-      <ng-container matColumnDef="act_base_name">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Base Naziv</th>
-        <td mat-cell *matCellDef="let row">{{row.act_base_name ? row.act_base_name : ""}}</td>
-      </ng-container>
-
       <!-- Activation Column -->
       <ng-container matColumnDef="activation">
         <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>

@@ -44,12 +44,6 @@
         <td mat-cell *matCellDef="let row">{{row.ip}}</td>
       </ng-container>
 
-      <!-- Act. Location Name Column -->
-      <ng-container matColumnDef="act_location_naziv">
-        <th mat-header-cell *matHeaderCellDef mat-sort-header disableClear>Act. Location Naziv</th>
-        <td mat-cell *matCellDef="let row">{{row.act_location_naziv ? row.act_location_naziv : ""}}</td>
-      </ng-container>
-
       <!-- Activation Column -->
       <ng-container matColumnDef="activation">
         <th mat-header-cell *matHeaderCellDef disableClear>Activation</th>
