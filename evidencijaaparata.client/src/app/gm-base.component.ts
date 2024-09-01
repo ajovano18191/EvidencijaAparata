@@ -1,7 +1,7 @@
 import { DatePipe, NgIf } from '@angular/common';
-import { AfterViewInit, Component, inject, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, inject, InjectFlags, Optional, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -33,6 +33,8 @@ export class GMBaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
+  private matDialogData: number | null = inject(MAT_DIALOG_DATA, { optional: true });
+
   constructor() { }
 
   private dataUpdate$ = new Subject();
@@ -47,6 +49,7 @@ export class GMBaseComponent implements AfterViewInit {
         switchMap(() => {
           this.isLoadingResults = true;
           return this.gmBaseService.getGMs(
+            this.matDialogData,
             this.sort.active,
             this.sort.direction,
             this.paginator.pageIndex,

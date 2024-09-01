@@ -13,6 +13,7 @@ import { GMLocationActFormComponent } from './gm-location-act-form.component';
 import { GMLocationFormComponent } from './gm-location-form.component';
 import { GMLocation } from './gm-location.interface';
 import { GMLocationService } from './gm-location.service';
+import { GMBaseComponent } from './gm-base.component';
 
 @Component({
   selector: 'app-gm-location',
@@ -67,6 +68,12 @@ export class GMLocationComponent implements AfterViewInit {
   }
 
   public dialog: MatDialog = inject(MatDialog);
+
+  openBasesDialog(data: number | undefined) {
+    const dialogRef = this.dialog.open(GMBaseComponent, {
+      data: data
+    });
+  }
 
   openLocationDialog(data: GMLocation | undefined) {
     const dialogRef = this.dialog.open(GMLocationFormComponent, {

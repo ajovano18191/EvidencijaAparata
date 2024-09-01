@@ -16,18 +16,25 @@ export class GMBaseService {
   constructor() { }
 
   getGMs(
+    act_location_id: number | null,
     sort: string,
     order: SortDirection,
     page: number,
     limit: number
   ): Observable<{ items: GMBase[], total_count: number }> {
+    const params: any = {
+      _sort: sort,
+      _order: order,
+      _page: page + 1,
+      _limit: limit
+    };
+
+    if (act_location_id !== null) {
+      params.act_location_id = act_location_id;
+    }
+
     return this.httpClient.get<GMBase[]>(this.href, {
-      params: {
-        _sort: sort,
-        _order: order,
-        _page: page + 1,
-        _limit: limit,
-      }
+      params: params
     })
       .pipe(
         map(items => ({
