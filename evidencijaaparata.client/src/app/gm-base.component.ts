@@ -33,14 +33,13 @@ export class GMBaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  private matDialogData: number | null = inject(MAT_DIALOG_DATA, { optional: true });
+  private matDialogData: { act_location_id: number, addOrNotList: boolean } | null = inject(MAT_DIALOG_DATA, { optional: true });
 
   constructor() { }
 
   private dataUpdate$ = new Subject();
 
   ngAfterViewInit() {
-    // If the user changes the sort order, reset back to the first page.
     this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
 
     merge(this.sort.sortChange, this.paginator.page, this.dataUpdate$)
@@ -97,6 +96,7 @@ export class GMBaseComponent implements AfterViewInit {
         id: gmBase.act_base_id,
         naziv: gmBase.name,
         base_id: gmBase.id,
+        act_location_id: this.matDialogData?.act_location_id,
       }
     });
 

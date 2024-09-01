@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { SortDirection } from '@angular/material/sort';
-import { Observable, map } from 'rxjs';
+import { Observable, filter, map } from 'rxjs';
 import { GMBaseActDTO } from './gm-base-act.dto';
 import { GMBaseDTO } from './gm-base.dto';
 import { GMBase } from './gm-base.interface';
@@ -16,7 +16,7 @@ export class GMBaseService {
   constructor() { }
 
   getGMs(
-    act_location_id: number | null,
+    matDialogData: { act_location_id: number, addOrNotList: boolean } | null,
     sort: string,
     order: SortDirection,
     page: number,
@@ -29,14 +29,17 @@ export class GMBaseService {
       _limit: limit
     };
 
-    if (act_location_id !== null) {
-      params.act_location_id = act_location_id;
+    if (matDialogData !== null && !matDialogData.addOrNotList) {
+      params.act_location_id = matDialogData.act_location_id;
     }
 
     return this.httpClient.get<GMBase[]>(this.href, {
       params: params
     })
       .pipe(
+        map(items => {
+          return items.filter(p => !matDialogData || !(matDialogData.addOrNotList) || !(p.hasOwnProperty('act_location_id')));
+        }),
         map(items => ({
           items: items,
           total_count: 5
