@@ -5,19 +5,22 @@
   <h1><b>{{this.matDialogData.naziv}}</b></h1>
   <mat-form-field>
     <mat-label>Resenje</mat-label>
-    <input matInput [(ngModel)]="gmLocationActDTO.resenje">
+    <input matInput [(ngModel)]="gmBaseActDTO.resenje">
   </mat-form-field>
   <br>
   <mat-form-field>
     <mat-label>Datum</mat-label>
-    <input matInput [matDatepicker]="picker" [(ngModel)]="gmLocationActDTO.datum">
+    <input matInput [matDatepicker]="picker" [(ngModel)]="gmBaseActDTO.datum">
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
   <br>
-  <mat-form-field>
-    <mat-label>Napomena</mat-label>
-    <input matInput [(ngModel)]="gmLocationActDTO.napomena">
+  
+  <mat-form-field *ngIf="this.isActivation">
+    <mat-label>Lokacija</mat-label>
+    <mat-select [(value)]="gmBaseActDTO!.act_location_id">
+      <mat-option [value]="location.act_location_id" *ngFor="let location of activeLocation$ | async">{{location.naziv}}</mat-option>
+    </mat-select>
   </mat-form-field>
 </div>
 <div mat-dialog-actions align="end">

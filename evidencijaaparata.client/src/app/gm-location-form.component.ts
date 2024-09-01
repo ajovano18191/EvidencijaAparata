@@ -1,16 +1,16 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatSelectModule } from '@angular/material/select';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { GmLocationService } from './gm-location.service';
-import { City, GMLocation } from './gm-location.interface';
-import { GMLocationDTO } from './gm-location.dto';
+import { MatSelectModule } from '@angular/material/select';
 import { Observable, tap } from 'rxjs';
+import { GMLocationDTO } from './gm-location.dto';
+import { City, GMLocation } from './gm-location.interface';
+import { GMLocationService } from './gm-location.service';
 
 @Component({
   selector: 'app-gm-location-form',
@@ -19,15 +19,15 @@ import { Observable, tap } from 'rxjs';
   templateUrl: './gm-location-form.component.html',
   styleUrls: ['./gm-location-form.component.css']
 })
-export class GmLocationFormComponent {
+export class GMLocationFormComponent {
   private dialogRef = inject(MatDialogRef);
-  private gmLocationService = inject(GmLocationService);
+  private gmLocationService = inject(GMLocationService);
   public isLoadingResult: boolean = false;
   public citie$: Observable<City[]> = this.gmLocationService
     .getCities()
     .pipe(
       tap(() => this.isLoadingResult = false),
-  );
+    );
 
   public gmLocation: GMLocation | undefined = inject(MAT_DIALOG_DATA);
   public isEdit = this.gmLocation !== undefined;
