@@ -91,7 +91,7 @@ export class GMBaseComponent implements AfterViewInit {
     event.source._checked = !event.source._checked;
     const dialogRef = this.dialog.open(GMBaseActFormComponent, {
       data: {
-        id: gmBase.id,
+        id: gmBase.act_base_id,
         naziv: gmBase.act_base_name ? gmBase.act_base_name : gmBase.name,
       }
     });

@@ -2,7 +2,7 @@
   <mat-spinner></mat-spinner>
 </div>
 <div mat-dialog-content>
-  <h1><b>{{this.matDialogData.naziv ? this.matDialogData.naziv : "Activation"}}</b></h1>
+  <h1><b>{{this.matDialogData.naziv}}</b></h1>
   <mat-form-field>
     <mat-label>Resenje</mat-label>
     <input matInput [(ngModel)]="gmBaseActDTO.resenje">
@@ -14,6 +14,15 @@
     <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
     <mat-datepicker #picker></mat-datepicker>
   </mat-form-field>
+  <br>
+  
+  <mat-form-field *ngIf="this.isActivation">
+    <mat-label>Lokacija</mat-label>
+    <mat-select [(value)]="gmBaseActDTO!.act_location_id">
+      <mat-option [value]="location.act_location_id" *ngFor="let location of activeLocation$ | async">{{location.act_location_naziv}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div mat-dialog-actions align="end">
   <button mat-button [mat-dialog-close]="false">Cancel</button>
   <button mat-button (click)="onOkClick()" cdkFocusInitial>{{this.isActivation ? "Activate" : "Deactivate"}}</button>

@@ -8,35 +8,39 @@ import { MAT_DIALOG_DATA, MatDialogModule, MatDialogRef } from '@angular/materia
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { Observable } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { GMBaseActDTO } from './gm-base-act.dto';
 import { GMBaseService } from './gm-base.service';
+import { GMLocation } from './gm-location.interface';
+import { GMLocationService } from './gm-location.service';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-gm-act-form',
   standalone: true,
-  imports: [CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule,],
+  imports: [CommonModule, MatDialogModule, MatFormFieldModule, MatInputModule, FormsModule, MatButtonModule, MatProgressSpinnerModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule,],
   templateUrl: './gm-base-act-form.component.html',
   styleUrls: ['./gm-base-act-form.component.css']
 })
 export class GMBaseActFormComponent {
   private dialogRef = inject(MatDialogRef);
   private gmBaseService = inject(GMBaseService);
-  public isLoadingResult: boolean = false;
+  public isLoadingResult: boolean = true;
 
   public matDialogData: { id: number | undefined, naziv: string | undefined, base_id: number } = inject(MAT_DIALOG_DATA);
   public isActivation: boolean = this.matDialogData.id === undefined;
   public gmBaseActDTO: GMBaseActDTO = {
     resenje: "",
     datum: new Date(),
+    act_location_id: undefined,
   }
 
-  ngOnInit() {
-    if (!this.isActivation) {
-      // this.gmLocationService.getActiveLocationNapomena(this.matDialogData.id!)
-      //        .subscribe(napomena => this.gmLocationActDTO.napomena = napomena);
-    }
-  }
+  private gmLocationService = inject(GMLocationService);
+  public activeLocation$: Observable<GMLocation[]> = this.gmLocationService
+    .getActiveLocations()
+    .pipe(
+      tap(() => this.isLoadingResult = false),
+    );
 
   onOkClick() {
     this.isLoadingResult = true;
