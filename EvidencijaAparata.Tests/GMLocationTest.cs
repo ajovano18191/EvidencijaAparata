@@ -13,7 +13,7 @@ namespace EvidencijaAparata.Tests
         public GMLocationsController GMLocationsController { get; set; }
 
         [OneTimeSetUp]
-        public void OneTimeSetUp()
+        public new void OneTimeSetUp()
         {
             GMLocationsController = new GMLocationsController(_context);
         }

@@ -1,6 +1,7 @@
 ﻿using EvidencijaAparata.Server.Data;
 using EvidencijaAparata.Server.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace EvidencijaAparata.Server.Controllers
 {
@@ -11,9 +12,9 @@ namespace EvidencijaAparata.Server.Controllers
         public ApplicationDbContext Context { get; set; } = dbContext;
 
         [HttpGet]
-        public List<GMLocation> GetGMLocations()
+        public IEnumerable<GMLocation> GetGMLocations()
         {
-            return [.. Context.GMLocations];
+            return [.. Context.GMLocations.Include(p => p.Mesto)];
         }
     }
 }
