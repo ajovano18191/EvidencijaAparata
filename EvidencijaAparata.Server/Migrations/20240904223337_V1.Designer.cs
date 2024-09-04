@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvidencijaAparata.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240904204744_V1")]
+    [Migration("20240904223337_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -78,8 +78,7 @@ namespace EvidencijaAparata.Server.Migrations
 
                     b.Property<string>("Adresa")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("text");
 
                     b.Property<string>("IP")
                         .IsRequired()
@@ -90,8 +89,7 @@ namespace EvidencijaAparata.Server.Migrations
 
                     b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("text");
 
                     b.Property<int>("rul_base_id")
                         .HasColumnType("integer");

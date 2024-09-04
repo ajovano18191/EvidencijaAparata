@@ -73,12 +73,21 @@ namespace EvidencijaAparata.Server.Controllers
         [HttpPut]
         public async Task<ActionResult<IGMLocation>> UpdateGMLocation([FromRoute] int id, [FromBody] GMLocationDTO gmLocationDTO)
         {
-            GMLocation gmLocation = await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
+            GMLocation gmLocation = await Context.GMLocations.Include(p => p.Mesto).FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
             City city = await Context.Cities.FirstOrDefaultAsync(p => p.Id == gmLocationDTO.mesto_id) ?? throw new Exception();
             gmLocation.DTO2GMLocation(gmLocationDTO, city);
             Context.GMLocations.Update(gmLocation);
             await Context.SaveChangesAsync();
             return Ok(new IGMLocation(gmLocation));
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> DeleteGMLocation([FromRoute] int id)
+        {
+            GMLocation gmLocation = await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
+            Context.GMLocations.Remove(gmLocation);
+            await Context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

@@ -75,8 +75,7 @@ namespace EvidencijaAparata.Server.Migrations
 
                     b.Property<string>("Adresa")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("text");
 
                     b.Property<string>("IP")
                         .IsRequired()
@@ -87,8 +86,7 @@ namespace EvidencijaAparata.Server.Migrations
 
                     b.Property<string>("Naziv")
                         .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("character varying(256)");
+                        .HasColumnType("text");
 
                     b.Property<int>("rul_base_id")
                         .HasColumnType("integer");

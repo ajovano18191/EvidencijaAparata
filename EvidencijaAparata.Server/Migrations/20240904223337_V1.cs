@@ -33,8 +33,8 @@ namespace EvidencijaAparata.Server.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     rul_base_id = table.Column<int>(type: "integer", nullable: false),
-                    Naziv = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
-                    Adresa = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: false),
+                    Naziv = table.Column<string>(type: "text", nullable: false),
+                    Adresa = table.Column<string>(type: "text", nullable: false),
                     MestoId = table.Column<int>(type: "integer", nullable: false),
                     IP = table.Column<string>(type: "text", nullable: false)
                 },

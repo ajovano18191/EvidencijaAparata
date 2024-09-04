@@ -4,6 +4,7 @@ using EvidencijaAparata.Server.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -134,13 +135,36 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        public async Task UpdateGMLocation_WrongId_ThrowsException()
+        [TestCase(-1)]
+        public async Task UpdateGMLocation_WrongId_ThrowsException(int id)
         {
-            int id = -1;
             GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", 1);
             Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
         }
-        
+
+        [Test]
+        [TestCase(3)]
+        public async Task DeleteGMLocation_Normal_DeletedGMLocationSuccessfully(int id)
+        {
+            var x = (await _context.GMLocations.Include(p => p.Mesto).FirstOrDefaultAsync(p => p.Id == id))!;
+            int cityId = x.Mesto.Id;
+            OkResult? httpRes = (await GMLocationsController.DeleteGMLocation(id)) as OkResult;
+            Assert.Multiple(() => {
+                Assert.That(httpRes, Is.Not.Null);
+                int numGMLocations = _context.GMLocations.Count(p => p.Id == id);
+                Assert.That(numGMLocations, Is.EqualTo(0));
+                int numCities = _context.Cities.Count(p => p.Id == cityId);
+                Assert.That(numCities, Is.EqualTo(1));
+            });
+        }
+
+        [Test]
+        [TestCase(-1)]
+        public async Task DeleteGMLocation_WrongId_ThrowsException(int id)
+        {
+            Assert.That(async () => await GMLocationsController.DeleteGMLocation(id), Throws.Exception);
+        }
+
         //[Test]
         //public void GetActiveGMLocations_Normal_GetsActiveGMLocationsSuccessfully()
         //{

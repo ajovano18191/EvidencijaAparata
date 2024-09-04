@@ -8,5 +8,6 @@ namespace EvidencijaAparata.Server.Models
         public int Id { get; set; }
         [Required]
         public string Naziv { get; set; } = default!;
+        List<GMLocation> GMLocations { get; set; } = default!;
     }
 }
