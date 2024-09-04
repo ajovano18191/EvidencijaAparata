@@ -62,11 +62,23 @@ namespace EvidencijaAparata.Server.Controllers
         [HttpPost]
         public async Task<ActionResult<IGMLocation>> AddGMLocation([FromBody] GMLocationDTO gmLocationDTO)
         {
-            City? city = await Context.Cities.FirstOrDefaultAsync(p => p.Id == gmLocationDTO.mesto_id);
-            GMLocation gmLocation = new GMLocation(gmLocationDTO, city!);
-            GMLocation savedGMLocation = (await Context.GMLocations.AddAsync(gmLocation)).Entity;
+            City city = await Context.Cities.FirstOrDefaultAsync(p => p.Id == gmLocationDTO.mesto_id) ?? throw new Exception();
+            GMLocation gmLocation = new GMLocation();
+            gmLocation.DTO2GMLocation(gmLocationDTO, city!);
+            await Context.GMLocations.AddAsync(gmLocation);
             await Context.SaveChangesAsync();
-            return Ok(new IGMLocation(savedGMLocation));
+            return Ok(new IGMLocation(gmLocation));
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<IGMLocation>> UpdateGMLocation([FromRoute] int id, [FromBody] GMLocationDTO gmLocationDTO)
+        {
+            GMLocation gmLocation = await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
+            City city = await Context.Cities.FirstOrDefaultAsync(p => p.Id == gmLocationDTO.mesto_id) ?? throw new Exception();
+            gmLocation.DTO2GMLocation(gmLocationDTO, city);
+            Context.GMLocations.Update(gmLocation);
+            await Context.SaveChangesAsync();
+            return Ok(new IGMLocation(gmLocation));
         }
     }
 }

@@ -22,7 +22,7 @@ namespace EvidencijaAparata.Server.Models
 
         public GMLocation() { }
 
-        public GMLocation(GMLocationDTO gmLocationDTO, City city)
+        public void DTO2GMLocation(GMLocationDTO gmLocationDTO, City city)
         {
             rul_base_id = gmLocationDTO.rul_base_id;
             Naziv = gmLocationDTO.naziv;

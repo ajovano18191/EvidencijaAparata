@@ -105,6 +105,42 @@ namespace EvidencijaAparata.Tests
             Assert.That(async () => await GMLocationsController.AddGMLocation(gmLocationDTO), Throws.Exception);
         }
 
+        [Test]
+        [TestCase(1)]
+        public async Task UpdateGMLocation_Normal_UpdatedGMLocationSuccessfully(int id)
+        {
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", 1);
+            OkObjectResult httpRes = ((await GMLocationsController.UpdateGMLocation(id, gmLocationDTO)).Result as OkObjectResult)!;
+            IGMLocation addedGMLocation = (httpRes.Value as IGMLocation)!;
+            GMLocation? foundedGMLocation = _context.GMLocations.FirstOrDefault(p => p.Id == addedGMLocation.id);
+
+            Assert.Multiple(() => {
+                Assert.That(foundedGMLocation, Is.Not.Null);
+                Assert.That(foundedGMLocation?.Id, Is.EqualTo(id));
+                Assert.That(foundedGMLocation?.rul_base_id, Is.EqualTo(gmLocationDTO.rul_base_id));
+                Assert.That(foundedGMLocation?.Naziv, Is.EqualTo(gmLocationDTO.naziv));
+                Assert.That(foundedGMLocation?.Adresa, Is.EqualTo(gmLocationDTO.adresa));
+                Assert.That(foundedGMLocation?.IP, Is.EqualTo(gmLocationDTO.IP));
+                Assert.That(foundedGMLocation?.Mesto.Id, Is.EqualTo(gmLocationDTO.mesto_id));
+            });
+        }
+
+        [Test]
+        [TestCaseSource(nameof(invalidInputs))]
+        public async Task UpdateGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
+        {
+            int id = 1;
+            Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
+        }
+
+        [Test]
+        public async Task UpdateGMLocation_WrongId_ThrowsException()
+        {
+            int id = -1;
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", 1);
+            Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
+        }
+        
         //[Test]
         //public void GetActiveGMLocations_Normal_GetsActiveGMLocationsSuccessfully()
         //{
