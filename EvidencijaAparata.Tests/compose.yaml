@@ -1,0 +1,31 @@
+﻿version: '3.8'
+services:
+ evidencija-aparata_db:
+   container_name: evidencija-aparata_db
+   image: postgres:alpine
+   restart: always
+   environment:
+     POSTGRES_DB: evidencija-aparata
+     POSTGRES_USER: evidencija-aparata-ef
+     POSTGRES_PASSWORD: evidencija-aparata-ef
+     PGDATA: /var/lib/postgresql/data
+   ports:
+     - "5432:5432"
+   volumes:
+     - db-data:/var/lib/postgresql/data
+
+ evidencija-aparata_pgadmin4:
+   container_name: evidencija-aparata_pgadmin4
+   image: dpage/pgadmin4
+   restart: always
+   environment:
+     PGADMIN_DEFAULT_EMAIL: aleksa.jovanovicc@elfak.rs
+     PGADMIN_DEFAULT_PASSWORD: arilje031
+     PGADMIN_LISTEN_PORT: 80
+   ports:
+     - "8080:80"
+   volumes:
+     - pgadmin-data:/var/lib/pgadmin
+volumes:
+ db-data:
+ pgadmin-data:

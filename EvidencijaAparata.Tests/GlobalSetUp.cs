@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using EvidencijaAparata.Server.Models;
+using Microsoft.EntityFrameworkCore.Storage;
 
 namespace EvidencijaAparata.Tests
 {
@@ -20,8 +21,11 @@ namespace EvidencijaAparata.Tests
         public void OneTimeSetUp()
         {
             var services = new ServiceCollection();
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseInMemoryDatabase("TestDatabase"));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseInMemoryDatabase("TestDatabase"));
+            services.AddDbContext<ApplicationDbContext>(options => 
+                options.UseNpgsql("Host=localhost;Port=5432;Database=evidencija-aparata;Username=evidencija-aparata-ef;Password=evidencija-aparata-ef"));
+
             _serviceProvider = services.BuildServiceProvider();
             _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
             _context.SeedDatabase();

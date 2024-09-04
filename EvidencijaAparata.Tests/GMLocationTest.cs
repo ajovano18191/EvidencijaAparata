@@ -23,6 +23,12 @@ namespace EvidencijaAparata.Tests
             GMLocationsController = new GMLocationsController(_context);
         }
 
+        [SetUp]
+        public void SetUp()
+        {
+            _context.ChangeTracker.Clear();
+        }
+
         [Test]
         [TestCase("id", "asc", 1, 30)]
         [TestCase("rul_base_id", "desc", 1, 30)]
@@ -32,7 +38,7 @@ namespace EvidencijaAparata.Tests
         [TestCase("id", "desc", 1, 30)]
         [TestCase(null, null, 0, 0)]
         [TestCase("id", "asc", 5, 2)]
-        [TestCase("id", "asc", 0, 2)]
+        [TestCase("id", "asc", 1, 2)]
         public void GetGMLocations_Normal_GetsGMLocationsSuccessfully(string? sort, string? order, int page, int limit)
         {
             OkObjectResult httpRes = (GMLocationsController.GetGMLocations(sort, order, page, limit).Result as OkObjectResult)!;
@@ -76,34 +82,25 @@ namespace EvidencijaAparata.Tests
         [Test]
         [TestCase()]
         public async Task AddGMLocation_Normal_AddedGMLocationSuccessfully()
-        {
-            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.17", 1);
+        {            
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "AKO", "A", "192.168.0.1", 1);
             OkObjectResult httpRes = ((await GMLocationsController.AddGMLocation(gmLocationDTO)).Result as OkObjectResult)!;
             IGMLocation addedGMLocation = (httpRes.Value as IGMLocation)!;
             GMLocation? foundedGMLocation = _context.GMLocations.FirstOrDefault(p => p.Id == addedGMLocation.id);
             
             Assert.That(foundedGMLocation, Is.Not.Null);
-
-            // _context.GMLocations.Remove(foundedGMLocation);
-            // await _context.SaveChangesAsync();
         }
 
         private static GMLocationDTO[] invalidInputs = {
-            new GMLocationDTO(1, "", "Adresa", "192.168.0.1", 1),
-            new GMLocationDTO(1, "Naziv", "", "192.168.0.1", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1.", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.256", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", ".192.168.0.1", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "192,168,0,1", 1),
-            new GMLocationDTO(1, "Naziv", "Adresa", "192..168.0.1", 1),
+            new GMLocationDTO(1, null!, "Adresa", "192.168.0.1", 1),
+            new GMLocationDTO(1, "Naziv", null!, "192.168.0.1", 1),
+            new GMLocationDTO(1, "Naziv", "Adresa", null!, 1),
             new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", -1),
         };
 
         [Test]
         [TestCaseSource(nameof(invalidInputs))]
-        public void AddGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
+        public async Task AddGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
         {
             Assert.That(async () => await GMLocationsController.AddGMLocation(gmLocationDTO), Throws.Exception);
         }

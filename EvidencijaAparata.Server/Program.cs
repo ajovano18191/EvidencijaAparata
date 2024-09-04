@@ -1,5 +1,6 @@
 using EvidencijaAparata.Server.Data;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,8 +11,10 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-     options.UseInMemoryDatabase("TestDatabase"));
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//     options.UseInMemoryDatabase("TestDatabase"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PGTest")).EnableSensitiveDataLogging());
 
 builder.Services.AddCors(options => {
     options.AddPolicy("AllowAll", builder => {

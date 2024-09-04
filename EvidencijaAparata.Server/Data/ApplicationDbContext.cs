@@ -1,5 +1,6 @@
 ﻿using EvidencijaAparata.Server.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EvidencijaAparata.Server.Data
 {
@@ -9,8 +10,35 @@ namespace EvidencijaAparata.Server.Data
         public DbSet<GMLocation> GMLocations { get; set; }
 
         private static bool isDatabaseSeeded = false;
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            City[] cities = [
+                new() { Id = 1, Naziv = "City 1" },
+                new() { Id = 2, Naziv = "City 2" },
+                new() { Id = 3, Naziv = "City 3" },
+                new() { Id = 4, Naziv = "City 4" },
+                new() { Id = 5, Naziv = "City 5" }
+            ];
+
+            modelBuilder.Entity<City>().HasData(cities);
+
+            object[] gmLocations = [
+                new { MestoId = 1, Id = 1, rul_base_id = 1, Naziv = "Lokacija 1", Adresa = "Adresa 1", IP = "192.168.0.1" },
+                new { MestoId = 2, Id = 2, rul_base_id = 2, Naziv = "Lokacija 2", Adresa = "Adresa 2", IP = "192.168.0.2" },
+                new { MestoId = 3, Id = 3, rul_base_id = 3, Naziv = "Lokacija 3", Adresa = "Adresa 3", IP = "192.168.0.3" },
+                new { MestoId = 4, Id = 4, rul_base_id = 4, Naziv = "Lokacija 4", Adresa = "Adresa 4", IP = "192.168.0.4" },
+                new { MestoId = 5, Id = 5, rul_base_id = 5, Naziv = "Lokacija 5", Adresa = "Adresa 5", IP = "192.168.0.5" }
+            ];
+
+            modelBuilder.Entity<GMLocation>().HasData(gmLocations);
+        }
+
         public void SeedDatabase()
         {
+            return;
             if (isDatabaseSeeded) {
                 return;
             }
