@@ -45,7 +45,7 @@ namespace EvidencijaAparata.Server.Controllers
                 case "mesto_naziv":
                     gmLocations = gmLocations.OrderBy(p => p.Mesto.Naziv);
                     break;
-                case "ip":
+                case "IP":
                     gmLocations = gmLocations.OrderBy(p => p.IP);
                     break;
             }
@@ -55,18 +55,18 @@ namespace EvidencijaAparata.Server.Controllers
             }
             gmLocations = gmLocations.Skip((page - 1) * limit).Take(limit);
 
-            IQueryable<IGMLocation> igmLocations = gmLocations.Select(p => 
-                new IGMLocation(
-                    p.Id,
-                    p.rul_base_id,
-                    p.Naziv,
-                    p.Adresa,
-                    new ICity(p.Mesto.Id, p.Mesto.Naziv),
-                    p.IP,
-                    null
-                )
-            );
+            IQueryable<IGMLocation> igmLocations = gmLocations.Select(p => new IGMLocation(p));
             return Ok(new ReturnDTO<IGMLocation>(igmLocations, count_items));
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<IGMLocation>> AddGMLocation([FromBody] GMLocationDTO gmLocationDTO)
+        {
+            City? city = await Context.Cities.FirstOrDefaultAsync(p => p.Id == gmLocationDTO.mesto_id);
+            GMLocation gmLocation = new GMLocation(gmLocationDTO, city!);
+            GMLocation savedGMLocation = (await Context.GMLocations.AddAsync(gmLocation)).Entity;
+            await Context.SaveChangesAsync();
+            return Ok(new IGMLocation(savedGMLocation));
         }
     }
 }
