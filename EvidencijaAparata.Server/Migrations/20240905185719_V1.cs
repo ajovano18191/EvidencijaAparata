@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
@@ -49,6 +50,30 @@ namespace EvidencijaAparata.Server.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "GMLocationActs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    DatumAkt = table.Column<DateOnly>(type: "date", nullable: false),
+                    ResenjeAkt = table.Column<string>(type: "text", nullable: false),
+                    DatumDeakt = table.Column<DateOnly>(type: "date", nullable: true),
+                    ResenjeDeakt = table.Column<string>(type: "text", nullable: true),
+                    Napomena = table.Column<string>(type: "text", nullable: false),
+                    GMLocationId = table.Column<int>(type: "integer", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GMLocationActs", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_GMLocationActs_GMLocations_GMLocationId",
+                        column: x => x.GMLocationId,
+                        principalTable: "GMLocations",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "Cities",
                 columns: new[] { "Id", "Naziv" },
@@ -73,6 +98,21 @@ namespace EvidencijaAparata.Server.Migrations
                     { 5, "Adresa 5", "192.168.0.5", 5, "Lokacija 5", 5 }
                 });
 
+            migrationBuilder.InsertData(
+                table: "GMLocationActs",
+                columns: new[] { "Id", "DatumAkt", "DatumDeakt", "GMLocationId", "Napomena", "ResenjeAkt", "ResenjeDeakt" },
+                values: new object[,]
+                {
+                    { 1, new DateOnly(2024, 1, 9), new DateOnly(2024, 3, 9), 1, "Napomena 1", "ResenjeAkt1", "ResenjeDeakt1" },
+                    { 2, new DateOnly(2024, 1, 9), new DateOnly(2024, 3, 9), 2, "Napomena 2", "ResenjeAkt2", "ResenjeDeakt2" },
+                    { 3, new DateOnly(2024, 4, 9), null, 2, "Napomena 3", "ResenjeAkt3", null }
+                });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GMLocationActs_GMLocationId",
+                table: "GMLocationActs",
+                column: "GMLocationId");
+
             migrationBuilder.CreateIndex(
                 name: "IX_GMLocations_MestoId",
                 table: "GMLocations",
@@ -82,6 +122,9 @@ namespace EvidencijaAparata.Server.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "GMLocationActs");
+
             migrationBuilder.DropTable(
                 name: "GMLocations");
 

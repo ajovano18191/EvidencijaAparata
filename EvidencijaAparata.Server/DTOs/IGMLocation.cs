@@ -4,20 +4,21 @@ namespace EvidencijaAparata.Server.DTOs
 {
     public record IGMLocation(int id, int rul_base_id, string naziv, string adresa, ICity mesto, string IP, int? act_location_id)
     {
-        public IGMLocation(GMLocation gmLocation): 
+        public IGMLocation(GMLocation gmLocation) :
             this(
-                gmLocation.Id, 
-                gmLocation.rul_base_id, 
-                gmLocation.Naziv, 
-                gmLocation.Adresa, 
-                new ICity(gmLocation.Mesto.Id, gmLocation.Mesto.Naziv), 
-                gmLocation.IP, 
-                null
+                gmLocation.Id,
+                gmLocation.rul_base_id,
+                gmLocation.Naziv,
+                gmLocation.Adresa,
+                new ICity(gmLocation.Mesto.Id, gmLocation.Mesto.Naziv),
+                gmLocation.IP,
+                gmLocation.GetLocationActId()
             )
         { }
     }
     public record ICity(int id, string naziv);
     public record GMLocationDTO(int rul_base_id, string naziv, string adresa, string IP, int mesto_id);
+    public record GMLocationActDTO(DateOnly datum, string resenje, string napomena);
 
     //public class IGMLocation
     //{

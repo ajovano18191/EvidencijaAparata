@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,10 +25,20 @@ namespace EvidencijaAparata.Tests
             GMLocationsController = new GMLocationsController(_context);
         }
 
+        IDbContextTransaction transaction;
+
         [SetUp]
         public void SetUp()
         {
             _context.ChangeTracker.Clear();
+            transaction = _context.Database.BeginTransaction(System.Data.IsolationLevel.Serializable);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            transaction.Rollback();
+            transaction.Dispose();
         }
 
         [Test]
@@ -81,10 +92,10 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase()]
-        public async Task AddGMLocation_Normal_AddedGMLocationSuccessfully()
-        {            
-            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "AKO", "A", "192.168.0.1", 1);
+        [TestCase(1, "Naziv", "Adresa", "192.168.0.1", 1)]
+        public async Task AddGMLocation_Normal_AddedGMLocationSuccessfully(int rul_base_id, string naziv, string adresa, string IP, int mesto_id)
+        {
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(rul_base_id, naziv, adresa, IP, mesto_id);
             OkObjectResult httpRes = ((await GMLocationsController.AddGMLocation(gmLocationDTO)).Result as OkObjectResult)!;
             IGMLocation addedGMLocation = (httpRes.Value as IGMLocation)!;
             GMLocation? foundedGMLocation = _context.GMLocations.FirstOrDefault(p => p.Id == addedGMLocation.id);
@@ -107,10 +118,10 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(1)]
-        public async Task UpdateGMLocation_Normal_UpdatedGMLocationSuccessfully(int id)
+        [TestCase(1, 1, "Naziv", "Adresa", "192.168.0.1", 1)]
+        public async Task UpdateGMLocation_Normal_UpdatedGMLocationSuccessfully(int id, int rul_base_id, string naziv, string adresa, string IP, int mesto_id)
         {
-            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", 1);
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(rul_base_id, naziv, adresa, IP, mesto_id);
             OkObjectResult httpRes = ((await GMLocationsController.UpdateGMLocation(id, gmLocationDTO)).Result as OkObjectResult)!;
             IGMLocation addedGMLocation = (httpRes.Value as IGMLocation)!;
             GMLocation? foundedGMLocation = _context.GMLocations.FirstOrDefault(p => p.Id == addedGMLocation.id);
@@ -135,10 +146,10 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(-1)]
-        public async Task UpdateGMLocation_WrongId_ThrowsException(int id)
+        [TestCase(-1, 1, "Naziv", "Adresa", "192.168.0.1", 1)]
+        public async Task UpdateGMLocation_WrongId_ThrowsException(int id, int rul_base_id, string naziv, string adresa, string IP, int mesto_id)
         {
-            GMLocationDTO gmLocationDTO = new GMLocationDTO(1, "Naziv", "Adresa", "192.168.0.1", 1);
+            GMLocationDTO gmLocationDTO = new GMLocationDTO(rul_base_id, naziv, adresa, IP, mesto_id);
             Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
         }
 
@@ -162,6 +173,25 @@ namespace EvidencijaAparata.Tests
         public async Task DeleteGMLocation_WrongId_ThrowsException(int id)
         {
             Assert.That(async () => await GMLocationsController.DeleteGMLocation(id), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(5, "4.9.2024.", "Resenje", "Napomena")]
+        public async Task ActivateGMLocation_Normal_GMLocationActivatedSuccessfully(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            OkResult? httpRes = (await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO)) as OkResult;
+
+            await Assert.MultipleAsync (async () => {
+                Assert.That(httpRes, Is.Not.Null);
+
+                GMLocation gmLocation = (await _context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id))!;
+                Assert.That(gmLocation.GetLocationActId(), Is.Not.Null);
+                
+                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).Last()!;
+                Assert.That(gmLocationAct.DatumAkt, Is.EqualTo(DateOnly.Parse(datum)));
+                Assert.That(gmLocationAct.DatumDeakt, Is.Null);
+            });
         }
 
         //[Test]

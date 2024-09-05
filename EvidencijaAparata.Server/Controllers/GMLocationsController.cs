@@ -26,6 +26,7 @@ namespace EvidencijaAparata.Server.Controllers
             [FromQuery(Name = "_limit")] int limit)
         {
             IQueryable<GMLocation> gmLocations = Context.GMLocations
+                .Include(p => p.GMLocationActs)
                 .Include(p => p.Mesto);
             int count_items = gmLocations.Count();
 
@@ -87,6 +88,22 @@ namespace EvidencijaAparata.Server.Controllers
             GMLocation gmLocation = await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
             Context.GMLocations.Remove(gmLocation);
             await Context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id}/activate")]
+        public async Task<ActionResult> ActivateGMLocation([FromRoute] int id, [FromBody] GMLocationActDTO gmLocationActDTO)
+        {
+            GMLocation gmLocation = (await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMLocationAct gmLocationAct = new GMLocationAct {
+                DatumAkt = gmLocationActDTO.datum,
+                ResenjeAkt = gmLocationActDTO.resenje,
+                Napomena = gmLocationActDTO.napomena,
+                GMLocation = gmLocation,
+            };
+            await Context.GMLocationActs.AddAsync(gmLocationAct);
+            await Context.SaveChangesAsync(); 
             return Ok();
         }
     }

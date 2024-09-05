@@ -8,6 +8,7 @@ namespace EvidencijaAparata.Server.Data
     {
         public DbSet<City> Cities { get; set; }
         public DbSet<GMLocation> GMLocations { get; set; }
+        public DbSet<GMLocationAct> GMLocationActs { get; set; }
 
         private static bool isDatabaseSeeded = false;
 
@@ -34,6 +35,14 @@ namespace EvidencijaAparata.Server.Data
             ];
 
             modelBuilder.Entity<GMLocation>().HasData(gmLocations);
+
+            object[] gmLocationsAct  = [
+                new { Id = 1, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMLocationId = 1 },
+                new { Id = 2, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMLocationId = 2 },
+                new { Id = 3, DatumAkt = DateOnly.Parse("4.9.2024."), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMLocationId = 2 }
+            ];
+
+            modelBuilder.Entity<GMLocationAct>().HasData(gmLocationsAct);
         }
 
         public void SeedDatabase()

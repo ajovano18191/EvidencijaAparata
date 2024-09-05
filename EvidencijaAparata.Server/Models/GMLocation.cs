@@ -19,6 +19,7 @@ namespace EvidencijaAparata.Server.Models
         [Required]
         // [RegularExpression(@"^(?:(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])\.){3}(?:25[0-5]|2[0-4][0-9]|1[0-9][0-9]|[1-9]?[0-9])$")]
         public string IP { get; set; } = default!;
+        public IEnumerable<GMLocationAct> GMLocationActs { get; set; }
 
         public GMLocation() { }
 
@@ -29,6 +30,11 @@ namespace EvidencijaAparata.Server.Models
             Adresa = gmLocationDTO.adresa;
             Mesto = city;
             IP = gmLocationDTO.IP;
+        }
+
+        public int? GetLocationActId()
+        {
+            return GMLocationActs?.Where(p => p.DatumDeakt == null).SingleOrDefault()?.Id;
         }
     }
 }
