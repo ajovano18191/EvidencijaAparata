@@ -146,8 +146,7 @@ namespace EvidencijaAparata.Tests
         [TestCase(3)]
         public async Task DeleteGMLocation_Normal_DeletedGMLocationSuccessfully(int id)
         {
-            var x = (await _context.GMLocations.Include(p => p.Mesto).FirstOrDefaultAsync(p => p.Id == id))!;
-            int cityId = x.Mesto.Id;
+            int cityId = (await _context.GMLocations.Include(p => p.Mesto).FirstOrDefaultAsync(p => p.Id == id))!.Mesto.Id;
             OkResult? httpRes = (await GMLocationsController.DeleteGMLocation(id)) as OkResult;
             Assert.Multiple(() => {
                 Assert.That(httpRes, Is.Not.Null);
