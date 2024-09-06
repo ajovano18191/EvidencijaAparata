@@ -105,6 +105,7 @@ namespace EvidencijaAparata.Server.Controllers
                     throw new Exception();
                 }
             }
+
             GMLocationAct gmLocationAct = new GMLocationAct {
                 DatumAkt = gmLocationActDTO.datum,
                 ResenjeAkt = gmLocationActDTO.resenje,
@@ -113,6 +114,28 @@ namespace EvidencijaAparata.Server.Controllers
             };
             await Context.GMLocationActs.AddAsync(gmLocationAct);
             await Context.SaveChangesAsync(); 
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id}/deactivate")]
+        public async Task<ActionResult> DeactivateGMLocation([FromRoute] int id, [FromBody] GMLocationActDTO gmLocationActDTO)
+        {
+            GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
+            GMLocationAct lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault() ?? throw new Exception();
+            if (lastGMLocationAct.DatumDeakt != null) {
+                throw new Exception();
+            }
+            if (lastGMLocationAct.DatumAkt > gmLocationActDTO.datum) {
+                throw new Exception();
+            }
+
+            lastGMLocationAct.DatumDeakt = gmLocationActDTO.datum;
+            lastGMLocationAct.ResenjeDeakt = gmLocationActDTO.resenje;
+            lastGMLocationAct.Napomena = gmLocationActDTO.napomena;
+
+            Context.Update(lastGMLocationAct);
+            await Context.SaveChangesAsync();
             return Ok();
         }
     }

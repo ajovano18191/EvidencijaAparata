@@ -212,13 +212,54 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(-1, "2.9.2024.", "Resenje", "Aktivan")]
+        [TestCase(-1, "2.9.2024.", "Resenje", "Napomena")]
         public void ActivateGMLocation_NonExistingLocation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
             Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
         }
 
+        [Test]
+        [TestCase(2, "5.9.2024.", "Resenje", "Aktivna")]
+        public async Task DeactivateGMLocation_Normal_GMLocationDeactivatedSuccessfully(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            OkResult? httpRes = (await GMLocationsController.DeactivateGMLocation(id, gmLocationActDTO)) as OkResult;
+
+            await Assert.MultipleAsync(async () => {
+                Assert.That(httpRes, Is.Not.Null);
+
+                GMLocation gmLocation = (await _context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id))!;
+                Assert.That(gmLocation.GetLocationActId(), Is.Null);
+
+                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).Last()!;
+                Assert.That(gmLocationAct.DatumDeakt, Is.EqualTo(DateOnly.Parse(datum)));
+            });
+        }
+
+        [Test]
+        [TestCase(-1, "2.9.2024.", "Resenje", "Napomena")]
+        public void DeactivateGMLocation_NonExistingLocation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(1, "2.9.2024.", "Resenje", "Deaktivirana")]
+        public void DeactivateGMLocation_DeactiveLocation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(2, "3.9.2024.", "Resenje", "Napomena")]
+        public void DeactivateGMLocation_DeactivateBeforeActivation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
 
         //[Test]
         //public void GetActiveGMLocations_Normal_GetsActiveGMLocationsSuccessfully()
