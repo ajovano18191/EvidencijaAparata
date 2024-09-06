@@ -176,7 +176,8 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(5, "4.9.2024.", "Resenje", "Napomena")]
+        [TestCase(1, "4.9.2024.", "Resenje", "Ima prethodne aktivacije")]
+        [TestCase(5, "4.9.2024.", "Resenje", "Nema prethodne aktivacije")]
         public async Task ActivateGMLocation_Normal_GMLocationActivatedSuccessfully(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
@@ -193,6 +194,31 @@ namespace EvidencijaAparata.Tests
                 Assert.That(gmLocationAct.DatumDeakt, Is.Null);
             });
         }
+
+        [Test]
+        [TestCase(2, "3.9.2024.", "Resenje", "Aktivan")]
+        public void ActivateGMLocation_ActiveLocation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(1, "2.9.2024.", "Resenje", "Aktivan")]
+        public void ActivateGMLocation_ActivationBeforeDeactivation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(-1, "2.9.2024.", "Resenje", "Aktivan")]
+        public void ActivateGMLocation_NonExistingLocation_ThrowsException(int id, string datum, string resenje, string napomena)
+        {
+            GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateOnly.Parse(datum), resenje, napomena);
+            Assert.That(async () => await GMLocationsController.ActivateGMLocation(id, gmLocationActDTO), Throws.Exception);
+        }
+
 
         //[Test]
         //public void GetActiveGMLocations_Normal_GetsActiveGMLocationsSuccessfully()

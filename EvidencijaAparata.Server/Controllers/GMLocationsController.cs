@@ -95,7 +95,16 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}/activate")]
         public async Task<ActionResult> ActivateGMLocation([FromRoute] int id, [FromBody] GMLocationActDTO gmLocationActDTO)
         {
-            GMLocation gmLocation = (await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
+            GMLocationAct? lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault();
+            if(lastGMLocationAct != null) {
+                if(lastGMLocationAct.DatumDeakt == null) {
+                    throw new Exception();
+                }
+                if(lastGMLocationAct.DatumDeakt > gmLocationActDTO.datum) {
+                    throw new Exception();
+                }
+            }
             GMLocationAct gmLocationAct = new GMLocationAct {
                 DatumAkt = gmLocationActDTO.datum,
                 ResenjeAkt = gmLocationActDTO.resenje,
