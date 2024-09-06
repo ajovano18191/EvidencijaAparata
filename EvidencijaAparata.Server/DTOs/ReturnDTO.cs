@@ -1,4 +1,4 @@
 ﻿namespace EvidencijaAparata.Server.DTOs
 {
-    public record ReturnDTO<T>(IQueryable<T> items, int count_items);
+    public record ReturnDTO<T>(IList<T> items, int count_items);
 }

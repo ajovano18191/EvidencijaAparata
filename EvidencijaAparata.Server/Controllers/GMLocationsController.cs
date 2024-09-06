@@ -22,13 +22,18 @@ namespace EvidencijaAparata.Server.Controllers
         public ActionResult<ReturnDTO<IGMLocation>> GetGMLocations(
             [FromQuery(Name = "_sort")] string? sort, 
             [FromQuery(Name = "_order")] string? order,
-            [FromQuery(Name = "_page")] int page,
-            [FromQuery(Name = "_limit")] int limit)
+            [FromQuery(Name = "_page")] int? page,
+            [FromQuery(Name = "_limit")] int? limit,
+            [FromQuery(Name = "act_location_id_ne")] string act_location_only = "yes"
+            )
         {
+            Console.WriteLine(act_location_only);
             IQueryable<GMLocation> gmLocations = Context.GMLocations
                 .Include(p => p.GMLocationActs)
                 .Include(p => p.Mesto);
             int count_items = gmLocations.Count();
+            limit = page == null ? count_items : limit;
+            page ??= 1;
 
             switch(sort) {
                 case "id":
@@ -54,9 +59,12 @@ namespace EvidencijaAparata.Server.Controllers
             if (order == "desc") {
                 gmLocations = gmLocations.Reverse();
             }
-            gmLocations = gmLocations.Skip((page - 1) * limit).Take(limit);
+            gmLocations = gmLocations.Skip(((page - 1) * limit) ?? 0).Take(limit ?? 0);
 
-            IQueryable<IGMLocation> igmLocations = gmLocations.Select(p => new IGMLocation(p));
+            IList<IGMLocation> igmLocations = gmLocations.Select(p => new IGMLocation(p)).ToList();
+            if (act_location_only == "yes") {
+                igmLocations = igmLocations.Where(p => p.act_location_id != null).ToList();
+            }
             return Ok(new ReturnDTO<IGMLocation>(igmLocations, count_items));
         }
 

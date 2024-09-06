@@ -42,44 +42,61 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase("id", "asc", 1, 30)]
-        [TestCase("rul_base_id", "desc", 1, 30)]
-        [TestCase("naziv", "desc", 1, 30)]
-        [TestCase("adresa", "desc", 1, 30)]
-        [TestCase("IP", "desc", 1, 30)]
-        [TestCase("id", "desc", 1, 30)]
-        [TestCase(null, null, 0, 0)]
-        [TestCase("id", "asc", 5, 2)]
-        [TestCase("id", "asc", 1, 2)]
-        public void GetGMLocations_Normal_GetsGMLocationsSuccessfully(string? sort, string? order, int page, int limit)
+        [TestCase("id", "asc", 1, 30, "")]
+        [TestCase("rul_base_id", "desc", 1, 30, "")]
+        [TestCase("naziv", "desc", 1, 30, "")]
+        [TestCase("adresa", "desc", 1, 30, "")]
+        [TestCase("IP", "desc", 1, 30, "")]
+        [TestCase("id", "desc", 1, 30, "")]
+        [TestCase(null, null, null, null, "")]
+        [TestCase("id", "asc", 5, 2, "")]
+        [TestCase("id", "asc", 1, 2, "")]
+        [TestCase("id", "asc", 1, 30, "yes")]
+        public void GetGMLocations_Normal_GetsGMLocationsSuccessfully(string? sort, string? order, int? page, int? limit, string act_location_only)
         {
-            OkObjectResult httpRes = (GMLocationsController.GetGMLocations(sort, order, page, limit).Result as OkObjectResult)!;
+            OkObjectResult httpRes = (GMLocationsController.GetGMLocations(sort, order, page, limit, act_location_only).Result as OkObjectResult)!;
             ReturnDTO<IGMLocation> response = (httpRes.Value as ReturnDTO<IGMLocation>)!;
-            IQueryable<IGMLocation> gmLocations = response.items;
+            IList<IGMLocation> gmLocations = response.items;
             
             Assert.Multiple(() => {
                 Assert.That(response.count_items, Is.EqualTo(_context.GMLocations.Count()));
-                Assert.That(gmLocations.Count, Is.LessThanOrEqualTo(limit));
+                if (limit == null && act_location_only != "yes") {
+                    Assert.That(gmLocations.Count, Is.EqualTo(response.count_items));
+                }
+                else {
+                    Assert.That(gmLocations.Count, Is.LessThanOrEqualTo(limit!));
+                }
+                
                 if (order == "asc") {
-                    Assert.That(gmLocations, Is.Ordered.Ascending.By(sort));
+                    Assert.That(gmLocations, Is.Ordered.Ascending.By(sort ?? "id"));
                 }
                 else if (order == "desc") {
-                    Assert.That(gmLocations, Is.Ordered.Descending.By(sort));
+                    Assert.That(gmLocations, Is.Ordered.Descending.By(sort ?? "id"));
+                }
+
+                if (act_location_only == "yes") {
+                    Assert.That(gmLocations.Select(p => p.act_location_id), Is.All.Not.Null);
                 }
             });
         }
 
         [Test]
-        [TestCase("mesto_naziv", "desc", 1, 30)]
-        public void GetGMLocations_SortByMestoNaziv_GetsGMLocationsSuccessfully(string? sort, string? order, int page, int limit)
+        [TestCase("mesto_naziv", "desc", 1, 30, "")]
+        public void GetGMLocations_SortByMestoNaziv_GetsGMLocationsSuccessfully(string? sort, string? order, int? page, int? limit, string act_location_only)
         {
-            OkObjectResult httpRes = (GMLocationsController.GetGMLocations(sort, order, page, limit).Result as OkObjectResult)!;
+            OkObjectResult httpRes = (GMLocationsController.GetGMLocations(sort, order, page, limit, act_location_only).Result as OkObjectResult)!;
             ReturnDTO<IGMLocation> response = (httpRes.Value as ReturnDTO<IGMLocation>)!;
-            IQueryable<IGMLocation> gmLocations = response.items;
+            IList<IGMLocation> gmLocations = response.items;
             
             Assert.Multiple(() => {
                 Assert.That(response.count_items, Is.EqualTo(_context.GMLocations.Count()));
-                Assert.That(gmLocations.Count, Is.LessThanOrEqualTo(limit));
+                if(limit == null && act_location_only != "yes") {
+                    Assert.That(gmLocations.Count, Is.EqualTo(response.count_items));
+                }
+                else {
+                    Assert.That(gmLocations.Count, Is.LessThanOrEqualTo(limit!));
+                }
+
                 string nazivPrvogMesta = gmLocations.First().mesto.naziv;
                 string nazivDrugogMesta = gmLocations.Skip(1).First().mesto.naziv;
                 if (order == "asc") {
@@ -87,6 +104,10 @@ namespace EvidencijaAparata.Tests
                 }
                 else if (order == "desc") {
                     Assert.That(nazivPrvogMesta, Is.GreaterThanOrEqualTo(nazivDrugogMesta));
+                }
+
+                if(act_location_only == "yes") {
+                    Assert.That(gmLocations.Select(p => p.act_location_id), Is.All.Not.Null);
                 }
             });
         }
