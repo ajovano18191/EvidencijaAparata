@@ -5,7 +5,7 @@ export interface GMLocation {
   adresa: string;
   mesto: City;
   ip: string;
-  act_location_id: number | undefined;
+  act_location_id: number | null;
 }
 
 export interface City {

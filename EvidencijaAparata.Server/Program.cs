@@ -1,3 +1,7 @@
+using EvidencijaAparata.Server.Data;
+using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -6,6 +10,21 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+//builder.Services.AddDbContext<ApplicationDbContext>(options =>
+//     options.UseInMemoryDatabase("TestDatabase"));
+builder.Services.AddDbContext<ApplicationDbContext>(options => 
+    options.UseNpgsql(builder.Configuration.GetConnectionString("PGTest")).EnableSensitiveDataLogging());
+
+builder.Services.AddCors(options => {
+    options.AddPolicy("AllowAll", builder => {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+
+    });
+});
 
 var app = builder.Build();
 
@@ -25,5 +44,7 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.MapFallbackToFile("/index.html");
+
+app.UseCors("AllowAll");
 
 app.Run();

@@ -29,8 +29,8 @@ export class GMLocationFormComponent {
       tap(() => this.isLoadingResult = false),
     );
 
-  public gmLocation: GMLocation | undefined = inject(MAT_DIALOG_DATA);
-  public isEdit = this.gmLocation !== undefined;
+  public gmLocation: GMLocation | null = inject(MAT_DIALOG_DATA);
+  public isEdit = this.gmLocation !== null;
   public gmLocationDTO: GMLocationDTO =
     this.isEdit ?
       { ...(this.gmLocation!), mesto_id: this.gmLocation!.mesto.id } :

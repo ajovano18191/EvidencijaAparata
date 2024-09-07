@@ -11,7 +11,8 @@ import { City, GMLocation } from './gm-location.interface';
 })
 export class GMLocationService {
   private httpClient = inject(HttpClient);
-  private readonly href = 'http://localhost:3000/gm_location';
+  // private readonly href = 'http://localhost:3000/gm_location';
+  private readonly href = 'http://localhost:5291/gm_location';
 
   constructor() { }
 
@@ -21,7 +22,7 @@ export class GMLocationService {
     page: number,
     limit: number
   ): Observable<{ items: GMLocation[], total_count: number }> {
-    return this.httpClient.get<GMLocation[]>(this.href, {
+    return this.httpClient.get(this.href, {
       params: {
         _sort: sort,
         _order: order,
@@ -30,9 +31,9 @@ export class GMLocationService {
       }
     })
       .pipe(
-        map(items => ({
-          items: items,
-          total_count: 5
+        map((p: any) => ({
+          items: p.items ?? p,
+          total_count: p.total_count ?? 5,
         })),
       );
   }
@@ -54,7 +55,7 @@ export class GMLocationService {
   }
 
   getCities(): Observable<City[]> {
-    return this.httpClient.get<City[]>("http://localhost:3000/cities");
+    return this.httpClient.get<City[]>("http://localhost:5291/cities");
   }
 
   activateLocation(location_id: number, gmLocationActDTO: GMLocationActDTO): Observable<void> {

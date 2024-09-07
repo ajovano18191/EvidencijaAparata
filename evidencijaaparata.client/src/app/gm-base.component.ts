@@ -75,7 +75,7 @@ export class GMBaseComponent implements AfterViewInit {
     if (event.source._checked) {
       this.matDialogData = null;
     }
-    else {      
+    else {
       this.matDialogData = {
         act_location_id: this.matDialogData?.act_location_id ?? -1,
         addOrNotList: true,
@@ -84,7 +84,7 @@ export class GMBaseComponent implements AfterViewInit {
     this.dataUpdate$.next({});
   }
 
-  openGMDialog(data: GMBase | undefined) {
+  openGMDialog(data: GMBase | null) {
     const dialogRef = this.dialog.open(GMBaseFormComponent, {
       data: data
     });
