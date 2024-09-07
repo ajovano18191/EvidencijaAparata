@@ -9,6 +9,8 @@ namespace EvidencijaAparata.Server.Data
         public DbSet<City> Cities { get; set; }
         public DbSet<GMLocation> GMLocations { get; set; }
         public DbSet<GMLocationAct> GMLocationActs { get; set; }
+        public DbSet<GMBase> GMBases { get; set; }
+        public DbSet<GMBaseAct> GMBaseActs { get; set; }
 
         private static bool isDatabaseSeeded = false;
 
