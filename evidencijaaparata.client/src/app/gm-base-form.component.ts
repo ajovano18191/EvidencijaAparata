@@ -24,8 +24,8 @@ export class GMBaseFormComponent {
   private gmBaseService = inject(GMBaseService);
   public workTypes = GMBaseWorkType;
   public isLoadingResult: boolean = false;
-  public gmBase: GMBase | undefined = inject(MAT_DIALOG_DATA);
-  public isEdit = this.gmBase !== undefined;
+  public gmBase: GMBase | null = inject(MAT_DIALOG_DATA);
+  public isEdit = this.gmBase !== null;
   public gmBaseDTO: GMBaseDTO =
     this.isEdit ?
       { ...(this.gmBase!) } :

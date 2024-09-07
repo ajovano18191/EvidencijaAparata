@@ -18,7 +18,7 @@ namespace EvidencijaAparata.Server.DTOs
     }
     public record ICity(int id, string naziv);
     public record GMLocationDTO(int rul_base_id, string naziv, string adresa, string IP, int mesto_id);
-    public record GMLocationActDTO(DateOnly datum, string resenje, string napomena);
+    public record GMLocationActDTO(DateTime datum, string resenje, string napomena);
 
     //public class IGMLocation
     //{

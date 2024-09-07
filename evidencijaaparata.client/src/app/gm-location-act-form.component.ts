@@ -29,8 +29,8 @@ export class GMLocationActFormComponent implements OnInit {
   private gmLocationService = inject(GMLocationService);
   public isLoadingResult: boolean = false;
 
-  public matDialogData: { id: number | undefined, naziv: string | undefined, location_id: number } = inject(MAT_DIALOG_DATA);
-  public isActivation: boolean = this.matDialogData.id === undefined;
+  public matDialogData: { id: number | null, naziv: string | null, location_id: number } = inject(MAT_DIALOG_DATA);
+  public isActivation: boolean = this.matDialogData.id === null;
   public gmLocationActDTO: GMLocationActDTO = {
     resenje: "",
     datum: new Date(),

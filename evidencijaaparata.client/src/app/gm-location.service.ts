@@ -55,7 +55,7 @@ export class GMLocationService {
   }
 
   getCities(): Observable<City[]> {
-    return this.httpClient.get<City[]>("http://localhost:3000/cities");
+    return this.httpClient.get<City[]>("http://localhost:5291/cities");
   }
 
   activateLocation(location_id: number, gmLocationActDTO: GMLocationActDTO): Observable<void> {

@@ -15,7 +15,10 @@
       "name": "Aparat 2",
       "serial_num": "SN002",
       "old_sticker_no": "OSN002",
-      "work_type": "APOLLO"
+      "work_type": "APOLLO",
+      "act_base_id": null,
+      "act_location_id": null,
+      "act_location_naziv": null
     },
     {
       "id": 3,
@@ -32,7 +35,10 @@
       "name": "Aparat 4",
       "serial_num": "SN004",
       "old_sticker_no": "OSN004",
-      "work_type": "COUNTERS"
+      "work_type": "COUNTERS",
+      "act_base_id": null,
+      "act_location_id": null,
+      "act_location_naziv": null
     },
     {
       "id": 5,
@@ -55,7 +61,8 @@
         "id": 1,
         "naziv": "Mesto 1"
       },
-      "ip": "192.168.0.1"
+      "ip": "192.168.0.1",
+      "act_location_id": null
     },
     {
       "id": 2,
@@ -78,7 +85,8 @@
         "id": 3,
         "naziv": "Mesto 3"
       },
-      "ip": "192.168.0.3"
+      "ip": "192.168.0.3",
+      "act_location_id": null
     },
     {
       "id": 4,

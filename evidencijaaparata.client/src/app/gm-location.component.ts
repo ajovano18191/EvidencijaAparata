@@ -87,7 +87,7 @@ export class GMLocationComponent implements AfterViewInit {
     });
   }
 
-  openLocationDialog(data: GMLocation | undefined) {
+  openLocationDialog(data: GMLocation | null) {
     const dialogRef = this.dialog.open(GMLocationFormComponent, {
       data: data
     });

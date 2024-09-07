@@ -51,7 +51,7 @@
           <mat-slide-toggle class="example-margin" color="primary" [checked]="!(this.matDialogData?.addOrNotList)" (change)="selectAllOrDeactivatedBases($event)">Deactivated only</mat-slide-toggle>
         </th>
         <td mat-cell *matCellDef="let row">
-          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_base_id !== undefined" (change)="activateOrDeactivateBase($event, row)">
+          <mat-slide-toggle class="example-margin" color="primary" [checked]="row.act_base_id !== null" (change)="activateOrDeactivateBase($event, row)">
             {{row.act_base_id ? "Active" : "Deactive"}}
           </mat-slide-toggle>
         </td>
@@ -61,7 +61,7 @@
       <ng-container matColumnDef="actions">
         <th mat-header-cell *matHeaderCellDef disableClear>
           Actions
-          <button mat-icon-button color="primary" aria-label="Add" (click)="openGMDialog(undefined)">
+          <button mat-icon-button color="primary" aria-label="Add" (click)="openGMDialog(null)">
             <mat-icon>add</mat-icon>
           </button>
         </th>

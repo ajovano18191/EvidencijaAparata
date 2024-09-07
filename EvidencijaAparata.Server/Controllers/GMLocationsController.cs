@@ -24,7 +24,7 @@ namespace EvidencijaAparata.Server.Controllers
             [FromQuery(Name = "_order")] string? order,
             [FromQuery(Name = "_page")] int? page,
             [FromQuery(Name = "_limit")] int? limit,
-            [FromQuery(Name = "act_location_id_ne")] string act_location_only = "yes"
+            [FromQuery(Name = "act_location_id_ne")] string? act_location_only
             )
         {
             Console.WriteLine(act_location_only);
@@ -36,9 +36,6 @@ namespace EvidencijaAparata.Server.Controllers
             page ??= 1;
 
             switch(sort) {
-                case "id":
-                    gmLocations = gmLocations.OrderBy(p => p.Id);
-                    break;
                 case "rul_base_id":
                     gmLocations = gmLocations.OrderBy(p => p.rul_base_id);
                     break;
@@ -51,8 +48,11 @@ namespace EvidencijaAparata.Server.Controllers
                 case "mesto_naziv":
                     gmLocations = gmLocations.OrderBy(p => p.Mesto.Naziv);
                     break;
-                case "IP":
+                case "ip":
                     gmLocations = gmLocations.OrderBy(p => p.IP);
+                    break;
+                default:
+                    gmLocations = gmLocations.OrderBy(p => p.Id);
                     break;
             }
 
@@ -62,7 +62,7 @@ namespace EvidencijaAparata.Server.Controllers
             gmLocations = gmLocations.Skip(((page - 1) * limit) ?? 0).Take(limit ?? 0);
 
             IList<IGMLocation> igmLocations = gmLocations.Select(p => new IGMLocation(p)).ToList();
-            if (act_location_only == "yes") {
+            if (HttpContext?.Request.QueryString.ToString().Contains("act_location_id_ne") ?? act_location_only == "yes") {
                 igmLocations = igmLocations.Where(p => p.act_location_id != null).ToList();
             }
             return Ok(new ReturnDTO<IGMLocation>(igmLocations, count_items));
@@ -80,6 +80,7 @@ namespace EvidencijaAparata.Server.Controllers
         }
 
         [HttpPut]
+        [Route("{id}")]
         public async Task<ActionResult<IGMLocation>> UpdateGMLocation([FromRoute] int id, [FromBody] GMLocationDTO gmLocationDTO)
         {
             GMLocation gmLocation = await Context.GMLocations.Include(p => p.Mesto).FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
@@ -91,6 +92,7 @@ namespace EvidencijaAparata.Server.Controllers
         }
 
         [HttpDelete]
+        [Route("{id}")]
         public async Task<ActionResult> DeleteGMLocation([FromRoute] int id)
         {
             GMLocation gmLocation = await Context.GMLocations.FirstOrDefaultAsync(p => p.Id == id) ?? throw new Exception();
@@ -109,13 +111,13 @@ namespace EvidencijaAparata.Server.Controllers
                 if(lastGMLocationAct.DatumDeakt == null) {
                     throw new Exception();
                 }
-                if(lastGMLocationAct.DatumDeakt > gmLocationActDTO.datum) {
+                if(lastGMLocationAct.DatumDeakt > DateOnly.FromDateTime(gmLocationActDTO.datum)) {
                     throw new Exception();
                 }
             }
 
             GMLocationAct gmLocationAct = new GMLocationAct {
-                DatumAkt = gmLocationActDTO.datum,
+                DatumAkt = DateOnly.FromDateTime(gmLocationActDTO.datum),
                 ResenjeAkt = gmLocationActDTO.resenje,
                 Napomena = gmLocationActDTO.napomena,
                 GMLocation = gmLocation,
@@ -134,11 +136,11 @@ namespace EvidencijaAparata.Server.Controllers
             if (lastGMLocationAct.DatumDeakt != null) {
                 throw new Exception();
             }
-            if (lastGMLocationAct.DatumAkt > gmLocationActDTO.datum) {
+            if (lastGMLocationAct.DatumAkt > DateOnly.FromDateTime(gmLocationActDTO.datum)) {
                 throw new Exception();
             }
 
-            lastGMLocationAct.DatumDeakt = gmLocationActDTO.datum;
+            lastGMLocationAct.DatumDeakt = DateOnly.FromDateTime(gmLocationActDTO.datum);
             lastGMLocationAct.ResenjeDeakt = gmLocationActDTO.resenje;
             lastGMLocationAct.Napomena = gmLocationActDTO.napomena;
 
