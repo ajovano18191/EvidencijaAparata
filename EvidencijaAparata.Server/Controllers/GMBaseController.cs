@@ -88,7 +88,7 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}/activate")]
         public async Task<ActionResult> ActivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
         {
-            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id))!;
             GMLocationAct gmLocationAct = (await Context.GMLocations
                 .Include(p => p.GMLocationActs)
                 .FirstOrDefaultAsync(p => p.Id == gmBaseActDTO.location_id))!
@@ -100,6 +100,19 @@ namespace EvidencijaAparata.Server.Controllers
                 GMLocationAct = gmLocationAct,
             };
             await Context.GMBaseActs.AddAsync(gmBaseAct);
+            await Context.SaveChangesAsync();
+            return Ok();
+        }
+
+        [HttpPut]
+        [Route("{id}/deactivate")]
+        public async Task<ActionResult> DeactivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
+        {
+            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id))!;
+            GMBaseAct gmBaseAct = gmBase.GetBaseAct()!;
+            gmBaseAct.DatumDeakt = DateOnly.FromDateTime(gmBaseActDTO.datum);
+            gmBaseAct.ResenjeDeakt = gmBaseActDTO.resenje;
+            Context.GMBaseActs.Update(gmBaseAct);
             await Context.SaveChangesAsync();
             return Ok();
         }
