@@ -45,6 +45,24 @@ namespace EvidencijaAparata.Server.Data
             ];
 
             modelBuilder.Entity<GMLocationAct>().HasData(gmLocationsAct);
+
+            object[] gmBases = [
+                new { Id = 1, Name = "GM 1", serial_num = "SN1", old_sticker_no = "OSN1", work_type = "APOLLO" },
+                new { Id = 2, Name = "GM 2", serial_num = "SN2", old_sticker_no = "OSN2", work_type = "SAS" },
+                new { Id = 3, Name = "GM 3", serial_num = "SN3", old_sticker_no = "OSN3", work_type = "ROULETE" },
+                new { Id = 4, Name = "GM 4", serial_num = "SN4", old_sticker_no = "OSN4", work_type = "APOLLO" },
+                new { Id = 5, Name = "GM 5", serial_num = "SN5", old_sticker_no = "OSN5", work_type = "SAS" },
+            ];
+
+            modelBuilder.Entity<GMBase>().HasData(gmBases);
+
+            object[] gmBasesAct  = [
+                new { Id = 1, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMBaseId = 5, GMLocationActId = 1 },
+                new { Id = 2, DatumAkt = DateOnly.Parse("4.9.2024."), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("6.9.2024."), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMBaseId = 4, GMLocationActId = 3 },
+                new { Id = 3, DatumAkt = DateOnly.Parse("7.9.2024."), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMBaseId = 3, GMLocationActId = 3 }
+            ];
+
+            modelBuilder.Entity<GMBaseAct>().HasData(gmBasesAct);
         }
 
         public void SeedDatabase()

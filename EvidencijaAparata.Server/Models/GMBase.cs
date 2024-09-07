@@ -25,9 +25,9 @@ namespace EvidencijaAparata.Server.Models
             work_type = gmBaseDTO.work_type;
         }
 
-        public int? GetBaseActId()
+        public GMBaseAct? GetBaseAct()
         {
-            return GMBaseActs?.Where(p => p.DatumDeakt == null).SingleOrDefault()?.Id;
+            return GMBaseActs?.Where(p => p.DatumDeakt == null).SingleOrDefault();
         }
     }
 }

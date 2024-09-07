@@ -11,7 +11,8 @@ import { GMBase } from './gm-base.interface';
 })
 export class GMBaseService {
   private httpClient = inject(HttpClient);
-  private readonly href = 'http://localhost:3000/gm_base';
+  // private readonly href = 'http://localhost:3000/gm_base';
+  private readonly href = 'http://localhost:5291/gm_base';
 
   constructor() { }
 
@@ -33,16 +34,16 @@ export class GMBaseService {
       params.act_location_id = matDialogData.act_location_id;
     }
 
-    return this.httpClient.get<GMBase[]>(this.href, {
+    return this.httpClient.get(this.href, {
       params: params
     })
       .pipe(
-        map(items => {
-          return items.filter(p => !matDialogData || !(matDialogData.addOrNotList) || !(p.hasOwnProperty('act_location_id')));
-        }),
-        map(items => ({
-          items: items,
-          total_count: 5
+        //map(items => {
+        //  return items.filter(p => !matDialogData || !(matDialogData.addOrNotList) || !(p.hasOwnProperty('act_location_id')));
+        //}),
+        map((p: any) => ({
+          items: p.items ?? p,
+          total_count: p.count_items ?? 5
         })),
       );
   }

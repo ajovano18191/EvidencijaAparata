@@ -39,7 +39,10 @@ export class GMLocationService {
   }
 
   getActiveLocations(): Observable<GMLocation[]> {
-    return this.httpClient.get<GMLocation[]>(this.href + "?act_location_id_ne");
+    return this.httpClient.get(this.href + "?act_location_id_ne")
+      .pipe(
+        map((p: any) => p.items),
+      );
   }
 
   addLocation(gmDTO: GMLocationDTO): Observable<GMLocation> {
