@@ -18,8 +18,8 @@
   
   <mat-form-field *ngIf="this.isActivation">
     <mat-label>Lokacija</mat-label>
-    <mat-select [(value)]="gmBaseActDTO!.act_location_id">
-      <mat-option [value]="location.act_location_id" *ngFor="let location of activeLocation$ | async">{{location.naziv}}</mat-option>
+    <mat-select [(value)]="gmBaseActDTO!.location_id">
+      <mat-option [value]="location.id" *ngFor="let location of activeLocation$ | async">{{location.naziv}}</mat-option>
     </mat-select>
   </mat-form-field>
 </div>

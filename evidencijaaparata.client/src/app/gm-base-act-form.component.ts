@@ -27,12 +27,12 @@ export class GMBaseActFormComponent {
   private gmBaseService = inject(GMBaseService);
   public isLoadingResult: boolean = false;
 
-  public matDialogData: { id: number | null, naziv: string | null, base_id: number, act_location_id: number | null, } = inject(MAT_DIALOG_DATA);
+  public matDialogData: { id: number | null, naziv: string | null, base_id: number, location_id: number, } = inject(MAT_DIALOG_DATA);
   public isActivation: boolean = this.matDialogData.id === null;
   public gmBaseActDTO: GMBaseActDTO = {
     resenje: "",
     datum: new Date(),
-    act_location_id: this.matDialogData.act_location_id,
+    location_id: this.matDialogData.location_id ?? -1,
   }
 
   private gmLocationService = inject(GMLocationService);

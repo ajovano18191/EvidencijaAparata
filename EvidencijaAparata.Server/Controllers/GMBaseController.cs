@@ -24,22 +24,28 @@ namespace EvidencijaAparata.Server.Controllers
             [FromQuery(Name = "_order")] string? order,
             [FromQuery(Name = "_page")] int? page,
             [FromQuery(Name = "_limit")] int? limit,
-            [FromQuery(Name = "act_location_id")] int? act_location_id
+            [FromQuery(Name = "location_id")] int? location_id,
+            [FromQuery(Name = "addOrNotList")] bool addOrNotList = false
         )
         {
             IQueryable<GMBase> gmBases;
-            if (act_location_id == null) {
+            if (location_id == null) {
                 gmBases = Context.GMBases
                 .Include(p => p.GMBaseActs)
                 .ThenInclude(p => p.GMLocationAct)
                 .ThenInclude(p => p.GMLocation);
             }
             else {
-                gmBases = Context.GMLocationActs
-                .FirstOrDefault(p => p.Id == act_location_id)!
+                gmBases = Context.GMLocations
+                .Include(p => p.GMLocationActs)
+                .ThenInclude(p => p.GMBaseActs)
+                .ThenInclude(p => p.GMBase)
+                .FirstOrDefault(p => p.Id == location_id)!
+                .GetLocationAct()!
                 .GMBaseActs
+                .Where(p => p.DatumDeakt == null)
                 .Select(p => p.GMBase)
-                .AsQueryable<GMBase>();
+                .AsQueryable();
             }
             int count_items = gmBases.Count();
             limit = page == null ? count_items : limit;
@@ -72,7 +78,30 @@ namespace EvidencijaAparata.Server.Controllers
             gmBases = gmBases.Skip(((page - 1) * limit) ?? 0).Take(limit ?? 0);
 
             IList<IGMBase> igmBases = gmBases.Select(p => new IGMBase(p)).ToList();
+            if (addOrNotList) {
+                igmBases = igmBases.Where(p => p.act_base_id == null).ToList();
+            }
             return Ok(new ReturnDTO<IGMBase>(igmBases, count_items));
+        }
+
+        [HttpPut]
+        [Route("{id}/activate")]
+        public async Task<ActionResult> ActivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
+        {
+            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMLocationAct gmLocationAct = (await Context.GMLocations
+                .Include(p => p.GMLocationActs)
+                .FirstOrDefaultAsync(p => p.Id == gmBaseActDTO.location_id))!
+                .GetLocationAct()!;
+            GMBaseAct gmBaseAct = new GMBaseAct {
+                DatumAkt = DateOnly.FromDateTime(gmBaseActDTO.datum),
+                ResenjeAkt = gmBaseActDTO.resenje,
+                GMBase = gmBase,
+                GMLocationAct = gmLocationAct,
+            };
+            await Context.GMBaseActs.AddAsync(gmBaseAct);
+            await Context.SaveChangesAsync();
+            return Ok();
         }
     }
 }

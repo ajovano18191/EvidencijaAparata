@@ -17,7 +17,7 @@ export class GMBaseService {
   constructor() { }
 
   getGMs(
-    matDialogData: { act_location_id: number, addOrNotList: boolean } | null,
+    matDialogData: { location_id: number | null, addOrNotList: boolean } | null,
     sort: string,
     order: SortDirection,
     page: number,
@@ -30,8 +30,11 @@ export class GMBaseService {
       _limit: limit
     };
 
-    if (matDialogData !== null && !matDialogData.addOrNotList) {
-      params.act_location_id = matDialogData.act_location_id;
+    if (matDialogData !== null) {
+      if (matDialogData.location_id !== null && !matDialogData.addOrNotList) {
+        params.location_id = matDialogData.location_id;
+      }
+      params.addOrNotList = matDialogData.addOrNotList;
     }
 
     return this.httpClient.get(this.href, {
@@ -39,7 +42,7 @@ export class GMBaseService {
     })
       .pipe(
         //map(items => {
-        //  return items.filter(p => !matDialogData || !(matDialogData.addOrNotList) || !(p.hasOwnProperty('act_location_id')));
+        //  return items.filter(p => !matDialogData || !(matDialogData.addOrNotList) || !(p.hasOwnProperty('location_id')));
         //}),
         map((p: any) => ({
           items: p.items ?? p,

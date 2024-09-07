@@ -25,5 +25,5 @@ namespace EvidencijaAparata.Server.DTOs
         }
     }
     public record GMBaseDTO(string name, string serial_num, string old_sticker_no, string work_type);
-    public record GMBaseActDTO(DateTime datum, string resenje, string napomena);
+    public record GMBaseActDTO(DateTime datum, string resenje, int location_id);
 }
