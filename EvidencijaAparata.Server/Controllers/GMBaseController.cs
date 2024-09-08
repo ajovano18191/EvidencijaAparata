@@ -84,6 +84,37 @@ namespace EvidencijaAparata.Server.Controllers
             return Ok(new ReturnDTO<IGMBase>(igmBases, count_items));
         }
 
+        [HttpPost]
+        public async Task<ActionResult> AddGMBase([FromBody] GMBaseDTO gmBaseDTO)
+        {
+            GMBase gmBase = new GMBase();
+            gmBase.DTO2GMBase(gmBaseDTO);
+            await Context.GMBases.AddAsync(gmBase);
+            await Context.SaveChangesAsync();
+            return Ok(new IGMBase(gmBase));
+        }
+
+        [HttpPut]
+        [Route("{id}")]
+        public async Task<ActionResult> UpdateGMBase([FromRoute] int id, [FromBody] GMBaseDTO gmBaseDTO)
+        {
+            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            gmBase.DTO2GMBase(gmBaseDTO);
+            Context.GMBases.Update(gmBase);
+            await Context.SaveChangesAsync();
+            return Ok(new IGMBase(gmBase));
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public async Task<ActionResult> DeleteGMBase([FromRoute] int id)
+        {
+            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            Context.GMBases.Remove(gmBase);
+            await Context.SaveChangesAsync();
+            return Ok();
+        }
+
         [HttpPut]
         [Route("{id}/activate")]
         public async Task<ActionResult> ActivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
