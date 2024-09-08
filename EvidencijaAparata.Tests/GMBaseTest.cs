@@ -87,5 +87,49 @@ namespace EvidencijaAparata.Tests
             Assert.That(nazivPrveLokacije, Is.LessThanOrEqualTo(nazivDrugeLokacije));
         }
 
+        [Test]
+        [TestCase("Name", "SerialNum", "OldStickerNo", "SAS")]
+        public async Task AddGMBase_Normal_AddedGMBaseSuccessfully(string name, string serial_num, string old_sticker_no, string work_type)
+        {
+            GMBaseDTO gmBaseDTO = new GMBaseDTO(name, serial_num, old_sticker_no, work_type);
+            OkObjectResult httpRes = ((await GMBasesController.AddGMBase(gmBaseDTO)).Result as OkObjectResult)!;
+            IGMBase addedGMBase = (httpRes.Value as IGMBase)!;
+            GMBase? foundedGMLocation = _context.GMBases.FirstOrDefault(p => p.Id == addedGMBase.id);
+
+            Assert.That(foundedGMLocation, Is.Not.Null);
+        }
+
+        [Test]
+        [TestCase(1, "Name", "SerialNum", "OldStickerNo", "SAS")]
+        public async Task UpdateGMBase_Normal_UpdatedGMBaseSuccessfully(int id, string name, string serial_num, string old_sticker_no, string work_type)
+        {
+            GMBaseDTO gmBaseDTO = new GMBaseDTO(name, serial_num, old_sticker_no, work_type);
+            OkObjectResult httpRes = ((await GMBasesController.UpdateGMBase(id, gmBaseDTO)).Result as OkObjectResult)!;
+            IGMBase updatedGMBase = (httpRes.Value as IGMBase)!;
+            GMBase? foundedGMBase = _context.GMBases.FirstOrDefault(p => p.Id == id);
+
+            Assert.Multiple(() => {
+                Assert.That(foundedGMBase, Is.Not.Null);
+                Assert.That(foundedGMBase!.Id, Is.EqualTo(updatedGMBase.id));
+                Assert.That(foundedGMBase!.Name, Is.EqualTo(name));
+                Assert.That(foundedGMBase!.serial_num, Is.EqualTo(serial_num));
+                Assert.That(foundedGMBase!.old_sticker_no, Is.EqualTo(old_sticker_no));
+                Assert.That(foundedGMBase!.work_type, Is.EqualTo(work_type));
+            });
+        }
+
+        [Test]
+        [TestCase(1)]
+        public async Task DeleteGMBase_Normal_DeletedGMBaseSuccessfully(int id)
+        {
+            OkResult? httpRes = (await GMBasesController.DeleteGMBase(id)) as OkResult;
+            Assert.Multiple(() => {
+                Assert.That(httpRes, Is.Not.Null);
+                int numGMBases = _context.GMBases.Count(p => p.Id == id);
+                Assert.That(numGMBases, Is.EqualTo(0));
+                Assert.That(_context.GMBaseActs.Include(p => p.GMBase).Where(p => p.GMBase.Id == id).Count(), Is.EqualTo(0));
+            });
+
+        }
     }
 }

@@ -89,7 +89,7 @@ namespace EvidencijaAparata.Server.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddGMBase([FromBody] GMBaseDTO gmBaseDTO)
+        public async Task<ActionResult<IGMBase>> AddGMBase([FromBody] GMBaseDTO gmBaseDTO)
         {
             GMBase gmBase = new GMBase();
             gmBase.DTO2GMBase(gmBaseDTO);
@@ -100,7 +100,7 @@ namespace EvidencijaAparata.Server.Controllers
 
         [HttpPut]
         [Route("{id}")]
-        public async Task<ActionResult> UpdateGMBase([FromRoute] int id, [FromBody] GMBaseDTO gmBaseDTO)
+        public async Task<ActionResult<IGMBase>> UpdateGMBase([FromRoute] int id, [FromBody] GMBaseDTO gmBaseDTO)
         {
             GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
             gmBase.DTO2GMBase(gmBaseDTO);
