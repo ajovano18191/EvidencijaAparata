@@ -19,7 +19,7 @@ namespace EvidencijaAparata.Server.DTOs
             GMBaseAct? gmBaseAct = gmBase.GetBaseAct();
             if (gmBaseAct != null) {
                 act_base_id = gmBaseAct.Id;
-                act_location_id = gmBaseAct.GMLocationAct.Id;
+                act_location_id = gmBaseAct.GMLocationAct.GMLocation.Id;
                 act_location_naziv = gmBaseAct.GMLocationAct.GMLocation.Naziv;
             }
         }

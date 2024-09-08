@@ -8,11 +8,11 @@ namespace EvidencijaAparata.Server.Controllers
 {
     [ApiController]
     [Route("gm_base")]
-    public class GMBaseController : ControllerBase
+    public class GMBasesController : ControllerBase
     {
         public ApplicationDbContext Context { get; set; }
 
-        public GMBaseController(ApplicationDbContext dbContext)
+        public GMBasesController(ApplicationDbContext dbContext)
         {
             Context = dbContext;
             dbContext.SeedDatabase();
@@ -65,7 +65,11 @@ namespace EvidencijaAparata.Server.Controllers
                     gmBases = gmBases.OrderBy(p => p.work_type);
                     break;
                 case "act_location_naziv":
-                    gmBases = gmBases.OrderBy(p => p.GetBaseAct() == null ? "" : p.GetBaseAct()!.GMLocationAct.GMLocation.Naziv);
+                    gmBases = gmBases.OrderBy(p => 
+                        p.GMBaseActs.Where(q => q.DatumDeakt == null).SingleOrDefault() == null 
+                        ? "" 
+                        : p.GMBaseActs.Where(q => q.DatumDeakt == null).SingleOrDefault()!.GMLocationAct.GMLocation.Naziv
+                    );
                     break;
                 default:
                     gmBases = gmBases.OrderBy(p => p.Id);
