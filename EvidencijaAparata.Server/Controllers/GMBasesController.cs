@@ -3,6 +3,7 @@ using EvidencijaAparata.Server.DTOs;
 using EvidencijaAparata.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 
 namespace EvidencijaAparata.Server.Controllers
 {
@@ -102,7 +103,12 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}")]
         public async Task<ActionResult<IGMBase>> UpdateGMBase([FromRoute] int id, [FromBody] GMBaseDTO gmBaseDTO)
         {
-            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMBase gmBase = (await Context.GMBases
+                .Include(p => p.GMBaseActs)
+                .ThenInclude(p => p.GMLocationAct)
+                .ThenInclude(p => p.GMLocation)
+                .FirstOrDefaultAsync(p => p.Id == id)
+            ) ?? throw new Exception();
             gmBase.DTO2GMBase(gmBaseDTO);
             Context.GMBases.Update(gmBase);
             await Context.SaveChangesAsync();
@@ -113,7 +119,7 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}")]
         public async Task<ActionResult> DeleteGMBase([FromRoute] int id)
         {
-            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id))!;
+            GMBase gmBase = (await Context.GMBases.FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
             Context.GMBases.Remove(gmBase);
             await Context.SaveChangesAsync();
             return Ok();

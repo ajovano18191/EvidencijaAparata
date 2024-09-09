@@ -100,7 +100,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(1, "Name", "SerialNum", "OldStickerNo", "SAS")]
+        [TestCase(2, "Name", "SerialNum", "OldStickerNo", "SAS")]
         public async Task UpdateGMBase_Normal_UpdatedGMBaseSuccessfully(int id, string name, string serial_num, string old_sticker_no, string work_type)
         {
             GMBaseDTO gmBaseDTO = new GMBaseDTO(name, serial_num, old_sticker_no, work_type);
@@ -115,7 +115,17 @@ namespace EvidencijaAparata.Tests
                 Assert.That(foundedGMBase!.serial_num, Is.EqualTo(serial_num));
                 Assert.That(foundedGMBase!.old_sticker_no, Is.EqualTo(old_sticker_no));
                 Assert.That(foundedGMBase!.work_type, Is.EqualTo(work_type));
+                Assert.That(updatedGMBase.act_base_id, Is.Not.Null);
+                Assert.That(updatedGMBase.act_location_id, Is.Not.Null);
             });
+        }
+
+        [Test]
+        [TestCase(-1, "Name", "SerialNum", "OldStickerNo", "SAS")]
+        public async Task UpdateGMBase_WrongId_ThrowsException(int id, string name, string serial_num, string old_sticker_no, string work_type)
+        {
+            GMBaseDTO gmBaseDTO = new GMBaseDTO(name, serial_num, old_sticker_no, work_type);
+            Assert.That(async () => await GMBasesController.UpdateGMBase(id, gmBaseDTO), Throws.Exception);
         }
 
         [Test]
@@ -129,7 +139,13 @@ namespace EvidencijaAparata.Tests
                 Assert.That(numGMBases, Is.EqualTo(0));
                 Assert.That(_context.GMBaseActs.Include(p => p.GMBase).Where(p => p.GMBase.Id == id).Count(), Is.EqualTo(0));
             });
+        }
 
+        [Test]
+        [TestCase(-1)]
+        public async Task DeleteGMBase_WrongId_ThrowsException(int id)
+        {
+            Assert.That(async () => await GMBasesController.DeleteGMBase(id), Throws.Exception);
         }
     }
 }

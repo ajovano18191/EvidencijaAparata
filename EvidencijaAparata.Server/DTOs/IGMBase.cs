@@ -1,4 +1,5 @@
 ﻿using EvidencijaAparata.Server.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace EvidencijaAparata.Server.DTOs
 {
@@ -24,6 +25,6 @@ namespace EvidencijaAparata.Server.DTOs
             }
         }
     }
-    public record GMBaseDTO(string name, string serial_num, string old_sticker_no, string work_type);
+    public record GMBaseDTO(string name, string serial_num, string old_sticker_no, [AllowedValues("SAS", "APOLLO", "ROULETE", "COUNTERS")]string work_type);
     public record GMBaseActDTO(DateTime datum, string resenje, int location_id);
 }
