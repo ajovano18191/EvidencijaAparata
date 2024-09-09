@@ -10,6 +10,7 @@ using EvidencijaAparata.Server.DTOs;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using EvidencijaAparata.Server.Models;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EvidencijaAparata.Tests
 {
@@ -100,7 +101,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(2, "Name", "SerialNum", "OldStickerNo", "SAS")]
+        [TestCase(3, "Name", "SerialNum", "OldStickerNo", "SAS")]
         public async Task UpdateGMBase_Normal_UpdatedGMBaseSuccessfully(int id, string name, string serial_num, string old_sticker_no, string work_type)
         {
             GMBaseDTO gmBaseDTO = new GMBaseDTO(name, serial_num, old_sticker_no, work_type);
@@ -146,6 +147,53 @@ namespace EvidencijaAparata.Tests
         public async Task DeleteGMBase_WrongId_ThrowsException(int id)
         {
             Assert.That(async () => await GMBasesController.DeleteGMBase(id), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(1, "9.9.2024.", "Resenje", 2)]
+        public async Task ActivateGMBase_Normal_ActivatedGMBaseSuccessfully(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            OkResult? httpRes = (await GMBasesController.ActivateGMBase(id, gmBaseActDTO)) as OkResult;
+
+            await Assert.MultipleAsync(async () => {
+                Assert.That(httpRes, Is.Not.Null);
+
+                GMBase gmBase = (await _context.GMBases
+                    .Include(p => p.GMBaseActs)
+                    .ThenInclude(p => p.GMLocationAct)
+                    .ThenInclude(p => p.GMLocation)
+                    .FirstOrDefaultAsync(p => p.Id == id)
+                )!;
+                Assert.That(gmBase.GetBaseAct(), Is.Not.Null);
+
+                GMBaseAct gmBaseAct = gmBase.GMBaseActs.OrderBy(p => p.DatumAkt).Last()!;
+                Assert.That(gmBaseAct.DatumAkt, Is.EqualTo(DateOnly.Parse(datum)));
+                Assert.That(gmBaseAct.DatumDeakt, Is.Null);
+            });
+        }
+
+        [Test]
+        [TestCase(3, "9.9.2024.", "Resenje", 2)]
+        public async Task DeactivateGMBase_Normal_DeactivatedGMBaseSuccessfully(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            OkResult? httpRes = (await GMBasesController.DeactivateGMBase(id, gmBaseActDTO)) as OkResult;
+
+            await Assert.MultipleAsync(async () => {
+                Assert.That(httpRes, Is.Not.Null);
+
+                GMBase gmBase = (await _context.GMBases
+                    .Include(p => p.GMBaseActs)
+                    .ThenInclude(p => p.GMLocationAct)
+                    .ThenInclude(p => p.GMLocation)
+                    .FirstOrDefaultAsync(p => p.Id == id)
+                )!;
+                Assert.That(gmBase.GetBaseAct(), Is.Null);
+
+                GMBaseAct gmBaseAct = gmBase.GMBaseActs.OrderBy(p => p.DatumAkt).Last()!;
+                Assert.That(gmBaseAct.DatumDeakt, Is.EqualTo(DateOnly.Parse(datum)));
+            });
         }
     }
 }
