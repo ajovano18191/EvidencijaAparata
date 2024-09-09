@@ -167,10 +167,18 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}/deactivate")]
         public async Task<ActionResult> DeactivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
         {
-            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id))!;
-            GMBaseAct gmBaseAct = gmBase.GetBaseAct()!;
+            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
+            GMBaseAct? gmBaseAct = gmBase.GetBaseAct() ?? throw new Exception();
+            if (gmBaseAct.DatumDeakt != null) {
+                throw new Exception();
+            }
+            if (gmBaseAct.DatumAkt > DateOnly.FromDateTime(gmBaseActDTO.datum)) {
+                throw new Exception();
+            }
+
             gmBaseAct.DatumDeakt = DateOnly.FromDateTime(gmBaseActDTO.datum);
             gmBaseAct.ResenjeDeakt = gmBaseActDTO.resenje;
+
             Context.GMBaseActs.Update(gmBaseAct);
             await Context.SaveChangesAsync();
             return Ok();

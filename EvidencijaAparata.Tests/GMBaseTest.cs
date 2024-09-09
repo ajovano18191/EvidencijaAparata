@@ -10,7 +10,6 @@ using EvidencijaAparata.Server.DTOs;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc;
 using EvidencijaAparata.Server.Models;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace EvidencijaAparata.Tests
 {
@@ -234,6 +233,30 @@ namespace EvidencijaAparata.Tests
                 GMBaseAct gmBaseAct = gmBase.GMBaseActs.MaxBy(p => p.DatumAkt)!;
                 Assert.That(gmBaseAct.DatumDeakt, Is.EqualTo(DateOnly.Parse(datum)));
             });
+        }
+
+        [Test]
+        [TestCase(-1, "2024-09-09", "Resenje", -1)]
+        public async Task DeactivateGMBase_NonExistingBase_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.DeactivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(5, "2024-09-09", "Resenje", -1)]
+        public async Task DeactivateGMBase_DeactiveBase_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.DeactivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(3, "2024-09-06", "Resenje", -1)]
+        public async Task DeactivateGMBase_DeactivationBeforeActivation_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.DeactivateGMBase(id, gmBaseActDTO), Throws.Exception);
         }
     }
 }
