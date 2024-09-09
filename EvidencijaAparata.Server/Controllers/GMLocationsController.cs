@@ -106,7 +106,7 @@ namespace EvidencijaAparata.Server.Controllers
         public async Task<ActionResult> ActivateGMLocation([FromRoute] int id, [FromBody] GMLocationActDTO gmLocationActDTO)
         {
             GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
-            GMLocationAct? lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault();
+            GMLocationAct? lastGMLocationAct = gmLocation.GMLocationActs.MaxBy(p => p.DatumAkt);
             if(lastGMLocationAct != null) {
                 if(lastGMLocationAct.DatumDeakt == null) {
                     throw new Exception();
@@ -132,7 +132,7 @@ namespace EvidencijaAparata.Server.Controllers
         public async Task<ActionResult> DeactivateGMLocation([FromRoute] int id, [FromBody] GMLocationActDTO gmLocationActDTO)
         {
             GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
-            GMLocationAct lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault() ?? throw new Exception();
+            GMLocationAct lastGMLocationAct = gmLocation.GMLocationActs.MaxBy(p => p.DatumAkt) ?? throw new Exception();
             if (lastGMLocationAct.DatumDeakt != null) {
                 throw new Exception();
             }

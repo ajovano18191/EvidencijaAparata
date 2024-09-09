@@ -1,6 +1,5 @@
 ﻿using EvidencijaAparata.Server.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EvidencijaAparata.Server.Data
 {
@@ -39,9 +38,9 @@ namespace EvidencijaAparata.Server.Data
             modelBuilder.Entity<GMLocation>().HasData(gmLocations);
 
             object[] gmLocationsAct  = [
-                new { Id = 1, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMLocationId = 1 },
-                new { Id = 2, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMLocationId = 2 },
-                new { Id = 3, DatumAkt = DateOnly.Parse("4.9.2024."), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMLocationId = 2 }
+                new { Id = 1, DatumAkt = DateOnly.Parse("2024-09-01"), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("2024-09-03"), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMLocationId = 1 },
+                new { Id = 2, DatumAkt = DateOnly.Parse("2024-09-01"), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("2024-09-01"), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMLocationId = 2 },
+                new { Id = 3, DatumAkt = DateOnly.Parse("2024-09-04"), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMLocationId = 2 }
             ];
 
             modelBuilder.Entity<GMLocationAct>().HasData(gmLocationsAct);
@@ -57,9 +56,9 @@ namespace EvidencijaAparata.Server.Data
             modelBuilder.Entity<GMBase>().HasData(gmBases);
 
             object[] gmBasesAct  = [
-                new { Id = 1, DatumAkt = DateOnly.Parse("1.9.2024."), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("3.9.2024."), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMBaseId = 5, GMLocationActId = 1 },
-                new { Id = 2, DatumAkt = DateOnly.Parse("4.9.2024."), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("6.9.2024."), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMBaseId = 4, GMLocationActId = 3 },
-                new { Id = 3, DatumAkt = DateOnly.Parse("7.9.2024."), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMBaseId = 3, GMLocationActId = 3 }
+                new { Id = 1, DatumAkt = DateOnly.Parse("2024-09-01"), ResenjeAkt = "ResenjeAkt1", DatumDeakt = DateOnly.Parse("2024-09-03"), ResenjeDeakt = "ResenjeDeakt1", Napomena = "Napomena 1", GMBaseId = 5, GMLocationActId = 1 },
+                new { Id = 2, DatumAkt = DateOnly.Parse("2024-09-04"), ResenjeAkt = "ResenjeAkt2", DatumDeakt = DateOnly.Parse("2024-09-06"), ResenjeDeakt = "ResenjeDeakt2", Napomena = "Napomena 2", GMBaseId = 4, GMLocationActId = 3 },
+                new { Id = 3, DatumAkt = DateOnly.Parse("2024-09-07"), ResenjeAkt = "ResenjeAkt3", Napomena = "Napomena 3", GMBaseId = 3, GMLocationActId = 3 }
             ];
 
             modelBuilder.Entity<GMBaseAct>().HasData(gmBasesAct);

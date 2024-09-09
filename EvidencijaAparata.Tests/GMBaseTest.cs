@@ -167,14 +167,54 @@ namespace EvidencijaAparata.Tests
                 )!;
                 Assert.That(gmBase.GetBaseAct(), Is.Not.Null);
 
-                GMBaseAct gmBaseAct = gmBase.GMBaseActs.OrderBy(p => p.DatumAkt).Last()!;
+                GMBaseAct gmBaseAct = gmBase.GMBaseActs.MaxBy(p => p.DatumAkt)!;
                 Assert.That(gmBaseAct.DatumAkt, Is.EqualTo(DateOnly.Parse(datum)));
                 Assert.That(gmBaseAct.DatumDeakt, Is.Null);
             });
         }
 
         [Test]
-        [TestCase(3, "9.9.2024.", "Resenje", 2)]
+        [TestCase(3, "2024-09-09", "Resenje", 2)]
+        public void ActivateGMBase_ActiveBase_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.ActivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(5, "2024-09-02", "Resenje", 2)]
+        public void ActivateGMBase_ActivationBeforeDeactivation_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.ActivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(-1, "2024-09-09", "Resenje", 2)]
+        public void ActivateGMBase_NonExistingBase_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.ActivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(1, "2024-09-09", "Resenje", 1)]
+        public void ActivateGMBase_NonActiveLocation_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.ActivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(1, "2024-09-09", "Resenje", -1)]
+        public void ActivateGMBase_NonExistingLocation_ThrowsException(int id, string datum, string resenje, int location_id)
+        {
+            GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
+            Assert.That(async () => await GMBasesController.ActivateGMBase(id, gmBaseActDTO), Throws.Exception);
+        }
+
+        [Test]
+        [TestCase(3, "2024-09-09", "Resenje", 2)]
         public async Task DeactivateGMBase_Normal_DeactivatedGMBaseSuccessfully(int id, string datum, string resenje, int location_id)
         {
             GMBaseActDTO gmBaseActDTO = new GMBaseActDTO(DateTime.Parse(datum), resenje, location_id);
@@ -191,7 +231,7 @@ namespace EvidencijaAparata.Tests
                 )!;
                 Assert.That(gmBase.GetBaseAct(), Is.Null);
 
-                GMBaseAct gmBaseAct = gmBase.GMBaseActs.OrderBy(p => p.DatumAkt).Last()!;
+                GMBaseAct gmBaseAct = gmBase.GMBaseActs.MaxBy(p => p.DatumAkt)!;
                 Assert.That(gmBaseAct.DatumDeakt, Is.EqualTo(DateOnly.Parse(datum)));
             });
         }

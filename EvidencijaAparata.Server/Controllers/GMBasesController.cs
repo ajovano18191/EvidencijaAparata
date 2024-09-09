@@ -3,7 +3,6 @@ using EvidencijaAparata.Server.DTOs;
 using EvidencijaAparata.Server.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Npgsql.EntityFrameworkCore.PostgreSQL.Infrastructure.Internal;
 
 namespace EvidencijaAparata.Server.Controllers
 {
@@ -129,11 +128,30 @@ namespace EvidencijaAparata.Server.Controllers
         [Route("{id}/activate")]
         public async Task<ActionResult> ActivateGMBase([FromRoute] int id, [FromBody] GMBaseActDTO gmBaseActDTO)
         {
-            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id))!;
-            GMLocationAct gmLocationAct = (await Context.GMLocations
+            GMBase gmBase = (await Context.GMBases.Include(p => p.GMBaseActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
+            
+            GMBaseAct? lastGMBaseAct = gmBase.GMBaseActs.MaxBy(p => p.DatumAkt);
+            if (lastGMBaseAct != null) {
+                if (lastGMBaseAct.DatumDeakt == null) {
+                    throw new Exception();
+                }
+                if (lastGMBaseAct.DatumDeakt > DateOnly.FromDateTime(gmBaseActDTO.datum)) {
+                    throw new Exception();
+                }
+            }
+
+            GMLocation? gmLocation = (await Context.GMLocations
                 .Include(p => p.GMLocationActs)
-                .FirstOrDefaultAsync(p => p.Id == gmBaseActDTO.location_id))!
-                .GetLocationAct()!;
+                .FirstOrDefaultAsync(p => p.Id == gmBaseActDTO.location_id));
+            if (gmLocation == null) {
+                throw new Exception();
+            }
+
+            GMLocationAct? gmLocationAct = gmLocation.GetLocationAct();
+            if (gmLocationAct == null) {
+                throw new Exception();
+            }               
+
             GMBaseAct gmBaseAct = new GMBaseAct {
                 DatumAkt = DateOnly.FromDateTime(gmBaseActDTO.datum),
                 ResenjeAkt = gmBaseActDTO.resenje,

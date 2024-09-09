@@ -176,8 +176,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 1,
-                            DatumAkt = new DateOnly(2024, 1, 9),
-                            DatumDeakt = new DateOnly(2024, 3, 9),
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 3),
                             GMBaseId = 5,
                             GMLocationActId = 1,
                             ResenjeAkt = "ResenjeAkt1",
@@ -186,8 +186,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 2,
-                            DatumAkt = new DateOnly(2024, 4, 9),
-                            DatumDeakt = new DateOnly(2024, 6, 9),
+                            DatumAkt = new DateOnly(2024, 9, 4),
+                            DatumDeakt = new DateOnly(2024, 9, 6),
                             GMBaseId = 4,
                             GMLocationActId = 3,
                             ResenjeAkt = "ResenjeAkt2",
@@ -196,7 +196,7 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 3,
-                            DatumAkt = new DateOnly(2024, 7, 9),
+                            DatumAkt = new DateOnly(2024, 9, 7),
                             GMBaseId = 3,
                             GMLocationActId = 3,
                             ResenjeAkt = "ResenjeAkt3"
@@ -321,8 +321,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 1,
-                            DatumAkt = new DateOnly(2024, 1, 9),
-                            DatumDeakt = new DateOnly(2024, 3, 9),
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 3),
                             GMLocationId = 1,
                             Napomena = "Napomena 1",
                             ResenjeAkt = "ResenjeAkt1",
@@ -331,8 +331,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 2,
-                            DatumAkt = new DateOnly(2024, 1, 9),
-                            DatumDeakt = new DateOnly(2024, 3, 9),
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 1),
                             GMLocationId = 2,
                             Napomena = "Napomena 2",
                             ResenjeAkt = "ResenjeAkt2",
@@ -341,7 +341,7 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 3,
-                            DatumAkt = new DateOnly(2024, 4, 9),
+                            DatumAkt = new DateOnly(2024, 9, 4),
                             GMLocationId = 2,
                             Napomena = "Napomena 3",
                             ResenjeAkt = "ResenjeAkt3"
