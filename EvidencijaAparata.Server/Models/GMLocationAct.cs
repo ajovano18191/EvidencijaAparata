@@ -15,5 +15,6 @@ namespace EvidencijaAparata.Server.Models
         public string Napomena { get; set; } = default!;
         [Required]
         public GMLocation GMLocation { get; set; } = default!;
+        public IEnumerable<GMBaseAct> GMBaseActs { get; set; } = default!;
     }
 }

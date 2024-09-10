@@ -64,10 +64,10 @@
         </th>
         <td mat-cell *matCellDef="let row">
           <div class="example-button-row">
-            <button mat-icon-button color="primary" aria-label="List" (click)="openBasesDialog(row.act_location_id)" [ngStyle]="{ 'visibility': row.act_location_id ? 'visible' : 'hidden' }">
+            <button mat-icon-button color="primary" aria-label="List" (click)="openBasesDialog(row.id)" [ngStyle]="{ 'visibility': row.act_location_id ? 'visible' : 'hidden' }">
               <mat-icon>receipt_long</mat-icon>
             </button>
-            <button mat-icon-button color="primary" aria-label="Add base" (click)="openDeactBasesDialog(row.act_location_id)" [ngStyle]="{ 'visibility': row.act_location_id ? 'visible' : 'hidden' }">
+            <button mat-icon-button color="primary" aria-label="Add base" (click)="openDeactBasesDialog(row.id)" [ngStyle]="{ 'visibility': row.act_location_id ? 'visible' : 'hidden' }">
               <mat-icon>add</mat-icon>
             </button>
             <button mat-icon-button color="primary" aria-label="Edit" (click)="openLocationDialog(row)">

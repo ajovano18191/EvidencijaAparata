@@ -32,9 +32,14 @@ namespace EvidencijaAparata.Server.Models
             IP = gmLocationDTO.IP;
         }
 
+        public GMLocationAct? GetLocationAct()
+        {
+            return GMLocationActs?.Where(p => p.DatumDeakt == null).SingleOrDefault();
+        }
+
         public int? GetLocationActId()
         {
-            return GMLocationActs?.Where(p => p.DatumDeakt == null).SingleOrDefault()?.Id;
+            return GetLocationAct()?.Id;
         }
     }
 }

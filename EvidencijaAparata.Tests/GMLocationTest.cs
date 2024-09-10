@@ -198,8 +198,8 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(1, "4.9.2024.", "Resenje", "Ima prethodne aktivacije")]
-        [TestCase(5, "4.9.2024.", "Resenje", "Nema prethodne aktivacije")]
+        [TestCase(1, "2024-09-04", "Resenje", "Ima prethodne aktivacije")]
+        [TestCase(5, "2024-09-04", "Resenje", "Nema prethodne aktivacije")]
         public async Task ActivateGMLocation_Normal_GMLocationActivatedSuccessfully(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -211,14 +211,14 @@ namespace EvidencijaAparata.Tests
                 GMLocation gmLocation = (await _context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id))!;
                 Assert.That(gmLocation.GetLocationActId(), Is.Not.Null);
                 
-                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).Last()!;
+                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.MaxBy(p => p.DatumAkt)!;
                 Assert.That(gmLocationAct.DatumAkt, Is.EqualTo(DateOnly.Parse(datum)));
                 Assert.That(gmLocationAct.DatumDeakt, Is.Null);
             });
         }
 
         [Test]
-        [TestCase(2, "3.9.2024.", "Resenje", "Aktivan")]
+        [TestCase(2, "2024-09-03", "Resenje", "Aktivan")]
         public void ActivateGMLocation_ActiveLocation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -226,7 +226,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(1, "2.9.2024.", "Resenje", "Aktivan")]
+        [TestCase(1, "2024-09-02", "Resenje", "Aktivan")]
         public void ActivateGMLocation_ActivationBeforeDeactivation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -234,7 +234,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(-1, "2.9.2024.", "Resenje", "Napomena")]
+        [TestCase(-1, "2024-09-02", "Resenje", "Napomena")]
         public void ActivateGMLocation_NonExistingLocation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -242,7 +242,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(2, "5.9.2024.", "Resenje", "Aktivna")]
+        [TestCase(2, "2024-09-05", "Resenje", "Aktivna")]
         public async Task DeactivateGMLocation_Normal_GMLocationDeactivatedSuccessfully(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -254,13 +254,13 @@ namespace EvidencijaAparata.Tests
                 GMLocation gmLocation = (await _context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id))!;
                 Assert.That(gmLocation.GetLocationActId(), Is.Null);
 
-                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).Last()!;
+                GMLocationAct gmLocationAct = gmLocation.GMLocationActs.MaxBy(p => p.DatumAkt)!;
                 Assert.That(gmLocationAct.DatumDeakt, Is.EqualTo(DateOnly.Parse(datum)));
             });
         }
 
         [Test]
-        [TestCase(-1, "2.9.2024.", "Resenje", "Napomena")]
+        [TestCase(-1, "2024-09-02", "Resenje", "Napomena")]
         public void DeactivateGMLocation_NonExistingLocation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -268,7 +268,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(1, "2.9.2024.", "Resenje", "Deaktivirana")]
+        [TestCase(1, "2024-09-02", "Resenje", "Deaktivirana")]
         public void DeactivateGMLocation_DeactiveLocation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);
@@ -276,7 +276,7 @@ namespace EvidencijaAparata.Tests
         }
 
         [Test]
-        [TestCase(2, "3.9.2024.", "Resenje", "Napomena")]
+        [TestCase(2, "2024-09-03", "Resenje", "Napomena")]
         public void DeactivateGMLocation_DeactivateBeforeActivation_ThrowsException(int id, string datum, string resenje, string napomena)
         {
             GMLocationActDTO gmLocationActDTO = new GMLocationActDTO(DateTime.Parse(datum), resenje, napomena);

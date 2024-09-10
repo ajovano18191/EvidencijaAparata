@@ -33,7 +33,8 @@ export class GMBaseComponent implements AfterViewInit {
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   @ViewChild(MatSort) sort!: MatSort;
 
-  public matDialogData: { act_location_id: number, addOrNotList: boolean } | null = inject(MAT_DIALOG_DATA, { optional: true });
+  public matDialogData: { location_id: number | null, addOrNotList: boolean } = inject(MAT_DIALOG_DATA, { optional: true }) ?? { location_id: null, addOrNotList: false, };
+;
 
   constructor() { }
 
@@ -72,15 +73,7 @@ export class GMBaseComponent implements AfterViewInit {
   public dialog: MatDialog = inject(MatDialog);
 
   selectAllOrDeactivatedBases(event: { checked: boolean, source: any }) {
-    if (event.source._checked) {
-      this.matDialogData = null;
-    }
-    else {
-      this.matDialogData = {
-        act_location_id: this.matDialogData?.act_location_id ?? -1,
-        addOrNotList: true,
-      }
-    }
+    this.matDialogData.addOrNotList = !event.source._checked;
     this.dataUpdate$.next({});
   }
 
@@ -109,7 +102,7 @@ export class GMBaseComponent implements AfterViewInit {
         id: gmBase.act_base_id,
         naziv: gmBase.name,
         base_id: gmBase.id,
-        act_location_id: this.matDialogData?.act_location_id,
+        location_id: this.matDialogData?.location_id,
       }
     });
 

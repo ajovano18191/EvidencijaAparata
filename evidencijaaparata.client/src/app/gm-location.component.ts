@@ -69,19 +69,19 @@ export class GMLocationComponent implements AfterViewInit {
 
   public dialog: MatDialog = inject(MatDialog);
 
-  openBasesDialog(act_location_id: number) {
+  openBasesDialog(location_id: number) {
     const dialogRef = this.dialog.open(GMBaseComponent, {
       data: {
-        act_location_id,
+        location_id,
         addOrNotList: false,
       }
     });
   }
 
-  openDeactBasesDialog(act_location_id: number) {
+  openDeactBasesDialog(location_id: number) {
     const dialogRef = this.dialog.open(GMBaseComponent, {
       data: {
-        act_location_id,
+        location_id,
         addOrNotList: true,
       }
     });

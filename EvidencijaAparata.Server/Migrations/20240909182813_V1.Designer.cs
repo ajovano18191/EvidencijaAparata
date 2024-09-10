@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvidencijaAparata.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240905185719_V1")]
+    [Migration("20240909182813_V1")]
     partial class V1
     {
         /// <inheritdoc />
@@ -66,6 +66,143 @@ namespace EvidencijaAparata.Server.Migrations
                         {
                             Id = 5,
                             Naziv = "City 5"
+                        });
+                });
+
+            modelBuilder.Entity("EvidencijaAparata.Server.Models.GMBase", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("old_sticker_no")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("serial_num")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("work_type")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GMBases");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "GM 1",
+                            old_sticker_no = "OSN1",
+                            serial_num = "SN1",
+                            work_type = "APOLLO"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "GM 2",
+                            old_sticker_no = "OSN2",
+                            serial_num = "SN2",
+                            work_type = "SAS"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Name = "GM 3",
+                            old_sticker_no = "OSN3",
+                            serial_num = "SN3",
+                            work_type = "ROULETE"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Name = "GM 4",
+                            old_sticker_no = "OSN4",
+                            serial_num = "SN4",
+                            work_type = "APOLLO"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Name = "GM 5",
+                            old_sticker_no = "OSN5",
+                            serial_num = "SN5",
+                            work_type = "SAS"
+                        });
+                });
+
+            modelBuilder.Entity("EvidencijaAparata.Server.Models.GMBaseAct", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateOnly>("DatumAkt")
+                        .HasColumnType("date");
+
+                    b.Property<DateOnly?>("DatumDeakt")
+                        .HasColumnType("date");
+
+                    b.Property<int>("GMBaseId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("GMLocationActId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("ResenjeAkt")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ResenjeDeakt")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("GMBaseId");
+
+                    b.HasIndex("GMLocationActId");
+
+                    b.ToTable("GMBaseActs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 3),
+                            GMBaseId = 5,
+                            GMLocationActId = 1,
+                            ResenjeAkt = "ResenjeAkt1",
+                            ResenjeDeakt = "ResenjeDeakt1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            DatumAkt = new DateOnly(2024, 9, 4),
+                            DatumDeakt = new DateOnly(2024, 9, 6),
+                            GMBaseId = 4,
+                            GMLocationActId = 3,
+                            ResenjeAkt = "ResenjeAkt2",
+                            ResenjeDeakt = "ResenjeDeakt2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            DatumAkt = new DateOnly(2024, 9, 7),
+                            GMBaseId = 3,
+                            GMLocationActId = 3,
+                            ResenjeAkt = "ResenjeAkt3"
                         });
                 });
 
@@ -187,8 +324,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 1,
-                            DatumAkt = new DateOnly(2024, 1, 9),
-                            DatumDeakt = new DateOnly(2024, 3, 9),
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 3),
                             GMLocationId = 1,
                             Napomena = "Napomena 1",
                             ResenjeAkt = "ResenjeAkt1",
@@ -197,8 +334,8 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 2,
-                            DatumAkt = new DateOnly(2024, 1, 9),
-                            DatumDeakt = new DateOnly(2024, 3, 9),
+                            DatumAkt = new DateOnly(2024, 9, 1),
+                            DatumDeakt = new DateOnly(2024, 9, 1),
                             GMLocationId = 2,
                             Napomena = "Napomena 2",
                             ResenjeAkt = "ResenjeAkt2",
@@ -207,11 +344,30 @@ namespace EvidencijaAparata.Server.Migrations
                         new
                         {
                             Id = 3,
-                            DatumAkt = new DateOnly(2024, 4, 9),
+                            DatumAkt = new DateOnly(2024, 9, 4),
                             GMLocationId = 2,
                             Napomena = "Napomena 3",
                             ResenjeAkt = "ResenjeAkt3"
                         });
+                });
+
+            modelBuilder.Entity("EvidencijaAparata.Server.Models.GMBaseAct", b =>
+                {
+                    b.HasOne("EvidencijaAparata.Server.Models.GMBase", "GMBase")
+                        .WithMany("GMBaseActs")
+                        .HasForeignKey("GMBaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("EvidencijaAparata.Server.Models.GMLocationAct", "GMLocationAct")
+                        .WithMany("GMBaseActs")
+                        .HasForeignKey("GMLocationActId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("GMBase");
+
+                    b.Navigation("GMLocationAct");
                 });
 
             modelBuilder.Entity("EvidencijaAparata.Server.Models.GMLocation", b =>
@@ -236,9 +392,19 @@ namespace EvidencijaAparata.Server.Migrations
                     b.Navigation("GMLocation");
                 });
 
+            modelBuilder.Entity("EvidencijaAparata.Server.Models.GMBase", b =>
+                {
+                    b.Navigation("GMBaseActs");
+                });
+
             modelBuilder.Entity("EvidencijaAparata.Server.Models.GMLocation", b =>
                 {
                     b.Navigation("GMLocationActs");
+                });
+
+            modelBuilder.Entity("EvidencijaAparata.Server.Models.GMLocationAct", b =>
+                {
+                    b.Navigation("GMBaseActs");
                 });
 #pragma warning restore 612, 618
         }
