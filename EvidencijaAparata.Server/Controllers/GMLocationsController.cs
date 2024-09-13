@@ -20,13 +20,14 @@ namespace EvidencijaAparata.Server.Controllers
 
         [HttpGet]
         public ActionResult<ReturnDTO<IGMLocation>> GetGMLocations(
-            [FromQuery(Name = "_sort")] string? sort, 
+            [FromQuery(Name = "_sort")] string? sort,
             [FromQuery(Name = "_order")] string? order,
             [FromQuery(Name = "_page")] int? page,
             [FromQuery(Name = "_limit")] int? limit,
             [FromQuery(Name = "act_location_id_ne")] string? act_location_only
             )
         {
+            Thread.Sleep(2000);
             Console.WriteLine(act_location_only);
             IQueryable<GMLocation> gmLocations = Context.GMLocations
                 .Include(p => p.GMLocationActs)
@@ -35,7 +36,8 @@ namespace EvidencijaAparata.Server.Controllers
             limit = page == null ? count_items : limit;
             page ??= 1;
 
-            switch(sort) {
+            switch (sort)
+            {
                 case "rul_base_id":
                     gmLocations = gmLocations.OrderBy(p => p.rul_base_id);
                     break;
@@ -56,16 +58,18 @@ namespace EvidencijaAparata.Server.Controllers
                     break;
             }
 
-            if (order == "desc") {
+            if (order == "desc")
+            {
                 gmLocations = gmLocations.Reverse();
             }
             gmLocations = gmLocations.Skip(((page - 1) * limit) ?? 0).Take(limit ?? 0);
 
             IList<IGMLocation> igmLocations = gmLocations.Select(p => new IGMLocation(p)).ToList();
-            if (HttpContext?.Request.QueryString.ToString().Contains("act_location_id_ne") ?? act_location_only == "yes") {
+            if (HttpContext?.Request.QueryString.ToString().Contains("act_location_id_ne") ?? act_location_only == "yes")
+            {
                 igmLocations = igmLocations.Where(p => p.act_location_id != null).ToList();
             }
-            return Ok(new ReturnDTO<IGMLocation>(igmLocations, count_items));
+            return Ok(new ReturnDTO<IGMLocation>(igmLocations, 0));
         }
 
         [HttpPost]
@@ -107,23 +111,27 @@ namespace EvidencijaAparata.Server.Controllers
         {
             GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
             GMLocationAct? lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault();
-            if(lastGMLocationAct != null) {
-                if(lastGMLocationAct.DatumDeakt == null) {
+            if (lastGMLocationAct != null)
+            {
+                if (lastGMLocationAct.DatumDeakt == null)
+                {
                     throw new Exception();
                 }
-                if(lastGMLocationAct.DatumDeakt > DateOnly.FromDateTime(gmLocationActDTO.datum)) {
+                if (lastGMLocationAct.DatumDeakt > DateOnly.FromDateTime(gmLocationActDTO.datum))
+                {
                     throw new Exception();
                 }
             }
 
-            GMLocationAct gmLocationAct = new GMLocationAct {
+            GMLocationAct gmLocationAct = new GMLocationAct
+            {
                 DatumAkt = DateOnly.FromDateTime(gmLocationActDTO.datum),
                 ResenjeAkt = gmLocationActDTO.resenje,
                 Napomena = gmLocationActDTO.napomena,
                 GMLocation = gmLocation,
             };
             await Context.GMLocationActs.AddAsync(gmLocationAct);
-            await Context.SaveChangesAsync(); 
+            await Context.SaveChangesAsync();
             return Ok();
         }
 
@@ -133,10 +141,12 @@ namespace EvidencijaAparata.Server.Controllers
         {
             GMLocation gmLocation = (await Context.GMLocations.Include(p => p.GMLocationActs).FirstOrDefaultAsync(p => p.Id == id)) ?? throw new Exception();
             GMLocationAct lastGMLocationAct = gmLocation.GMLocationActs.OrderBy(p => p.DatumAkt).LastOrDefault() ?? throw new Exception();
-            if (lastGMLocationAct.DatumDeakt != null) {
+            if (lastGMLocationAct.DatumDeakt != null)
+            {
                 throw new Exception();
             }
-            if (lastGMLocationAct.DatumAkt > DateOnly.FromDateTime(gmLocationActDTO.datum)) {
+            if (lastGMLocationAct.DatumAkt > DateOnly.FromDateTime(gmLocationActDTO.datum))
+            {
                 throw new Exception();
             }
 

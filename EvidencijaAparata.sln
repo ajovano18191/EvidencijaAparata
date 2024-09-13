@@ -7,7 +7,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvidencijaAparata.Server", 
 EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "evidencijaaparata.client", "evidencijaaparata.client\evidencijaaparata.client.esproj", "{988DE2A1-193E-4998-84AB-20EF29205EB5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EvidencijaAparata.Tests", "EvidencijaAparata.Tests\EvidencijaAparata.Tests.csproj", "{7E65E13A-37AF-4C1F-9170-EDD868B5F780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvidencijaAparata.Tests", "EvidencijaAparata.Tests\EvidencijaAparata.Tests.csproj", "{7E65E13A-37AF-4C1F-9170-EDD868B5F780}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EvidencijaAparata.Playwright", "EvidencijaAparata.Playwright\EvidencijaAparata.Playwright.csproj", "{EE0A47FA-4C27-4EC0-B5DA-73A46D9CE000}"
+	ProjectSection(ProjectDependencies) = postProject
+		{988DE2A1-193E-4998-84AB-20EF29205EB5} = {988DE2A1-193E-4998-84AB-20EF29205EB5}
+		{BF6F35C8-3B77-4D64-8C47-310B06942568} = {BF6F35C8-3B77-4D64-8C47-310B06942568}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +35,10 @@ Global
 		{7E65E13A-37AF-4C1F-9170-EDD868B5F780}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7E65E13A-37AF-4C1F-9170-EDD868B5F780}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7E65E13A-37AF-4C1F-9170-EDD868B5F780}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE0A47FA-4C27-4EC0-B5DA-73A46D9CE000}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE0A47FA-4C27-4EC0-B5DA-73A46D9CE000}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE0A47FA-4C27-4EC0-B5DA-73A46D9CE000}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE0A47FA-4C27-4EC0-B5DA-73A46D9CE000}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
