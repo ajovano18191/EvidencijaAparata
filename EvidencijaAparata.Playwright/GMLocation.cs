@@ -100,5 +100,27 @@ namespace EvidencijaAparata.Playwright
             await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") }).GetByLabel("Delete").ClickAsync();
             await Expect(page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") })).ToHaveCountAsync(0);
         }
+
+        [Test]
+        public async Task OpenActiveGMBasesForLocation()
+        {
+            await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* Lokacija 2") }).GetByLabel("List").ClickAsync();
+            await Expect(page.Locator(".cdk-overlay-backdrop")).ToBeVisibleAsync();
+            foreach (var row in await page.GetByRole(AriaRole.Row).AllAsync())
+            {
+                await Expect(row).Not.ToContainTextAsync("Deactive");
+            }
+        }
+
+        [Test]
+        public async Task OpenDeactiveGMBases()
+        {
+            await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* Lokacija 2") }).GetByLabel("Add base").ClickAsync();
+            await Expect(page.Locator(".cdk-overlay-backdrop")).ToBeVisibleAsync();
+            foreach (var row in await page.GetByRole(AriaRole.Row).AllAsync())
+            {
+                await Expect(row).Not.ToContainTextAsync("Active");
+            }
+        }
     }
 }

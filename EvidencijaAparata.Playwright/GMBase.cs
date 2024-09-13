@@ -3,7 +3,7 @@ using Microsoft.Playwright;
 namespace EvidencijaAparata.Playwright
 {
     [TestFixture]
-    public class GMBase : PageTest
+    public class GMBaseTest : PageTest
     {
         private IBrowser browser;
         private IPage page;
@@ -97,6 +97,16 @@ namespace EvidencijaAparata.Playwright
         {
             await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* Base") }).GetByLabel("Delete").ClickAsync();
             await Expect(page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* Base") })).ToHaveCountAsync(0);
+        }
+
+        [Test]
+        public async Task DeactiveGMBaseOnly()
+        {
+            await page.GetByLabel("Deactivated only").ClickAsync();
+            foreach (var row in await page.GetByRole(AriaRole.Row).AllAsync())
+            {
+                await Expect(row).Not.ToContainTextAsync("Active");
+            }
         }
     }
 }
