@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: front-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: front
+  template:
+    metadata:
+      labels:
+        app: front
+    spec:
+      containers:
+      - name: front-container
+        image: ajovano/ajovano
+        ports:
+        - containerPort: 80

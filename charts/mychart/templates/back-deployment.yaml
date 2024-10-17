@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: back-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: back
+  template:
+    metadata:
+      labels:
+        app: back
+    spec:
+      containers:
+      - name: back-container
+        image: ajovano/ajovano.server
+        ports:
+        - containerPort: 5291
