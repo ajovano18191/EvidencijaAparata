@@ -31,21 +31,21 @@ pipeline {
                 }
             }
         }
-        // stage('Redeploy') {
-        //     agent {
-        //         docker {
-        //             image 'dtzar/helm-kubectl'
-        //             args '-v $PWD:/workspace'
-        //         }
-        //     } 
-        //     steps {
-        //         script {
-        //             def clusterIP = "dev-1.local"
-        //             withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
-        //                 sh "helm upgrade --install ajovano charts/mychart --set hostIP=${clusterIP}"
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Redeploy') {
+            agent {
+                docker {
+                    image 'dtzar/helm-kubectl'
+                    args '-v $PWD:/workspace'
+                }
+            } 
+            steps {
+                script {
+                    def clusterIP = "dev-1.local"
+                    withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
+                        sh "helm upgrade --install ajovano charts/mychart --set hostIP=${clusterIP}"
+                    }
+                }
+            }
+        }
     }
 }
