@@ -13,7 +13,7 @@ pipeline {
                 checkout scm
             }
         }
-        stage('Build') {
+        stage('Build and release') {
             agent {
                 docker {
                     image 'docker:cli'
@@ -27,29 +27,10 @@ pipeline {
                             docker.build("ajovano/ajovano.server").push()
                         }
                         sh 'docker rmi ajovano/ajovano.server'
-                        // customImage.push()
                     }
                 }
             }
         }
-        // stage('Release') {
-        //     agent {
-        //         docker {
-        //             image 'docker:cli'
-        //             args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workspace'
-        //         }
-        //     }
-        //     steps {
-        //         dir('evidencijaaparata.client') {
-        //             script {
-        //                 docker.withRegistry('', 'docker-token') {
-        //                     docker.build("ajovano/ajovano").push()
-        //                 }
-        //                 sh 'docker rmi ajovano/ajovano'
-        //             }
-        //         }
-        //     }
-        // }
         // stage('Redeploy') {
         //     agent {
         //         docker {
