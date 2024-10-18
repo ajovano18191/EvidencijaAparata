@@ -9,17 +9,17 @@ spec:
   - host: {{ printf "ea.%s.sslip.io" .Values.hostIP }}
     http:
       paths:
-      - path: /weatherforecast
+      - path: /
         pathType: Prefix
         backend:
           service:
             name: back-service
             port:
               number: 80
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: front-service
-            port:
-              number: 80
+      # - path: /
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: front-service
+      #       port:
+      #         number: 80
