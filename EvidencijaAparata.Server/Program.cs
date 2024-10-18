@@ -51,6 +51,8 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.UseCors("AllowAll");
+
+app.UsePathBase(new PathString("/api"));
 app.UseHttpLogging();
 
 app.Run();
