@@ -16,4 +16,4 @@ spec:
       - name: back-container
         image: ajovano/ajovano.server
         ports:
-        - containerPort: 5291
+        - containerPort: 8080

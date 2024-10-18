@@ -5,7 +5,7 @@ metadata:
 spec:
   ports:
     - protocol: TCP
-      port: 81
-      targetPort: 5291
+      port: 80
+      targetPort: 8080
   selector:
     app: back
