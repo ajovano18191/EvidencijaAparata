@@ -6,16 +6,16 @@ metadata:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
-  - host: {{ printf "ea.%s" .Values.hostIP }}
+  - host: {{ printf "front.%s" .Values.hostIP }}
     http:
       paths:
-      - path: /weatherforecast
-        pathType: Prefix
-        backend:
-          service:
-            name: back-service
-            port:
-              number: 81
+      # - path: /weatherforecast
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: back-service
+      #       port:
+      #         number: 81
       - path: /
         pathType: Prefix
         backend:
