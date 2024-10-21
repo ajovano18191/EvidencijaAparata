@@ -2,8 +2,6 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: ea-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
   ingressClassName: nginx
   rules:
@@ -17,10 +15,14 @@ spec:
             name: back-service
             port:
               number: 80
-      - path: /pufla(/|$)(.*)
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
+      - path: /
         pathType: ImplementationSpecific
         backend:
           service:
             name: front-service
             port:
               number: 80
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /$0
