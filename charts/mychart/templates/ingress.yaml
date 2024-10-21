@@ -17,7 +17,7 @@ spec:
             name: back-service
             port:
               number: 80
-      - path: /.*
+      - path: /pufla(/|$)(.*)
         pathType: ImplementationSpecific
         backend:
           service:
