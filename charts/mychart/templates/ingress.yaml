@@ -9,20 +9,20 @@ spec:
     http:
       paths:
       - path: /api(/|$)(.*)
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: back-service
             port:
               number: 80
-        # annotations:
-        #   nginx.ingress.kubernetes.io/rewrite-target: /$2
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /$2
       - path: /
-        pathType: ImplementationSpecific
+        pathType: Prefix
         backend:
           service:
             name: front-service
             port:
               number: 80
-        # annotations:
-        #   nginx.ingress.kubernetes.io/rewrite-target: /$0
+        annotations:
+          nginx.ingress.kubernetes.io/rewrite-target: /$0
