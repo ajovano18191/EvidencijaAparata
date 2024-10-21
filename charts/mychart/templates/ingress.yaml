@@ -11,17 +11,17 @@ spec:
   - host: {{ printf "ea.%s.sslip.io" .Values.hostIP }}
     http:
       paths:
-      - path: /api(/|$)(.*)
+      - path: /(.*)
         pathType: ImplementationSpecific
         backend:
           service:
             name: back-service
             port:
               number: 80
-      - path: (/|$)(.*)
-        pathType: ImplementationSpecific
-        backend:
-          service:
-            name: front-service
-            port:
-              number: 80
+      # - path: /(.*)
+      #   pathType: ImplementationSpecific
+      #   backend:
+      #     service:
+      #       name: front-service
+      #       port:
+      #         number: 80
