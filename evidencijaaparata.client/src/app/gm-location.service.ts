@@ -12,7 +12,7 @@ import { City, GMLocation } from './gm-location.interface';
 export class GMLocationService {
   private httpClient = inject(HttpClient);
   // private readonly href = 'http://localhost:3000/gm_location';
-  private readonly href = 'http://localhost:5291/gm_location';
+  private readonly href = '/api/gm_location';
 
   constructor() { }
 
@@ -58,7 +58,7 @@ export class GMLocationService {
   }
 
   getCities(): Observable<City[]> {
-    return this.httpClient.get<City[]>("http://localhost:5291/cities");
+    return this.httpClient.get<City[]>("/api/cities");
   }
 
   activateLocation(location_id: number, gmLocationActDTO: GMLocationActDTO): Observable<void> {
