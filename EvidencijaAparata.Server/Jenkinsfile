@@ -7,26 +7,84 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            agent any
-            steps {
-                checkout scm
-            }
-        }
         stage('Build and release') {
-            agent {
-                docker {
-                    image 'docker:cli'
-                    args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workspace'
-                }
-            }
-            steps {
-                dir('EvidencijaAparata.Server') {
-                    script {
-                        docker.withRegistry('', 'docker-token') {
-                            docker.build("ajovano/ajovano.server").push()
+            stages { // parallel
+                stage('Front') {
+                    stages {
+                        stage('Checkout') {
+                            agent any
+                            steps {
+                                checkout scm
+                            }
                         }
-                        sh 'docker rmi ajovano/ajovano.server'
+                        stage('Build') {
+                            agent {
+                                docker {
+                                    image 'node:alpine'
+                                    args '-u root -v $PWD:/workspace'
+                                }
+                            }
+                            steps {
+                                dir('evidencijaaparata.client') {
+                                    sh '''
+                                        pwd
+                                        ls -lhtra
+                                        npm i
+                                        npm run build --source-map=false
+                                    '''
+                                }
+                            }
+                        }
+                        stage('Release') {
+                            agent {
+                                docker {
+                                    image 'docker:cli'
+                                    args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workspace'
+                                }
+                            }
+                            steps {
+                                dir('evidencijaaparata.client') {
+                                    script {
+                                        sh '''
+                                            pwd
+                                            ls -lhtra
+                                        '''
+                                        docker.withRegistry('', 'docker-token') {
+                                            docker.build("ajovano/ajovano").push()
+                                        }
+                                        sh 'docker rmi ajovano/ajovano'
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                stage('Back') {
+                    stages {
+                        stage('Checkout') {
+                            agent any
+                            steps {
+                                checkout scm
+                            }
+                        }
+                        stage("Build and release") {
+                            agent {
+                                docker {
+                                    image 'docker:cli'
+                                    args '--privileged -u root -v /var/run/docker.sock:/var/run/docker.sock -v $PWD:/workspace'
+                                }
+                            }
+                            steps {
+                                dir('EvidencijaAparata.Server') {
+                                    script {
+                                        docker.withRegistry('', 'docker-token') {
+                                            docker.build("ajovano/ajovano.server").push()
+                                        }
+                                        sh 'docker rmi ajovano/ajovano.server'
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -40,7 +98,7 @@ pipeline {
             } 
             steps {
                 script {
-                    def clusterIP = "10.17.2.51"
+                    def clusterIP = "10.17.2.37"
                     withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
                         sh "helm upgrade --install ajovano charts/mychart --set hostIP=${clusterIP}"
                     }
