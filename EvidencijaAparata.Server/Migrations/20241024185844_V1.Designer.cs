@@ -12,7 +12,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EvidencijaAparata.Server.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240909182813_V1")]
+    [Migration("20241024185844_V1")]
     partial class V1
     {
         /// <inheritdoc />

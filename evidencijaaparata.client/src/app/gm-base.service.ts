@@ -12,7 +12,7 @@ import { GMBase } from './gm-base.interface';
 export class GMBaseService {
   private httpClient = inject(HttpClient);
   // private readonly href = 'http://localhost:3000/gm_base';
-  private readonly href = 'http://localhost:5291/gm_base';
+  private readonly href = '/api/gm_base';
 
   constructor() { }
 

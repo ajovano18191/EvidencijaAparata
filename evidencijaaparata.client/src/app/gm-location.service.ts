@@ -12,7 +12,7 @@ import { City, GMLocation } from './gm-location.interface';
 export class GMLocationService {
   private httpClient = inject(HttpClient);
   // private readonly href = 'http://localhost:3000/gm_location';
-  private readonly href = 'http://localhost:5291/gm_location';
+  private readonly href = '/api/gm_location';
 
   constructor() { }
 
