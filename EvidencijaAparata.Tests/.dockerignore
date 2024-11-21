@@ -1,0 +1,11 @@
+**/node_modules
+**/.angular
+**/.git
+**/.github
+**/bin
+**/obj
+**/out
+**/.vscode
+**/.vs
+.dotnet
+.Microsoft.DotNet.ImageBuilder

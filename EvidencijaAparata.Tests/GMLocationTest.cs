@@ -133,7 +133,7 @@ namespace EvidencijaAparata.Tests
 
         [Test]
         [TestCaseSource(nameof(invalidInputs))]
-        public async Task AddGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
+        public void AddGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
         {
             Assert.That(async () => await GMLocationsController.AddGMLocation(gmLocationDTO), Throws.Exception);
         }
@@ -160,7 +160,7 @@ namespace EvidencijaAparata.Tests
 
         [Test]
         [TestCaseSource(nameof(invalidInputs))]
-        public async Task UpdateGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
+        public void UpdateGMLocation_InvalidInput_ThrowsException(GMLocationDTO gmLocationDTO)
         {
             int id = 1;
             Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
@@ -168,7 +168,7 @@ namespace EvidencijaAparata.Tests
 
         [Test]
         [TestCase(-1, 1, "Naziv", "Adresa", "192.168.0.1", 1)]
-        public async Task UpdateGMLocation_WrongId_ThrowsException(int id, int rul_base_id, string naziv, string adresa, string IP, int mesto_id)
+        public void UpdateGMLocation_WrongId_ThrowsException(int id, int rul_base_id, string naziv, string adresa, string IP, int mesto_id)
         {
             GMLocationDTO gmLocationDTO = new GMLocationDTO(rul_base_id, naziv, adresa, IP, mesto_id);
             Assert.That(async () => await GMLocationsController.UpdateGMLocation(id, gmLocationDTO), Throws.Exception);
@@ -192,7 +192,7 @@ namespace EvidencijaAparata.Tests
 
         [Test]
         [TestCase(-1)]
-        public async Task DeleteGMLocation_WrongId_ThrowsException(int id)
+        public void DeleteGMLocation_WrongId_ThrowsException(int id)
         {
             Assert.That(async () => await GMLocationsController.DeleteGMLocation(id), Throws.Exception);
         }

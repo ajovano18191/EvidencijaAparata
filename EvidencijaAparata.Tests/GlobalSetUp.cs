@@ -23,8 +23,8 @@ namespace EvidencijaAparata.Tests
             var services = new ServiceCollection();
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseInMemoryDatabase("TestDatabase"));
-            services.AddDbContext<ApplicationDbContext>(options => 
-                options.UseNpgsql("Host=localhost;Port=5432;Database=evidencija-aparata;Username=evidencija-aparata-ef;Password=evidencija-aparata-ef"));
+            services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseNpgsql("Host=10.17.2.40;Port=5432;Database=ea;Username=ea-back;Password=arilje031"));
 
             _serviceProvider = services.BuildServiceProvider();
             _context = _serviceProvider.GetRequiredService<ApplicationDbContext>();
