@@ -109,6 +109,20 @@ pipeline {
                                     def clusterIP = "10.17.2.37"
                                     withKubeConfig([credentialsId: 'dev-api-token', serverUrl: "https://${clusterIP}:16443/"]) {
                                         sh "helm upgrade --install ea-nunit charts/ea-nunit --set hostIP=${clusterIP}"
+                                        
+                                        def jobStatus = sh(script: "kubectl wait job ea-nunit --timeout=-1s --for=jsonpath='{.status.conditions[*].status}'=True -o jsonpath='{.status.conditions[*].type}'", returnStdout: true).trim()
+                                        def line = sh(script: "kubectl logs jobs/ea-nunit | tail -n 1", returnStdout: true).trim()
+                                        def numOfFailedTests = (line =~ /Failed:\s*(\d+)/)[0][1]
+                                        
+                                        sh "helm uninstall ea-nunit"
+                                        
+                                        if (jobStatus == "Failed") {
+                                            error "Doslo je do greske u pokretanju testova."
+                                        }
+                                                                                
+                                        if (numOfFailedTests.toInteger() != 0) {
+                                            error "Neki testovi nisu prosli."
+                                        }                                    
                                     }
                                 }
                             }
