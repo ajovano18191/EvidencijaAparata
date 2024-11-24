@@ -14,7 +14,7 @@ namespace EvidencijaAparata.Playwright
         {
             browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 1000,
             });
 
