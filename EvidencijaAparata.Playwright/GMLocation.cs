@@ -19,7 +19,7 @@ namespace EvidencijaAparata.Playwright
             });
 
             page = await browser.NewPageAsync();
-            await page.GotoAsync("https://ea.10.17.2.37.sslip.io/gm-location");
+            await page.GotoAsync("http://ea.10.17.2.37.sslip.io/gm-location");
         }
 
         [TearDown]
