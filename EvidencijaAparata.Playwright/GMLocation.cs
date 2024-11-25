@@ -74,8 +74,9 @@ namespace EvidencijaAparata.Playwright
             await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") }).GetByLabel("Deactive").ClickAsync();
             await Expect(page.Locator(".cdk-overlay-backdrop")).ToBeVisibleAsync();
             await page.GetByLabel("Resenje").FillAsync("ResAkt");
-            await page.GetByLabel("Open calendar").ClickAsync();
-            await page.GetByLabel("10. септембар").ClickAsync();
+            await page.GetByLabel("Datum").FillAsync("9/10/2024");
+            // await page.GetByLabel("Open calendar").ClickAsync();
+            // await page.GetByLabel("10. новембар").ClickAsync();
             await page.GetByLabel("Napomena").FillAsync("NapomenaAkt");
             await page.GetByRole(AriaRole.Button, new() { Name = "Activate", Exact = true }).ClickAsync();
             await Expect(page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") }).GetByLabel("Active")).ToHaveCountAsync(1);
@@ -87,8 +88,9 @@ namespace EvidencijaAparata.Playwright
         {
             await page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") }).GetByLabel("Active").ClickAsync();
             await page.GetByLabel("Resenje").FillAsync("ResenjeDeakt");
-            await page.GetByLabel("Open calendar").ClickAsync();
-            await page.GetByLabel("12. септембар").ClickAsync();
+            await page.GetByLabel("Datum").FillAsync("9/12/2024");
+            // await page.GetByLabel("Open calendar").ClickAsync();
+            // await page.GetByLabel("12. новембар").ClickAsync();
             await page.GetByRole(AriaRole.Button, new() { Name = "Deactivate", Exact = true }).ClickAsync();
             await Expect(page.GetByRole(AriaRole.Row, new() { NameRegex = new Regex(".* 100") }).GetByLabel("Deactive")).ToHaveCountAsync(1);
         }
