@@ -12,7 +12,12 @@ pipeline {
                 stage('Front') {
                     stages {
                         stage('Front - Checkout') {
-                            agent any
+                            agent {
+                                docker {
+                                    image 'alpine/git'
+                                    args '-v $PWD:/workspace --entrypoint=""'
+                                }
+                            }
                             steps {
                                 checkout scm
                             }
@@ -57,7 +62,12 @@ pipeline {
                 stage('Back') {
                     stages {
                         stage('Back - Checkout') {
-                            agent any
+                            agent {
+                                docker {
+                                    image 'alpine/git'
+                                    args '-v $PWD:/workspace --entrypoint=""'
+                                }
+                            }
                             steps {
                                 checkout scm
                             }
