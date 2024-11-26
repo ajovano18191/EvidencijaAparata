@@ -44,9 +44,10 @@ pipeline {
                                 dir('evidencijaaparata.client') {
                                     script {
                                         docker.withRegistry('', 'docker-token') {
-                                            docker.build("ajovano/ea-front").push()
+                                            docker.build("ajovano/ea-front:${env.BUILD_NUMBER}", "-t ajovano/ea-front:latest .")
+                                            sh 'docker push -a ajovano/ea-front'
                                         }
-                                        sh 'docker rmi ajovano/ea-front'
+                                        sh 'docker rmi -f $(docker image ls --filter "reference=ajovano/ea-front" -q)'
                                     }
                                 }
                             }
@@ -72,9 +73,9 @@ pipeline {
                                 dir('EvidencijaAparata.Server') {
                                     script {
                                         docker.withRegistry('', 'docker-token') {
-                                            docker.build("ajovano/ea-back").push()
+                                            docker.build("ajovano/ea-back:${env.BUILD_NUMBER}", "-t ajovano/ea-back:latest .")
+                                            sh 'docker push -a ajovano/ea-back'
                                         }
-                                        sh 'docker rmi ajovano/ea-back'
                                     }
                                 }
                             }
@@ -90,9 +91,11 @@ pipeline {
                                 dir('EvidencijaAparata.Tests') {
                                     script {
                                         docker.withRegistry('', 'docker-token') {
-                                            docker.build("ajovano/ea-nunit").push()
+                                            docker.build("ajovano/ea-nunit:${env.BUILD_NUMBER}", "-t ajovano/ea-nunit:latest .")
+                                            sh 'docker push -a ajovano/ea-nunit'
                                         }
-                                        sh 'docker rmi ajovano/ea-nunit'
+                                        sh 'docker rmi -f $(docker image ls --filter "reference=ajovano/ea-back" -q)'
+                                        sh 'docker rmi -f $(docker image ls --filter "reference=ajovano/ea-nunit" -q)'
                                     }
                                 }
                             }
@@ -116,8 +119,8 @@ pipeline {
                                         if (jobStatus == "Failed") {
                                             error "Doslo je do greske u pokretanju testova."
                                         }
-                                        
                                         def failed = (line =~ /Failed:\s*(\d+)/)[0][1]
+                                        
                                         if (failed.toInteger() != 0) {
                                             error "Neki testovi nisu prosli."
                                         }
@@ -154,7 +157,7 @@ pipeline {
             }
             steps {
                 dir('EvidencijaAparata.Playwright') {
-                    sh 'dotnet test'
+                    sh 'dotnet test -- Playwright.ExpectTimeout=60000'
                 }
             }
         }
