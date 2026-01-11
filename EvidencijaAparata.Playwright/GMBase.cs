@@ -13,12 +13,12 @@ namespace EvidencijaAparata.Playwright
         {
             browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
             {
-                Headless = false,
+                Headless = true,
                 SlowMo = 1000,
             });
 
             page = await browser.NewPageAsync();
-            await page.GotoAsync("http://localhost:4200/gm-base");
+            await page.GotoAsync("http://ea.10.17.2.37.sslip.io/gm-base");
         }
 
         [TearDown]
